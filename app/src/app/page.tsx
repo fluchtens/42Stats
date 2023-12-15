@@ -1,3 +1,7 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 async function getApiToken() {
   try {
     const response = await fetch("https://api.intra.42.fr/oauth/token", {
@@ -77,6 +81,13 @@ export default async function Home() {
     const { id, name } = campus;
     campusMap.set(id, name);
   });
+
+  // await prisma.campus.createMany({
+  //   data: allCampus.map((campus) => ({
+  //     id: campus.id,
+  //     name: campus.name,
+  //   })),
+  // });
 
   return (
     <main className="">

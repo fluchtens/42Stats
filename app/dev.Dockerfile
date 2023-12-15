@@ -13,10 +13,10 @@ RUN pnpm install
 COPY ./ ./
 
 # Setups prisma
-# RUN pnpx prisma generate
+RUN pnpx prisma generate
 
 # Exposes port
 EXPOSE 3000
 
 # Starts application
-CMD ["pnpm", "run", "dev"]
+CMD ["pnpm", "run", "migrate:dev"]
