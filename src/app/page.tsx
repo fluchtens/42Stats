@@ -72,15 +72,29 @@ export default async function Home() {
     campusPage = await getCampus(token, page, perPage);
   }
 
-  console.log(allCampus);
+  const campusMap = new Map();
+  allCampus.forEach((campus: Campus) => {
+    const { id, name } = campus;
+    campusMap.set(id, name);
+  });
 
   return (
     <main className="">
       <h1>42stats</h1>
-      {allCampus &&
-        allCampus.map((campus: Campus) => (
-          <div key={campus.id}>{campus.name}</div>
-        ))}
+      {campusMap.size > 0 && (
+        <div>
+          <h2>Liste des campus :</h2>
+          <ul>
+            {Array.from(campusMap)
+              .sort(([idA], [idB]) => idA - idB)
+              .map(([id, name]) => (
+                <li key={id}>
+                  {id}. {name}
+                </li>
+              ))}
+          </ul>
+        </div>
+      )}
     </main>
   );
 }
