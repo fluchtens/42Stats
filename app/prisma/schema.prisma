@@ -6,3 +6,8 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Campus {
+  id   Int    @id
+  name String @db.VarChar(255)
+}

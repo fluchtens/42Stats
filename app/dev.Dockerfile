@@ -12,6 +12,9 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 COPY ./ ./
 
+# Setups prisma
+# RUN pnpx prisma generate
+
 # Exposes port
 EXPOSE 3000
 
