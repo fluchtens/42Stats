@@ -2,7 +2,7 @@ version: "3"
 
 services:
   postgres:
-    container_name: stats-postgres
+    container_name: 42stats-postgres
     image: postgres:latest
     env_file:
       - .env
@@ -11,12 +11,12 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
     networks:
-      - stats
+      - 42stats
     restart: always
 
   app:
-    container_name: stats-app
-    image: stats-app
+    container_name: 42stats-app
+    image: 42stats-app
     build:
       context: ./app
       dockerfile: dev.Dockerfile
@@ -31,12 +31,12 @@ services:
       - ./app:/app
       - /app/node_modules
     networks:
-      - stats
+      - 42stats
     restart: always
 
 networks:
-  stats:
-    name: stats
+  42stats:
+    name: 42stats
 
 volumes:
   database:

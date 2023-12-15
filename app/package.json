@@ -1,17 +1,19 @@
 {
-  "name": "42stats",
+  "name": "my-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "migrate:dev": "pnpx prisma migrate dev --name transcendence && pnpm run dev",
+    "migrate:dev": "npx prisma migrate dev && npm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",
+    "@types/node-cron": "^3.0.11",
     "next": "14.0.4",
+    "node-cron": "^3.0.3",
     "react": "^18",
     "react-dom": "^18"
   },
