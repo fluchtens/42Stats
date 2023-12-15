@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "migrate:dev": "npx prisma migrate dev && npm run dev",
+    "migrate:dev": "npx prisma migrate dev --name db && npm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

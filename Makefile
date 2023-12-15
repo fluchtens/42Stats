@@ -1,7 +1,7 @@
 all: build
 
 install:
-	cd app && pnpm install && pnpx prisma generate
+	cd app && npm install && npx prisma generate
 
 build: clean
 	docker-compose up --build

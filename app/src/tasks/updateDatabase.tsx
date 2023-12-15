@@ -16,10 +16,12 @@ async function initCampus() {
       campusPage = await getCampusApi(page, perPage);
     }
 
+    allCampus.sort((a, b) => a.id - b.id);
     await prisma.campus.createMany({
       data: allCampus.map((campus) => ({
         id: campus.id,
         name: campus.name,
+        country: campus.country,
       })),
     });
   } catch (error) {
@@ -27,7 +29,7 @@ async function initCampus() {
   }
 }
 
-async function initDatabase() {
+export async function initDatabase() {
   await initCampus();
 }
 

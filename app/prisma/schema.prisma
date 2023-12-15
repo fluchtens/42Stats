@@ -9,6 +9,7 @@ datasource db {
 }
 
 model Campus {
-  id   Int    @id
-  name String @db.VarChar(255)
+  id      Int    @id
+  name    String @db.VarChar(255)
+  country String @db.VarChar(255)
 }
