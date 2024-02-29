@@ -11,7 +11,7 @@ up: down
 
 down:
 	docker-compose down
-\\\\]
+
 clean:
 	docker-compose down --rmi all
 
