@@ -1,21 +1,23 @@
 all: build
 
 install:
-	cd app && npm install && npx prisma generate
+	cd app && pnpm install && pnpx prisma generate
 
-build: clean
+build:
 	docker-compose up --build
 
-up:
-	docker-compose down
+up: down
 	docker-compose up
 
 down:
+	docker-compose down
+\\\\]
+clean:
+	docker-compose down --rmi all
+
+fclean:
 	docker-compose down --rmi all --volumes
 
-clean: down
-	docker system prune -a -f
-
-.PHONY: all install build up down clean
+.PHONY: all install build up down clean fclean
 
 .SILENT:

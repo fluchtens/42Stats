@@ -1,29 +1,33 @@
 version: "3"
 
 services:
-  postgres:
-    container_name: 42stats-postgres
+  database:
+    container_name: 42stats-db
     image: postgres:latest
-    env_file:
-      - .env
-    ports:
-      - 5432:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
     volumes:
       - database:/var/lib/postgresql/data
     networks:
-      - 42stats
+      - 42stats_network
     restart: always
 
   app:
     container_name: 42stats-app
     image: 42stats-app
     build:
-      context: ./app
-      dockerfile: dev.Dockerfile
+      context: ./
+      dockerfile: Dockerfile
     depends_on:
-      - postgres
-    env_file:
-      - .env
+      - database
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - 3000:3000
       - 5555:5555
@@ -31,12 +35,12 @@ services:
       - ./app:/app
       - /app/node_modules
     networks:
-      - 42stats
+      - 42stats_network
     restart: always
 
 networks:
-  42stats:
-    name: 42stats
+  42stats_network:
+    name: 42stats_network
 
 volumes:
   database:
