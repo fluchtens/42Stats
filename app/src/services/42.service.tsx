@@ -1,69 +1,84 @@
-export async function getAccessToken() {
-  try {
-    const url = "https://api.intra.42.fr/oauth/token";
+// import { PrismaClient } from "@prisma/client";
 
-    const body = {
-      grant_type: "client_credentials",
-      client_id:
-        "u-s4t2ud-1bf3f54d118b8dd7945782afe2fd2e7058c7e17f4f51a12230a433b071054ac2",
-      client_secret:
-        "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",
-    };
+// const prisma = new PrismaClient();
 
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+// async function getAccessToken() {
+//   try {
+//     const url = "https://api.intra.42.fr/oauth/token";
 
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
+//     const body = {
+//       grant_type: "client_credentials",
+//       client_id:
+//         "u-s4t2ud-1bf3f54d118b8dd7945782afe2fd2e7058c7e17f4f51a12230a433b071054ac2",
+//       client_secret:
+//         "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",
+//     };
 
-    return data.access_token;
-  } catch (error) {
-    return null;
-  }
-}
+//     const response = await fetch(url, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(body),
+//     });
 
-async function getCampusApi(page: number) {
-  try {
-    const url = `https://api.intra.42.fr/v2/campus?page=${page}`;
-    const accessToken = await getAccessToken();
+//     const data = await response.json();
+//     if (!response.ok) {
+//       return null;
+//     }
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+//     return data.access_token;
+//   } catch (error) {
+//     return null;
+//   }
+// }
 
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
+// async function getCampusApi(page: number) {
+//   try {
+//     const url = `https://api.intra.42.fr/v2/campus?page=${page}`;
+//     const accessToken = await getAccessToken();
 
-    return data;
-  } catch (error) {
-    return null;
-  }
-}
+//     const response = await fetch(url, {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
 
-export async function initCampus() {
-  let campuses: any = [];
-  let page: number = 1;
+//     const data = await response.json();
+//     if (!response.ok) {
+//       return null;
+//     }
 
-  while (true) {
-    const data = await getCampusApi(page);
-    if (data && data.length) {
-      campuses = [...campuses, ...data];
-      page++;
-    } else {
-      break;
-    }
-  }
+//     return data;
+//   } catch (error) {
+//     return null;
+//   }
+// }
 
-  console.log(campuses);
-}
+// export async function initCampus() {
+//   let campuses: any = [];
+//   let page: number = 1;
+
+//   while (true) {
+//     const data = await getCampusApi(page);
+//     if (data && data.length) {
+//       campuses = [...campuses, ...data];
+//       page++;
+//     } else {
+//       break;
+//     }
+//   }
+
+//   await prisma.campus.createMany({
+//     data: campuses.map((campus: any) => ({
+//       id: campus.id,
+//       name: campus.name,
+//       country: campus.country,
+//     })),
+//   });
+
+//   console.log(campuses);
+//   return campuses;
+// }
+
+// initCampus();
