@@ -5,8 +5,10 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY ./app/package.json .
+COPY package.json .
 RUN pnpm install
-COPY ./app/ .
+COPY . .
+
+RUN pnpx prisma generate
 
 CMD ["pnpm", "run", "migrate:dev"]

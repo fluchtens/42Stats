@@ -19,7 +19,7 @@ services:
     container_name: 42stats-app
     image: 42stats-app
     build:
-      context: ./
+      context: ./app
       dockerfile: Dockerfile
     depends_on:
       - database
