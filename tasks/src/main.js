@@ -24,4 +24,4 @@ setTimeout(() => {
 }, 60 * 1000);
 
 // cron.schedule("0 0 * * *", updateDatabase);
-cron.schedule("*/1 * * * *", updateDatabase);
+cron.schedule("*/5 * * * *", updateDatabase);
