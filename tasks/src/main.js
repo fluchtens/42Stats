@@ -4,7 +4,7 @@ const { initCampuses, deleteCampuses } = require("./initCampuses");
 
 async function updateDatabase() {
   try {
-    const connectionString = "postgresql://fluchten:19@42stats-db:5432/42stats";
+    const connectionString = process.env.DATABASE_URL;
     const client = new Client({ connectionString });
 
     await client.connect();
@@ -24,4 +24,4 @@ setTimeout(() => {
 }, 60 * 1000);
 
 // cron.schedule("0 0 * * *", updateDatabase);
-cron.schedule("*/5 * * * *", updateDatabase);
+cron.schedule("*/1 * * * *", updateDatabase);

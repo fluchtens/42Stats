@@ -24,9 +24,6 @@ services:
     depends_on:
       - database
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_URL: ${DATABASE_URL}
     ports:
       - 3000:3000
@@ -47,9 +44,6 @@ services:
     depends_on:
       - app
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_URL: ${DATABASE_URL}
     networks:
       - 42stats_network
