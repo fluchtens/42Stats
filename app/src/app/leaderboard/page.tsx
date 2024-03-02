@@ -1,11 +1,63 @@
+"use client";
+
+import { CampusSelector } from "@/components/CampusSelector";
+import { PoolDateSelector } from "@/components/PoolDateSelector";
 import { getAllUsers } from "@/services/user.service";
+import { PoolDate } from "@/types/date.interface";
 
 export default async function Leaderboard() {
   const users = await getAllUsers();
+  let poolDates: PoolDate[] = [];
+
+  if (users) {
+    poolDates = users.reduce((dates: PoolDate[], user) => {
+      const date: PoolDate = { month: user.pool_month, year: user.pool_year };
+
+      const dateExists = dates.some(
+        (d) => d.month === date.month && d.year === date.year
+      );
+
+      if (!dateExists) {
+        dates.push(date);
+      }
+
+      return dates;
+    }, []);
+
+    const monthNames = [
+      "january",
+      "february",
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
+    ];
+
+    poolDates.sort((a, b) => {
+      const yearA = Number(a.year);
+      const yearB = Number(b.year);
+
+      const monthA = monthNames.indexOf(a.month);
+      const monthB = monthNames.indexOf(b.month);
+
+      if (yearA !== yearB) {
+        return yearA - yearB;
+      } else {
+        return monthA - monthB;
+      }
+    });
+  }
 
   return (
     <main className="p-6 flex-1">
-      <div className="max-w-screen-lg m-auto flex-col flex justify-center items-center gap-2">
+      <div className="max-w-screen-lg m-auto flex-col flex justify-center gap-2">
+        <PoolDateSelector dates={poolDates} />
         {users && (
           <table className="w-full">
             <thead>
