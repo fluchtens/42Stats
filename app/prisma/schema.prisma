@@ -17,4 +17,19 @@ model Campus {
   id      Int    @id
   name    String @db.VarChar(255)
   country String @db.VarChar(255)
+  User    User[]
+}
+
+model User {
+  id         Int     @id
+  email      String  @unique @db.VarChar(255)
+  login      String  @unique @db.VarChar(255)
+  first_name String  @db.VarChar(255)
+  last_name  String  @db.VarChar(255)
+  image      String  @db.VarChar(255)
+  pool_month String  @db.VarChar(255)
+  pool_year  String  @db.VarChar(255)
+  level      Decimal
+  campus_id  Int
+  Campus     Campus  @relation(fields: [campus_id], references: [id])
 }

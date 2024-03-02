@@ -16,11 +16,12 @@ async function getAccessToken() {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
     if (!response.ok) {
-      return null;
+      await new Promise((resolve) => setTimeout(resolve, 15 * 1000));
+      return getAccessToken();
     }
 
+    const data = await response.json();
     return data.access_token;
   } catch (error) {
     return null;
