@@ -1,6 +1,5 @@
-import { PrismaClient, Campus } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "@/libs/prisma";
+import { Campus } from "@prisma/client";
 
 export async function getCampuses(): Promise<Campus[] | null> {
   try {
@@ -18,3 +17,23 @@ export async function getCampuses(): Promise<Campus[] | null> {
     return null;
   }
 }
+
+// export aysnc function getCampusUsers(campusId: number): Promise<User[] | null> {
+//   try {
+//     const users = await prisma.user.findMany({
+//       where: {
+//         campus_id: campusId,
+//       },
+//       orderBy: {
+//         last_name: "asc",
+//       },
+//     });
+//     if (!users) {
+//       return null;
+//     }
+//     return users;
+//   } catch (error) {
+//     console.error(error);
+//     return null;
+//   }
+// }

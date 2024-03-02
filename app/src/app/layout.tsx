@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import "../styles/globals.css";
+import { Header } from "@/components/layouts/Header";
+import { Footer } from "@/components/layouts/Footer";
 
 export const metadata: Metadata = {
   title: "42stats",
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${GeistSans.className}`}>{children}</body>
+      <body className={`min-h-screen flex flex-col ${GeistSans.className}`}>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
