@@ -1,5 +1,5 @@
 import Link from "next/link";
-// import { NavLinks } from "../ui/NavLinks";
+import { NavLinks } from "../NavLinks";
 
 export const Header = () => (
   <header className="px-4 py-5 border-b border-slate-200 border-opacity-10">
@@ -7,7 +7,7 @@ export const Header = () => (
       <Link href="/">
         <h1 className="text-lg md:text-xl font-medium">42Stats</h1>
       </Link>
-      {/* <NavLinks /> */}
+      <NavLinks />
     </div>
   </header>
 );
