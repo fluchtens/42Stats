@@ -14,8 +14,8 @@ export const PoolDateSelector = ({ dates, setPoolDate }: PoolDateSelectorProps) 
 
   return (
     <div className="flex-col flex">
-      <label>Pool date:</label>
-      <select className="text-black" onChange={handleSelect}>
+      <label htmlFor="poolDateSelect">Pool date:</label>
+      <select id="poolDateSelect" className="text-black" onChange={handleSelect}>
         <option>Choose a date</option>
         {dates &&
           dates.map((date, index) => (
