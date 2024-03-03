@@ -3,7 +3,6 @@ const getAccessToken = require("./getAccessToken");
 async function getUsers(accessToken, page) {
   try {
     const url = `https://api.intra.42.fr/v2/cursus_users?filter[cursus_id]=21&filter[campus_id]=12&page[number]=${page}&page[size]=100`;
-
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -20,15 +19,9 @@ async function getUsers(accessToken, page) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("[USERS]", error);
+    console.error("[USER]", error);
     return null;
   }
-}
-
-async function deleteUsers(client) {
-  const query = 'DELETE FROM "User"';
-  await client.query(query);
-  console.log("[USERS] old data deleted.");
 }
 
 async function insertUsers(client, users) {
@@ -50,11 +43,11 @@ async function insertUsers(client, users) {
     await client.query(insert, values);
   });
   await Promise.all(insertPromises);
-  console.log("[USERS] new data added.");
+  console.log("[USER] table updated.");
 }
 
 async function initUsers(client) {
-  console.log("[USERS] init api fetching...");
+  console.log("[USER] init api fetching...");
   const accessToken = await getAccessToken();
   let users = [];
   let page = 1;
@@ -68,10 +61,8 @@ async function initUsers(client) {
       break;
     }
   }
+  console.log(`[USER] ${users.length} users fetched.`);
 
-  console.log(`[USERS] ${users.length} users fetched.`);
-
-  await deleteUsers(client);
   await insertUsers(client, users);
 }
 

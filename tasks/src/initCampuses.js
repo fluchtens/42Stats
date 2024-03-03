@@ -3,7 +3,6 @@ const getAccessToken = require("./getAccessToken");
 async function getCampuses(accessToken, page) {
   try {
     const url = `https://api.intra.42.fr/v2/campus?page=${page}&?page[size]=100`;
-
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -24,21 +23,14 @@ async function getCampuses(accessToken, page) {
   }
 }
 
-async function deleteCampuses(client) {
-  const query = 'DELETE FROM "Campus"';
-  await client.query(query);
-  console.log("[CAMPUS] old data deleted.");
-}
-
 async function insertCampuses(client, campuses) {
   const insertPromises = campuses.map(async (campus) => {
-    const insert =
-      'INSERT INTO "Campus"(id, name, country) VALUES($1, $2, $3) RETURNING *';
+    const insert = 'INSERT INTO "Campus"(id, name, country) VALUES($1, $2, $3) RETURNING *';
     const values = [campus.id, campus.name, campus.country];
     await client.query(insert, values);
   });
   await Promise.all(insertPromises);
-  console.log("[CAMPUS] new data added.");
+  console.log("[CAMPUS] table updated.");
 }
 
 async function initCampuses(client) {
@@ -56,10 +48,8 @@ async function initCampuses(client) {
       break;
     }
   }
-
   console.log(`[CAMPUS] ${campuses.length} campuses fetched.`);
 
-  await deleteCampuses(client);
   await insertCampuses(client, campuses);
 }
 

@@ -4,10 +4,8 @@ async function getAccessToken() {
 
     const body = {
       grant_type: "client_credentials",
-      client_id:
-        "u-s4t2ud-1bf3f54d118b8dd7945782afe2fd2e7058c7e17f4f51a12230a433b071054ac2",
-      client_secret:
-        "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",
+      client_id: process.env.FORTY_TWO_UID,
+      client_secret: process.env.FORTY_TWO_SECRET,
     };
 
     const response = await fetch(url, {
