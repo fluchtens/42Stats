@@ -23,10 +23,7 @@ export async function GET(req: Request) {
 
   const userId = Number(url.searchParams.get("user_id"));
   if (!userId) {
-    return NextResponse.json(
-      { message: "user_id cannot be empty." },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: "user_id cannot be empty." }, { status: 400 });
   }
 
   const user = await getUserById(userId);
@@ -34,5 +31,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "User not found." }, { status: 404 });
   }
 
-  return NextResponse.json({ user }, { status: 200 });
+  return NextResponse.json(user, { status: 200 });
 }

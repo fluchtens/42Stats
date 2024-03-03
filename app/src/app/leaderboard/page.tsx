@@ -82,7 +82,7 @@ export default function Leaderboard() {
                     />
                     {user.login}
                   </td>
-                  <td className="py-4 text-right">{user.level.toString()}</td>
+                  <td className="py-4 text-right">{Number(user.level.toString()).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
