@@ -7,7 +7,6 @@ import { getPoolDates } from "@/services/date.service";
 import { getCampusUsers, getPoolUsers } from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Leaderboard() {
