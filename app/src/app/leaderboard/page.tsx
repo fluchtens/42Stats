@@ -33,15 +33,15 @@ export default function Leaderboard() {
         setAvailablePoolDates(newPoolDates);
       }
     };
-    setCampusId(null);
+    setUsers(null);
     setAvailablePoolDates(null);
     fetchData();
   }, [campusId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (poolDate) {
-        const newUsers = await getPoolUsers(poolDate.month, poolDate.year);
+      if (campusId && poolDate) {
+        const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year);
         setUsers(newUsers);
       }
     };
