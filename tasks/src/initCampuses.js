@@ -1,4 +1,5 @@
 const getAccessToken = require("./getAccessToken");
+const initCampusUsers = require("./initCampusUsers");
 
 async function getCampuses(accessToken, page) {
   try {
@@ -24,12 +25,12 @@ async function getCampuses(accessToken, page) {
 }
 
 async function insertCampuses(client, campuses) {
-  const insertPromises = campuses.map(async (campus) => {
+  for (const campus of campuses) {
     const insert = 'INSERT INTO "Campus"(id, name, country) VALUES($1, $2, $3) RETURNING *';
     const values = [campus.id, campus.name, campus.country];
     await client.query(insert, values);
-  });
-  await Promise.all(insertPromises);
+    await initCampusUsers(client, campus.id);
+  }
   console.log("[CAMPUS] table updated.");
 }
 

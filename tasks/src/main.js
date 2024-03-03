@@ -1,7 +1,6 @@
 const { Client } = require("pg");
 const cron = require("node-cron");
 const initCampuses = require("./initCampuses");
-const initUsers = require("./initUsers");
 const cleanDatabase = require("./cleanDatabase");
 
 async function updateDatabase() {
@@ -11,7 +10,6 @@ async function updateDatabase() {
     await client.connect();
     await cleanDatabase(client);
     await initCampuses(client);
-    await initUsers(client);
     await client.end();
     console.log("Database updated successfully!");
   } catch (error) {

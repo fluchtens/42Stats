@@ -1,8 +1,8 @@
 const getAccessToken = require("./getAccessToken");
 
-async function getUsers(accessToken, page) {
+async function getCampusUsers(accessToken, campusId, page) {
   try {
-    const url = `https://api.intra.42.fr/v2/cursus_users?filter[cursus_id]=21&filter[campus_id]=12&page[number]=${page}&page[size]=100`;
+    const url = `https://api.intra.42.fr/v2/cursus_users?filter[cursus_id]=21&filter[campus_id]=${campusId}&page[number]=${page}&page[size]=100`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -13,7 +13,7 @@ async function getUsers(accessToken, page) {
 
     if (!response.ok) {
       await new Promise((resolve) => setTimeout(resolve, 15 * 1000));
-      return getUsers(accessToken, page);
+      return getCampusUsers(accessToken, page);
     }
 
     const data = await response.json();
@@ -24,7 +24,7 @@ async function getUsers(accessToken, page) {
   }
 }
 
-async function insertUsers(client, users) {
+async function insertUsers(client, users, campusId) {
   const insertPromises = users.map(async (user) => {
     const insert =
       'INSERT INTO "User"(id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
@@ -38,7 +38,7 @@ async function insertUsers(client, users) {
       user.user.pool_month,
       user.user.pool_year,
       user.level,
-      12,
+      campusId,
     ];
     await client.query(insert, values);
   });
@@ -46,14 +46,14 @@ async function insertUsers(client, users) {
   console.log("[USER] table updated.");
 }
 
-async function initUsers(client) {
+async function initCampusUsers(client, campusId) {
   console.log("[USER] init api fetching...");
   const accessToken = await getAccessToken();
   let users = [];
   let page = 1;
 
   while (true) {
-    const data = await getUsers(accessToken, page);
+    const data = await getCampusUsers(accessToken, campusId, page);
     if (data && data.length) {
       users = [...users, ...data];
       page++;
@@ -63,7 +63,7 @@ async function initUsers(client) {
   }
   console.log(`[USER] ${users.length} users fetched.`);
 
-  await insertUsers(client, users);
+  await insertUsers(client, users, campusId);
 }
 
-module.exports = initUsers;
+module.exports = initCampusUsers;
