@@ -76,8 +76,13 @@ export default function Leaderboard() {
                   <td className="py-4 text-left">{index + 1}</td>
                   <td className="py-4 flex justify-start items-center gap-4 text-left">
                     <img
-                      src={user.image}
-                      alt={user.image}
+                      src={`${user.image ? user.image : "/noavatar.png"}`}
+                      alt={`${user.image ? user.image : "noavatar.png"}`}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "/noavatar.png";
+                      }}
                       className="w-16 h-16 rounded-full object-cover"
                     />
                     {user.login}
