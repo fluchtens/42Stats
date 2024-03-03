@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { User } from "@prisma/client";
 import prisma from "@/libs/prisma";
 
-export async function getUserById(userId: number): Promise<User | null> {
+async function getUserById(userId: number): Promise<User | null> {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -14,7 +14,6 @@ export async function getUserById(userId: number): Promise<User | null> {
     }
     return user;
   } catch (error) {
-    console.error(error);
     return null;
   }
 }

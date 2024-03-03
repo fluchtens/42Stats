@@ -3,23 +3,23 @@ import { useState } from "react";
 
 interface PoolDateSelectorProps {
   dates: PoolDate[] | null;
+  setPoolDate: (date: PoolDate) => void;
 }
 
-export const PoolDateSelector = ({ dates }: PoolDateSelectorProps) => {
-  const [selection, setSelection] = useState<string | undefined>(undefined);
-
+export const PoolDateSelector = ({ dates, setPoolDate }: PoolDateSelectorProps) => {
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelection(event.target.value);
+    const [month, year] = event.target.value.split("-");
+    setPoolDate({ month, year });
   };
 
   return (
-    <div>
+    <div className="flex-col flex">
       <label>Pool date:</label>
       <select className="text-black" onChange={handleSelect}>
         <option>Choose a date</option>
         {dates &&
           dates.map((date, index) => (
-            <option key={index}>
+            <option key={index} value={`${date.month}-${date.year}`}>
               {date.month} {date.year}
             </option>
           ))}
