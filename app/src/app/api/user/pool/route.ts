@@ -10,7 +10,7 @@ async function getPoolUsers(month: string, year: string): Promise<User[]> {
         pool_year: year,
       },
       orderBy: {
-        id: "asc",
+        level: "desc",
       },
     });
     if (!users || users.length === 0) {
