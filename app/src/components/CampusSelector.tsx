@@ -16,7 +16,7 @@ export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) =
     <div className="flex-col flex">
       <label htmlFor="campusSelect">Campus:</label>
       <select id="campusSelect" className="text-black" onChange={handleCampusChange}>
-        <option>Please choose one option</option>
+        <option>Choose a campus</option>
         {campuses &&
           campuses.map((campus, index) => (
             <option key={index} value={campus.id}>
