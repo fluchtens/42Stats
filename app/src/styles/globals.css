@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply transition duration-300 ease-in-out;
+  }
+
   body {
     @apply bg-primary text-slate-200;
   }

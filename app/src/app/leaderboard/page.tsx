@@ -7,6 +7,7 @@ import { getPoolDates } from "@/services/date.service";
 import { getCampusUsers, getPoolUsers } from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Leaderboard() {
@@ -51,7 +52,7 @@ export default function Leaderboard() {
 
   return (
     <main className="p-6 flex-1">
-      <div className="max-w-screen-lg m-auto flex-col flex justify-center gap-2">
+      <div className="max-w-screen-lg m-auto flex-col flex justify-center gap-12">
         <div className="w-full flex justify-between items-center gap-2">
           <CampusSelector campuses={campuses} setCampusId={setCampusId} />
           <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
@@ -85,7 +86,13 @@ export default function Leaderboard() {
                       }}
                       className="w-16 h-16 rounded-full object-cover"
                     />
-                    {user.login}
+                    <a
+                      href={`https://profile.intra.42.fr/users/${user.login}`}
+                      target="_blank"
+                      className="cursor-pointer hover:text-zinc-400 hover:underline"
+                    >
+                      {user.login}
+                    </a>
                   </td>
                   <td className="py-4 text-right">{Number(user.level.toString()).toFixed(2)}</td>
                 </tr>
