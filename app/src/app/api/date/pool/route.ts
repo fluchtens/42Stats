@@ -24,9 +24,11 @@ async function getCampusUsers(campusId: number): Promise<User[]> {
 
 async function getPoolDates(users: User[]): Promise<PoolDate[]> {
   const poolDates = users.reduce((dates: PoolDate[], user) => {
-    const date: PoolDate = { month: user.pool_month, year: user.pool_year };
-    const dateExists = dates.some((d) => d.month === date.month && d.year === date.year);
-    if (!dateExists) dates.push(date);
+    if (user.pool_month && user.pool_year) {
+      const date: PoolDate = { month: user.pool_month, year: user.pool_year };
+      const dateExists = dates.some((d) => d.month === date.month && d.year === date.year);
+      if (!dateExists) dates.push(date);
+    }
     return dates;
   }, []);
 
