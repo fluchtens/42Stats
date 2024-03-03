@@ -3,8 +3,9 @@
 import { CampusSelector } from "@/components/CampusSelector";
 import { PoolDateSelector } from "@/components/PoolDateSelector";
 import { getCampuses } from "@/services/campus.service";
+import { getPoolDates } from "@/services/date.service";
 import { getCampusUsers, getPoolUsers } from "@/services/user.service";
-import { PoolDate, monthNames } from "@/types/date.interface";
+import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -20,61 +21,31 @@ export default function Leaderboard() {
       const campusesFetched = await getCampuses();
       setCampuses(campusesFetched);
     };
-
     fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!campusId) {
-        setUsers(null);
-      } else {
-        setUsers(null);
-        const usersFetched = await getCampusUsers(campusId);
-        setUsers(usersFetched);
-
-        if (!usersFetched || usersFetched.length === 0) {
-          setAvailablePoolDates(null);
-          return;
-        }
-
-        const newPoolDates = usersFetched.reduce((dates: PoolDate[], user) => {
-          const date: PoolDate = { month: user.pool_month, year: user.pool_year };
-          const dateExists = dates.some((d) => d.month === date.month && d.year === date.year);
-          if (!dateExists) dates.push(date);
-          return dates;
-        }, []);
-
-        newPoolDates.sort((a, b) => {
-          const yearA = Number(a.year);
-          const yearB = Number(b.year);
-          const monthA = monthNames.indexOf(a.month);
-          const monthB = monthNames.indexOf(b.month);
-
-          if (yearA !== yearB) {
-            return yearA - yearB;
-          } else {
-            return monthA - monthB;
-          }
-        });
+      if (campusId) {
+        const newUsers = await getCampusUsers(campusId);
+        const newPoolDates = await getPoolDates(campusId);
+        setUsers(newUsers);
         setAvailablePoolDates(newPoolDates);
       }
     };
-
+    setCampusId(null);
+    setAvailablePoolDates(null);
     fetchData();
   }, [campusId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!poolDate) {
-        setUsers(null);
-      } else {
-        setUsers(null);
-        const usersFetched = await getPoolUsers(poolDate.month, poolDate.year);
-        setUsers(usersFetched);
+      if (poolDate) {
+        const newUsers = await getPoolUsers(poolDate.month, poolDate.year);
+        setUsers(newUsers);
       }
     };
-
+    setUsers(null);
     fetchData();
   }, [poolDate]);
 
