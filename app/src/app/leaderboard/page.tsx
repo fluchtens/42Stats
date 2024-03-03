@@ -29,6 +29,7 @@ export default function Leaderboard() {
       if (!campusId) {
         setUsers(null);
       } else {
+        setUsers(null);
         const usersFetched = await getCampusUsers(campusId);
         setUsers(usersFetched);
 
@@ -66,10 +67,9 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchData = async () => {
       if (!poolDate) {
-        console.log("No pool date selected");
         setUsers(null);
       } else {
-        console.log("Fetching users for pool date", poolDate);
+        setUsers(null);
         const usersFetched = await getPoolUsers(poolDate.month, poolDate.year);
         setUsers(usersFetched);
       }
