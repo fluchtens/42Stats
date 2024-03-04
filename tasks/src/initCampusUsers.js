@@ -26,21 +26,26 @@ async function getCampusUsers(accessToken, campusId, page) {
 
 async function insertUsers(client, users, campusId) {
   const insertPromises = users.map(async (user) => {
-    const insert =
-      'INSERT INTO "User"(id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
-    const values = [
-      user.user.id,
-      user.user.email,
-      user.user.login,
-      user.user.first_name,
-      user.user.last_name,
-      user.user.image.link,
-      user.user.pool_month,
-      user.user.pool_year,
-      user.level,
-      campusId,
-    ];
-    await client.query(insert, values);
+    const checkQuery = 'SELECT id FROM "User" WHERE id = $1';
+    const checkValues = [user.user.id];
+    const checkResult = await client.query(checkQuery, checkValues);
+    if (checkResult.rows.length === 0) {
+      const insertQuery =
+        'INSERT INTO "User"(id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
+      const insertValues = [
+        user.user.id,
+        user.user.email,
+        user.user.login,
+        user.user.first_name,
+        user.user.last_name,
+        user.user.image.link,
+        user.user.pool_month,
+        user.user.pool_year,
+        user.level,
+        campusId,
+      ];
+      await client.query(insertQuery, insertValues);
+    }
   });
   await Promise.all(insertPromises);
   console.log("[USER] table updated.");
