@@ -8,6 +8,7 @@ import { getCampusUsers, getPoolUsers } from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Leaderboard() {
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
@@ -75,16 +76,13 @@ export default function Leaderboard() {
                 >
                   <td className="py-4 text-left">{index + 1}</td>
                   <td className="py-4 flex justify-start items-center gap-4 text-left">
-                    <img
-                      src={`${user.image ? user.image : "/noavatar.png"}`}
-                      alt={`${user.image ? user.image : "noavatar.png"}`}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = "/noavatar.png";
-                      }}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
+                    <Avatar className="w-16 h-16 rounded-full">
+                      <AvatarImage
+                        src={`${user.image ? user.image : "noavatar"}`}
+                        className="object-cover pointer-events-none"
+                      />
+                      <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
+                    </Avatar>
                     <a
                       href={`https://profile.intra.42.fr/users/${user.login}`}
                       target="_blank"
