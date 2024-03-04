@@ -24,7 +24,7 @@ export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) =
         <SelectTrigger className="w-60">
           <SelectValue placeholder="Select a campus..." />
         </SelectTrigger>
-        <SelectContent className="max-h-screen-">
+        <SelectContent className="max-h-screen">
           {campuses &&
             campuses.map((campus, index) => (
               <SelectItem key={index} value={campus.id.toString()}>
