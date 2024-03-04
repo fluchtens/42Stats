@@ -20,7 +20,7 @@ export const PoolDateSelector = ({ dates, setPoolDate }: PoolDateSelectorProps) 
 
   return (
     <div className="flex-col flex">
-      <span>Pool date:</span>
+      <span className="text-base font-medium">Pool date:</span>
       <Select onValueChange={handleSelect}>
         <SelectTrigger className="w-60">
           <SelectValue placeholder="Select a pool date..." />
