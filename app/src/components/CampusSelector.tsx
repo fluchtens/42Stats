@@ -1,6 +1,11 @@
-"use client";
-
 import { Campus } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CampusSelectorProps {
   campuses: Campus[] | null;
@@ -8,22 +13,26 @@ interface CampusSelectorProps {
 }
 
 export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) => {
-  const handleCampusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setCampusId(Number(event.target.value));
+  const handleCampusChange = (campusId: string) => {
+    setCampusId(Number(campusId));
   };
 
   return (
     <div className="flex-col flex">
-      <label htmlFor="campusSelect">Campus:</label>
-      <select id="campusSelect" className="text-black" onChange={handleCampusChange}>
-        <option>Choose a campus</option>
-        {campuses &&
-          campuses.map((campus, index) => (
-            <option key={index} value={campus.id}>
-              {campus.name} ({campus.country})
-            </option>
-          ))}
-      </select>
+      <span>Campus:</span>
+      <Select onValueChange={handleCampusChange}>
+        <SelectTrigger className="w-60">
+          <SelectValue placeholder="Select a campus..." />
+        </SelectTrigger>
+        <SelectContent className="max-h-screen-">
+          {campuses &&
+            campuses.map((campus, index) => (
+              <SelectItem key={index} value={campus.id.toString()}>
+                {campus.name} ({campus.country})
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
