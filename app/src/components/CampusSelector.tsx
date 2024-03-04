@@ -13,14 +13,14 @@ interface CampusSelectorProps {
 }
 
 export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) => {
-  const handleCampusChange = (campusId: string) => {
+  const handleSelect = (campusId: string) => {
     setCampusId(Number(campusId));
   };
 
   return (
     <div className="flex-col flex">
       <span>Campus:</span>
-      <Select onValueChange={handleCampusChange}>
+      <Select onValueChange={handleSelect}>
         <SelectTrigger className="w-60">
           <SelectValue placeholder="Select a campus..." />
         </SelectTrigger>

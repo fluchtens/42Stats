@@ -1,5 +1,11 @@
 import { PoolDate } from "@/types/date.interface";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface PoolDateSelectorProps {
   dates: PoolDate[] | null;
@@ -7,23 +13,27 @@ interface PoolDateSelectorProps {
 }
 
 export const PoolDateSelector = ({ dates, setPoolDate }: PoolDateSelectorProps) => {
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const [month, year] = event.target.value.split("-");
+  const handleSelect = (date: string) => {
+    const [month, year] = date.split("-");
     setPoolDate({ month, year });
   };
 
   return (
     <div className="flex-col flex">
-      <label htmlFor="poolDateSelect">Pool date:</label>
-      <select id="poolDateSelect" className="text-black" onChange={handleSelect}>
-        <option>Choose a date</option>
-        {dates &&
-          dates.map((date, index) => (
-            <option key={index} value={`${date.month}-${date.year}`}>
-              {date.month} {date.year}
-            </option>
-          ))}
-      </select>
+      <span>Pool date:</span>
+      <Select onValueChange={handleSelect}>
+        <SelectTrigger className="w-60">
+          <SelectValue placeholder="Select a pool date..." />
+        </SelectTrigger>
+        <SelectContent className="max-h-screen">
+          {dates &&
+            dates.map((date, index) => (
+              <SelectItem key={index} value={`${date.month}-${date.year}`}>
+                {date.month} {date.year}
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
