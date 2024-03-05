@@ -50,7 +50,7 @@ export async function getPoolUsers(
   page: number
 ): Promise<User[] | null> {
   try {
-    const url = `/api/user/pool?campus_id=${campusId}&pool_month=${month}&pool_year=${year}&page=${page}&page_size=42`;
+    const url = `/api/user/pool?campus_id=${campusId}&pool_month=${month}&pool_year=${year}&page=${page}&page_size=5`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
