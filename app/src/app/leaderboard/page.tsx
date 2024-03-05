@@ -4,7 +4,7 @@ import { CampusSelector } from "@/components/CampusSelector";
 import { PoolDateSelector } from "@/components/PoolDateSelector";
 import { getCampuses } from "@/services/campus.service";
 import { getPoolDates } from "@/services/date.service";
-import { getCampusUsers, getPoolUsers } from "@/services/user.service";
+import { getCampusUsers, getPoolUsers, getTotalPoolUsers } from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
 import { useEffect, useState } from "react";
@@ -21,16 +21,23 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
+enum SortType {
+  Campus = 1,
+  PoolDate,
+}
+
 export default function Leaderboard() {
   const router = useRouter();
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(12);
   const [users, setUsers] = useState<User[] | null>(null);
+  const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(
     Number(useSearchParams().get("page")) || 1
   );
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) {
@@ -89,13 +96,29 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchData = async () => {
       if (campusId && poolDate) {
-        const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year, currentPage);
+        const page = currentPage;
+        const pageSize = 5;
+
+        const newUsers = await getPoolUsers(
+          campusId,
+          poolDate.month,
+          poolDate.year,
+          page,
+          pageSize
+        );
         setUsers(newUsers);
+
+        const totalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
+        if (totalUsers && totalUsers.length > 0) {
+          const totalPages = Math.ceil(totalUsers.length / pageSize);
+          setTotalPages(totalPages);
+          console.log(totalPages);
+        }
       }
     };
     setUsers(null);
     fetchData();
-  }, [poolDate, currentPage]);
+  }, [poolDate]);
 
   return (
     <main className="p-6 flex-1">
