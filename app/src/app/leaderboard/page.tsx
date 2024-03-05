@@ -9,17 +9,9 @@ import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { UsersPagination } from "@/components/leaderboard/UsersPagination";
 
 enum SortType {
   Campus = 1,
@@ -38,38 +30,6 @@ export default function Leaderboard() {
     Number(useSearchParams().get("page")) || 1
   );
   const [totalPages, setTotalPages] = useState<number>(1);
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage < 1) {
-      return;
-    }
-    setCurrentPage(newPage);
-    router.push(`/leaderboard/?page=${newPage}`);
-  };
-
-  const UsersPagination = () => {
-    return (
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(1)}>1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(2)}>2</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    );
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +51,7 @@ export default function Leaderboard() {
     setUsers(null);
     setAvailablePoolDates(null);
     fetchData();
+    setSortBy(SortType.Campus);
   }, [campusId]);
 
   useEffect(() => {
@@ -118,7 +79,36 @@ export default function Leaderboard() {
     };
     setUsers(null);
     fetchData();
+    setSortBy(SortType.PoolDate);
   }, [poolDate]);
+
+  useEffect(() => {
+    if (sortBy === SortType.PoolDate) {
+      const fetchData = async () => {
+        if (campusId && poolDate) {
+          const page = currentPage;
+          const pageSize = 5;
+
+          const newUsers = await getPoolUsers(
+            campusId,
+            poolDate.month,
+            poolDate.year,
+            page,
+            pageSize
+          );
+          setUsers(newUsers);
+
+          const totalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
+          if (totalUsers && totalUsers.length > 0) {
+            const totalPages = Math.ceil(totalUsers.length / pageSize);
+            setTotalPages(totalPages);
+          }
+        }
+      };
+      setUsers(null);
+      fetchData();
+    }
+  }, [currentPage]);
 
   return (
     <main className="p-6 flex-1">
@@ -167,7 +157,11 @@ export default function Leaderboard() {
                 ))}
               </tbody>
             </table>
-            <UsersPagination />
+            <UsersPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
           </>
         )}
       </div>
