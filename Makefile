@@ -2,6 +2,7 @@ all: build
 
 install:
 	cd app && pnpm install && pnpx prisma generate
+	cd tasks && pnpm install
 
 build:
 	docker-compose up --build
