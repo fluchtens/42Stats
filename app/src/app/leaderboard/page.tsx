@@ -42,7 +42,7 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchData = async () => {
       if (campusId && poolDate) {
-        const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year);
+        const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year, 1);
         setUsers(newUsers);
       }
     };
