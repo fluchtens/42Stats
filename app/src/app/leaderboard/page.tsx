@@ -25,6 +25,7 @@ enum SortType {
 
 export default function Leaderboard() {
   const router = useRouter();
+  const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(12);
   const [users, setUsers] = useState<User[] | null>(null);
@@ -69,36 +70,45 @@ export default function Leaderboard() {
     const fetchData = async () => {
       const campusesFetched = await getCampuses();
       setCampuses(campusesFetched);
+      await updateCampusUsers();
+      setFirstLoad(false);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    setUsers(null);
-    setAvailablePoolDates(null);
-    setSortBy(SortType.Campus);
-    setCurrentPage(1);
-    router.push(`/leaderboard/?page=1`);
-    setTotalPages(1);
-    updateCampusUsers();
+    if (!firstLoad) {
+      setUsers(null);
+      setAvailablePoolDates(null);
+      setPoolDate(null);
+      setSortBy(SortType.Campus);
+      setCurrentPage(1);
+      router.push(`/leaderboard/?page=1`);
+      setTotalPages(1);
+      updateCampusUsers();
+    }
   }, [campusId]);
 
   useEffect(() => {
-    setUsers(null);
-    setSortBy(SortType.PoolDate);
-    setCurrentPage(1);
-    router.push(`/leaderboard/?page=1`);
-    setTotalPages(1);
-    updatePoolUsers();
+    if (!firstLoad) {
+      setUsers(null);
+      setSortBy(SortType.PoolDate);
+      setCurrentPage(1);
+      router.push(`/leaderboard/?page=1`);
+      setTotalPages(1);
+      updatePoolUsers();
+    }
   }, [poolDate]);
 
   useEffect(() => {
-    if (sortBy === SortType.Campus) {
-      setUsers(null);
-      updateCampusUsers();
-    } else if (sortBy === SortType.PoolDate) {
-      setUsers(null);
-      updatePoolUsers();
+    if (!firstLoad) {
+      if (sortBy === SortType.Campus) {
+        setUsers(null);
+        updateCampusUsers();
+      } else if (sortBy === SortType.PoolDate) {
+        setUsers(null);
+        updatePoolUsers();
+      }
     }
   }, [currentPage]);
 
@@ -127,7 +137,9 @@ export default function Leaderboard() {
                       index !== users.length - 1 ? "border-b border-slate-200 border-opacity-5" : ""
                     } text-base font-normal`}
                   >
-                    <td className="py-4 text-left">{index + 1}</td>
+                    <td className="py-4 text-left">
+                      {(currentPage - 1) * users.length + index + 1}
+                    </td>
                     <td className="py-4 flex justify-start items-center gap-4 text-left">
                       <Avatar className="w-16 h-16 rounded-full">
                         <AvatarImage
