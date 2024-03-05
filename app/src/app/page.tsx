@@ -1,6 +1,6 @@
 const HomeCard = ({ title, desc }: { title: string; desc: string }) => {
   return (
-    <div className="w-full h-auto flex-1 rounded-xl bg-secondary border p-6">
+    <div className="w-full h-auto flex-1 rounded-lg bg-secondary border p-6">
       <h2 className="text-xl font-semibold">{title}</h2>
       <p className="text-sm font-normal text-zinc-400">{desc}</p>
     </div>
