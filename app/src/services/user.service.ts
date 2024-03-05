@@ -22,9 +22,36 @@ export async function getUserById(userId: number): Promise<User | null> {
   }
 }
 
-export async function getCampusUsers(campusId: number): Promise<User[] | null> {
+export async function getCampusUsers(
+  campusId: number,
+  page: number,
+  pageSize: number
+): Promise<User[] | null> {
   try {
-    const response = await fetch(`/api/user/campus?campus_id=${campusId}`, {
+    const url = `/api/user/campus?campus_id=${campusId}&page=${page}&page_size=${pageSize}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getTotalCampusUsers(campusId: number): Promise<User[] | null> {
+  try {
+    const url = `/api/user/total_campus?campus_id=${campusId}`;
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

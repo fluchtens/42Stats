@@ -4,7 +4,12 @@ import { CampusSelector } from "@/components/CampusSelector";
 import { PoolDateSelector } from "@/components/PoolDateSelector";
 import { getCampuses } from "@/services/campus.service";
 import { getPoolDates } from "@/services/date.service";
-import { getCampusUsers, getPoolUsers, getTotalPoolUsers } from "@/services/user.service";
+import {
+  getCampusUsers,
+  getPoolUsers,
+  getTotalCampusUsers,
+  getTotalPoolUsers,
+} from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
 import { Campus, User } from "@prisma/client";
 import { useEffect, useState } from "react";
@@ -23,13 +28,42 @@ export default function Leaderboard() {
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(12);
   const [users, setUsers] = useState<User[] | null>(null);
-  const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
+  const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [currentPage, setCurrentPage] = useState<number>(
     Number(useSearchParams().get("page")) || 1
   );
   const [totalPages, setTotalPages] = useState<number>(1);
+
+  const updateCampusUsers = async () => {
+    if (campusId) {
+      const newUsers = await getCampusUsers(campusId, currentPage, 42);
+      setUsers(newUsers);
+
+      const newPoolDates = await getPoolDates(campusId);
+      setAvailablePoolDates(newPoolDates);
+
+      const newTotalUsers = await getTotalCampusUsers(campusId);
+      if (newTotalUsers && newTotalUsers.length > 0) {
+        const totalPages = Math.ceil(newTotalUsers.length / 42);
+        setTotalPages(totalPages);
+      }
+    }
+  };
+
+  const updatePoolUsers = async () => {
+    if (campusId && poolDate) {
+      const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year, currentPage, 42);
+      setUsers(newUsers);
+
+      const newTotalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
+      if (newTotalUsers && newTotalUsers.length > 0) {
+        const totalPages = Math.ceil(newTotalUsers.length / 42);
+        setTotalPages(totalPages);
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,73 +74,31 @@ export default function Leaderboard() {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (campusId) {
-        const newUsers = await getCampusUsers(campusId);
-        const newPoolDates = await getPoolDates(campusId);
-        setUsers(newUsers);
-        setAvailablePoolDates(newPoolDates);
-      }
-    };
     setUsers(null);
     setAvailablePoolDates(null);
-    fetchData();
     setSortBy(SortType.Campus);
+    setCurrentPage(1);
+    router.push(`/leaderboard/?page=1`);
+    setTotalPages(1);
+    updateCampusUsers();
   }, [campusId]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (campusId && poolDate) {
-        const page = currentPage;
-        const pageSize = 42;
-
-        const newUsers = await getPoolUsers(
-          campusId,
-          poolDate.month,
-          poolDate.year,
-          page,
-          pageSize
-        );
-        setUsers(newUsers);
-
-        const totalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
-        if (totalUsers && totalUsers.length > 0) {
-          const totalPages = Math.ceil(totalUsers.length / pageSize);
-          setTotalPages(totalPages);
-          console.log(totalPages);
-        }
-      }
-    };
     setUsers(null);
-    fetchData();
     setSortBy(SortType.PoolDate);
+    setCurrentPage(1);
+    router.push(`/leaderboard/?page=1`);
+    setTotalPages(1);
+    updatePoolUsers();
   }, [poolDate]);
 
   useEffect(() => {
-    if (sortBy === SortType.PoolDate) {
-      const fetchData = async () => {
-        if (campusId && poolDate) {
-          const page = currentPage;
-          const pageSize = 42;
-
-          const newUsers = await getPoolUsers(
-            campusId,
-            poolDate.month,
-            poolDate.year,
-            page,
-            pageSize
-          );
-          setUsers(newUsers);
-
-          const totalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
-          if (totalUsers && totalUsers.length > 0) {
-            const totalPages = Math.ceil(totalUsers.length / pageSize);
-            setTotalPages(totalPages);
-          }
-        }
-      };
+    if (sortBy === SortType.Campus) {
       setUsers(null);
-      fetchData();
+      updateCampusUsers();
+    } else if (sortBy === SortType.PoolDate) {
+      setUsers(null);
+      updatePoolUsers();
     }
   }, [currentPage]);
 
