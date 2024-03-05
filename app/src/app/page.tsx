@@ -33,7 +33,7 @@ export default async function Home() {
           />
           <HomeCard
             title="Leaderboard"
-            desc="Discover the competitive edge with our student leaderboard, showcasing rankings based on levels. Dive into the worldwide standings or narrow it down to specific campuses or pools to see who excels in the 42 community."
+            desc="Discover the competitive edge with student leaderboards, showcasing rankings based on levels."
           />
           <HomeCard
             title="Always up to date"

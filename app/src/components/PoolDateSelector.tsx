@@ -25,7 +25,7 @@ export const PoolDateSelector = ({ dates, setPoolDate }: PoolDateSelectorProps) 
         <SelectTrigger className="w-60">
           <SelectValue placeholder="Select a pool date..." />
         </SelectTrigger>
-        <SelectContent className="max-h-screen">
+        <SelectContent>
           {dates &&
             dates.map((date, index) => (
               <SelectItem key={index} value={`${date.month}-${date.year}`}>
