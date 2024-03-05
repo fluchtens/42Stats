@@ -80,7 +80,7 @@ export default function Leaderboard() {
     if (!firstLoad) {
       setUsers(null);
       setAvailablePoolDates(null);
-      setPoolDate(null);
+      // setPoolDate(null);
       setSortBy(SortType.Campus);
       setCurrentPage(1);
       router.push(`/leaderboard/?page=1`);
@@ -94,7 +94,6 @@ export default function Leaderboard() {
       setUsers(null);
       setSortBy(SortType.PoolDate);
       setCurrentPage(1);
-      router.push(`/leaderboard/?page=1`);
       setTotalPages(1);
       updatePoolUsers();
     }
