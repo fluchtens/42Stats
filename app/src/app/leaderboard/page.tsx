@@ -58,7 +58,7 @@ export default function Leaderboard() {
     const fetchData = async () => {
       if (campusId && poolDate) {
         const page = currentPage;
-        const pageSize = 5;
+        const pageSize = 42;
 
         const newUsers = await getPoolUsers(
           campusId,
@@ -87,7 +87,7 @@ export default function Leaderboard() {
       const fetchData = async () => {
         if (campusId && poolDate) {
           const page = currentPage;
-          const pageSize = 5;
+          const pageSize = 42;
 
           const newUsers = await getPoolUsers(
             campusId,

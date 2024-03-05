@@ -23,7 +23,7 @@ export const UsersPagination = ({
   const router = useRouter();
 
   const handlePageChange = (newPage: number) => {
-    if (newPage < 1 || newPage > totalPages) {
+    if (newPage < 1 || newPage > totalPages || newPage === currentPage) {
       return;
     }
     setCurrentPage(newPage);
@@ -43,7 +43,11 @@ export const UsersPagination = ({
     for (let page = startPage; page <= endPage; page++) {
       pages.push(
         <PaginationItem key={page}>
-          <PaginationLink onClick={() => handlePageChange(page)} isActive={currentPage === page}>
+          <PaginationLink
+            onClick={() => handlePageChange(page)}
+            isActive={currentPage === page}
+            className="cursor-pointer"
+          >
             {page}
           </PaginationLink>
         </PaginationItem>
@@ -74,11 +78,17 @@ export const UsersPagination = ({
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
+            <PaginationPrevious
+              onClick={() => handlePageChange(currentPage - 1)}
+              className="cursor-pointer"
+            />
           </PaginationItem>
           {renderPages()}
           <PaginationItem>
-            <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
+            <PaginationNext
+              onClick={() => handlePageChange(currentPage + 1)}
+              className="cursor-pointer"
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
