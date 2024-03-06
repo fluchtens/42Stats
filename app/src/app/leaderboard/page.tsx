@@ -1,7 +1,7 @@
 "use client";
 
-import { CampusSelector } from "@/components/CampusSelector";
-import { PoolDateSelector } from "@/components/PoolDateSelector";
+import { CampusSelector } from "@/components/leaderboard/CampusSelector";
+import { PoolDateSelector } from "@/components/leaderboard/PoolDateSelector";
 import { getCampuses } from "@/services/getCampuses";
 import { PoolDate } from "@/types/date.interface";
 import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";

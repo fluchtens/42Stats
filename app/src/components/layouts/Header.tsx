@@ -1,7 +1,7 @@
 "use server";
 
 import Link from "next/link";
-import { NavLinks } from "../NavLinks";
+import { NavLinks } from "../utils/NavLinks";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 
