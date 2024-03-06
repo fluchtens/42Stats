@@ -17,13 +17,14 @@ import { getCampusUsersCount } from "@/services/getCampusUsersCount";
 import { getPoolUsersCount } from "@/services/getPoolUsersCount";
 import { SortType } from "@/types/sort.enum";
 import { useSession } from "next-auth/react";
+import { getMyCampusId } from "@/services/getMyCampusId";
 
 export default function Leaderboard() {
   const session = useSession();
   const router = useRouter();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [campuses, setCampuses] = useState<FortyTwoCampus[] | null>(null);
-  const [campusId, setCampusId] = useState<number | null>(12);
+  const [campusId, setCampusId] = useState<number | null>(null);
   const [users, setUsers] = useState<FortyTwoUser[] | null>(null);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
@@ -66,16 +67,18 @@ export default function Leaderboard() {
     const fetchData = async () => {
       const campusesFetched = await getCampuses();
       setCampuses(campusesFetched);
-      await updateCampusUsers();
+
+      const newCampusId = await getMyCampusId();
+      setCampusId(newCampusId);
+
       setFirstLoad(false);
     };
-    fetchData();
-  }, []);
 
-  useEffect(() => {
     if (session.status === "unauthenticated") {
       router.replace("/");
     }
+
+    fetchData();
   }, [session]);
 
   useEffect(() => {
