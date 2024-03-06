@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { User } from "@prisma/client";
-import prisma from "@/libs/prisma";
+import prisma from "@/lib/prisma";
 import { PoolDate, monthNames } from "@/types/date.interface";
 
 async function getCampusUsers(campusId: number): Promise<User[]> {

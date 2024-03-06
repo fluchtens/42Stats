@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Campus, User } from "@prisma/client";
-import prisma from "@/libs/prisma";
+import prisma from "@/lib/prisma";
 
 async function getCampuses(): Promise<Campus[]> {
   try {
