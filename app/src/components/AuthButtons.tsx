@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export const SigninBtn = () => {
   return (
-    <Button variant="ghost" size="default" onClick={() => signIn()}>
+    <Button variant="ghost" size="default" onClick={() => signIn("42-school")}>
       Sign in
     </Button>
   );
