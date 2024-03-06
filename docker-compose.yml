@@ -21,11 +21,6 @@ services:
     build:
       context: ./app
       dockerfile: prod.Dockerfile
-      # args:
-      #   - DATABASE_URL=${DATABASE_URL}
-      #   - FORTY_TWO_UID=${FORTY_TWO_UID}
-      #   - FORTY_TWO_SECRET=${FORTY_TWO_SECRET}
-      #   - AUTH_SECRET=${AUTH_SECRET}
     depends_on:
       - database
     environment:
@@ -33,8 +28,9 @@ services:
       FORTY_TWO_UID: ${FORTY_TWO_UID}
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
       AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL}
     ports:
-      - 3000:3000
+      - 80:80
       - 5555:5555
     volumes:
       - ./app:/app
