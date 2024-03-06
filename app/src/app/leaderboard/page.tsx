@@ -2,14 +2,7 @@
 
 import { CampusSelector } from "@/components/CampusSelector";
 import { PoolDateSelector } from "@/components/PoolDateSelector";
-import { getCampuses } from "@/services/campus.service";
-import { getPoolDates } from "@/services/date.service";
-import {
-  getCampusUsers,
-  getPoolUsers,
-  getTotalCampusUsers,
-  getTotalPoolUsers,
-} from "@/services/user.service";
+import { getCampuses } from "@/services/getCampuses";
 import { PoolDate } from "@/types/date.interface";
 import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
 import { useEffect, useState } from "react";
@@ -17,11 +10,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { UsersPagination } from "@/components/leaderboard/UsersPagination";
-
-enum SortType {
-  Campus = 1,
-  PoolDate,
-}
+import { getAvailablePoolDates } from "@/services/getAvailablePoolDates";
+import { getCampusUsers } from "@/services/getCampusUsers";
+import { getPoolUsers } from "@/services/getPoolUsers";
+import { getCampusUsersCount } from "@/services/getCampusUsersCount";
+import { getPoolUsersCount } from "@/services/getPoolUsersCount";
+import { SortType } from "@/types/sort.enum";
 
 export default function Leaderboard() {
   const router = useRouter();
@@ -42,12 +36,12 @@ export default function Leaderboard() {
       const newUsers = await getCampusUsers(campusId, currentPage, 42);
       setUsers(newUsers);
 
-      const newPoolDates = await getPoolDates(campusId);
+      const newPoolDates = await getAvailablePoolDates(campusId);
       setAvailablePoolDates(newPoolDates);
 
-      const newTotalUsers = await getTotalCampusUsers(campusId);
-      if (newTotalUsers && newTotalUsers.length > 0) {
-        const totalPages = Math.ceil(newTotalUsers.length / 42);
+      const userCount = await getCampusUsersCount(campusId);
+      if (userCount) {
+        const totalPages = Math.ceil(userCount / 42);
         setTotalPages(totalPages);
       }
     }
@@ -58,9 +52,9 @@ export default function Leaderboard() {
       const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year, currentPage, 42);
       setUsers(newUsers);
 
-      const newTotalUsers = await getTotalPoolUsers(campusId, poolDate.month, poolDate.year);
-      if (newTotalUsers && newTotalUsers.length > 0) {
-        const totalPages = Math.ceil(newTotalUsers.length / 42);
+      const userCount = await getPoolUsersCount(campusId, poolDate.month, poolDate.year);
+      if (userCount) {
+        const totalPages = Math.ceil(userCount / 42);
         setTotalPages(totalPages);
       }
     }

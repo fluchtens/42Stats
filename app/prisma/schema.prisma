@@ -13,6 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Auhentication
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -40,6 +42,16 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Application
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -48,14 +60,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 model FortyTwoCampus {

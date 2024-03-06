@@ -11,8 +11,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.FORTY_TWO_SECRET,
     }),
   ],
-  // callbacks: {
-  //   async session({ session, user }) {
-  //   },
-  // },
 });
