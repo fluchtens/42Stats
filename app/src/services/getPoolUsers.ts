@@ -39,7 +39,8 @@ export async function getPoolUsers(
     if (!users || users.length === 0) {
       return null;
     }
-    return users;
+
+    return JSON.parse(JSON.stringify(users));
   } catch (error) {
     return null;
   }

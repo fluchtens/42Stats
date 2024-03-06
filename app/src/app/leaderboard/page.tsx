@@ -7,7 +7,7 @@ import { PoolDate } from "@/types/date.interface";
 import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { UsersPagination } from "@/components/leaderboard/UsersPagination";
 import { getAvailablePoolDates } from "@/services/getAvailablePoolDates";
@@ -16,8 +16,10 @@ import { getPoolUsers } from "@/services/getPoolUsers";
 import { getCampusUsersCount } from "@/services/getCampusUsersCount";
 import { getPoolUsersCount } from "@/services/getPoolUsersCount";
 import { SortType } from "@/types/sort.enum";
+import { useSession } from "next-auth/react";
 
 export default function Leaderboard() {
+  const session = useSession();
   const router = useRouter();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [campuses, setCampuses] = useState<FortyTwoCampus[] | null>(null);
@@ -69,6 +71,12 @@ export default function Leaderboard() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (session.status === "unauthenticated") {
+      router.replace("/");
+    }
+  }, [session]);
 
   useEffect(() => {
     if (!firstLoad) {
