@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { FortyTwoUser } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
-async function getTotalCampusUsers(campusId: number): Promise<User[]> {
+async function getTotalCampusUsers(campusId: number): Promise<FortyTwoUser[]> {
   try {
-    const users = await prisma.user.findMany({
+    const users = await prisma.fortyTwoUser.findMany({
       where: {
         campus_id: campusId,
       },

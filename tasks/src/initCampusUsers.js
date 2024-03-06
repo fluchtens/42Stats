@@ -26,12 +26,12 @@ async function getCampusUsers(accessToken, campusId, page) {
 
 async function insertUsers(client, users, campusId) {
   const insertPromises = users.map(async (user) => {
-    const checkQuery = 'SELECT id FROM "User" WHERE id = $1';
+    const checkQuery = 'SELECT id FROM "FortyTwoUser" WHERE id = $1';
     const checkValues = [user.user.id];
     const checkResult = await client.query(checkQuery, checkValues);
     if (checkResult.rows.length === 0) {
       const insertQuery =
-        'INSERT INTO "User"(id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
+        'INSERT INTO "FortyTwoUser"(id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
       const insertValues = [
         user.user.id,
         user.user.email,

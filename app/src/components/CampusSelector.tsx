@@ -1,4 +1,4 @@
-import { Campus } from "@prisma/client";
+import { FortyTwoCampus } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 
 interface CampusSelectorProps {
-  campuses: Campus[] | null;
+  campuses: FortyTwoCampus[] | null;
   setCampusId: (campus: number) => void;
 }
 

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { FortyTwoUser } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { PoolDate, monthNames } from "@/types/date.interface";
 
-async function getCampusUsers(campusId: number): Promise<User[]> {
+async function getCampusUsers(campusId: number): Promise<FortyTwoUser[]> {
   try {
-    const users = await prisma.user.findMany({
+    const users = await prisma.fortyTwoUser.findMany({
       where: {
         campus_id: campusId,
       },
@@ -22,7 +22,7 @@ async function getCampusUsers(campusId: number): Promise<User[]> {
   }
 }
 
-async function getPoolDates(users: User[]): Promise<PoolDate[]> {
+async function getPoolDates(users: FortyTwoUser[]): Promise<PoolDate[]> {
   const poolDates = users.reduce((dates: PoolDate[], user) => {
     if (user.pool_month && user.pool_year) {
       const date: PoolDate = { month: user.pool_month, year: user.pool_year };

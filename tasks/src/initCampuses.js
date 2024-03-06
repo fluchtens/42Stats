@@ -26,7 +26,7 @@ async function getCampuses(accessToken, page) {
 
 async function insertCampuses(client, campuses) {
   for (const campus of campuses) {
-    const insert = 'INSERT INTO "Campus"(id, name, country) VALUES($1, $2, $3) RETURNING *';
+    const insert = 'INSERT INTO "FortyTwoCampus"(id, name, country) VALUES($1, $2, $3) RETURNING *';
     const values = [campus.id, campus.name, campus.country];
     await client.query(insert, values);
     await initCampusUsers(client, campus.id);

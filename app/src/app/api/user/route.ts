@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { FortyTwoUser } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
-async function getUserById(userId: number): Promise<User | null> {
+async function getUserById(userId: number): Promise<FortyTwoUser | null> {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.fortyTwoUser.findUnique({
       where: {
         id: userId,
       },

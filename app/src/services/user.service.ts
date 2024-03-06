@@ -1,6 +1,6 @@
-import { User } from "@prisma/client";
+import { FortyTwoUser } from "@prisma/client";
 
-export async function getUserById(userId: number): Promise<User | null> {
+export async function getUserById(userId: number): Promise<FortyTwoUser | null> {
   try {
     const url = `/api/user?user_id=${userId}`;
     const response = await fetch(url, {
@@ -26,7 +26,7 @@ export async function getCampusUsers(
   campusId: number,
   page: number,
   pageSize: number
-): Promise<User[] | null> {
+): Promise<FortyTwoUser[] | null> {
   try {
     const url = `/api/user/campus?campus_id=${campusId}&page=${page}&page_size=${pageSize}`;
     const response = await fetch(url, {
@@ -48,7 +48,7 @@ export async function getCampusUsers(
   }
 }
 
-export async function getTotalCampusUsers(campusId: number): Promise<User[] | null> {
+export async function getTotalCampusUsers(campusId: number): Promise<FortyTwoUser[] | null> {
   try {
     const url = `/api/user/total_campus?campus_id=${campusId}`;
     const response = await fetch(url, {
@@ -76,7 +76,7 @@ export async function getPoolUsers(
   year: string,
   page: number,
   pageSize: number
-): Promise<User[] | null> {
+): Promise<FortyTwoUser[] | null> {
   try {
     const url = `/api/user/pool?campus_id=${campusId}&pool_month=${month}&pool_year=${year}&page=${page}&page_size=${pageSize}`;
     const response = await fetch(url, {
@@ -102,7 +102,7 @@ export async function getTotalPoolUsers(
   campusId: number,
   month: string,
   year: string
-): Promise<User[] | null> {
+): Promise<FortyTwoUser[] | null> {
   try {
     const url = `/api/user/total_pool?campus_id=${campusId}&pool_month=${month}&pool_year=${year}`;
     const response = await fetch(url, {

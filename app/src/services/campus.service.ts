@@ -1,6 +1,6 @@
-import { Campus, User } from "@prisma/client";
+import { FortyTwoCampus } from "@prisma/client";
 
-export async function getCampuses(): Promise<Campus[] | null> {
+export async function getCampuses(): Promise<FortyTwoCampus[] | null> {
   try {
     const response = await fetch("/api/campus", {
       method: "GET",

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { FortyTwoUser } from "@prisma/client";
 import prisma from "@/lib/prisma";
 
 async function getPoolUsers(
@@ -8,9 +8,9 @@ async function getPoolUsers(
   year: string,
   skip: number,
   take: number
-): Promise<User[]> {
+): Promise<FortyTwoUser[]> {
   try {
-    const users = await prisma.user.findMany({
+    const users = await prisma.fortyTwoUser.findMany({
       where: {
         campus_id: campusId,
         pool_month: month,

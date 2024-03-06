@@ -11,7 +11,7 @@ import {
   getTotalPoolUsers,
 } from "@/services/user.service";
 import { PoolDate } from "@/types/date.interface";
-import { Campus, User } from "@prisma/client";
+import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSearchParams } from "next/navigation";
@@ -26,9 +26,9 @@ enum SortType {
 export default function Leaderboard() {
   const router = useRouter();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-  const [campuses, setCampuses] = useState<Campus[] | null>(null);
+  const [campuses, setCampuses] = useState<FortyTwoCampus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(12);
-  const [users, setUsers] = useState<User[] | null>(null);
+  const [users, setUsers] = useState<FortyTwoUser[] | null>(null);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);

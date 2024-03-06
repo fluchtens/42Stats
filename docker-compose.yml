@@ -25,6 +25,9 @@ services:
       - database
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      FORTY_TWO_UID: ${FORTY_TWO_UID}
+      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
+      AUTH_SECRET: ${AUTH_SECRET}
     ports:
       - 3000:3000
       - 5555:5555

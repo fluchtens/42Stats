@@ -1,11 +1,11 @@
 async function deleteUsers(client) {
-  const query = 'DELETE FROM "User"';
+  const query = 'DELETE FROM "FortyTwoUser"';
   await client.query(query);
   console.log("[USER] table cleaned.");
 }
 
 async function deleteCampuses(client) {
-  const query = 'DELETE FROM "Campus"';
+  const query = 'DELETE FROM "FortyTwoCampus"';
   await client.query(query);
   console.log("[CAMPUS] table cleaned.");
 }
