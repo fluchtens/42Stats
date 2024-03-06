@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import "../styles/globals.css";
 import { Header } from "@/components/layouts/Header";
 import { Footer } from "@/components/layouts/Footer";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "42stats",
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`min-h-screen flex flex-col ${GeistSans.className}`}>
-        <Header />
-        {children}
-        <Footer />
+        <SessionProvider>
+          <Header />
+          {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );
