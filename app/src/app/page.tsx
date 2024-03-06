@@ -43,7 +43,6 @@ export default async function Home() {
         <h2 className="text-base md:text-2xl font-light md:font-thin">
           Statistics for 42 students
         </h2>
-        <h3>My var is {process.env.AUTH_SECRET}</h3>
         <div className="mt-6 md:mt-16 flex-col md:flex-row flex gap-4">
           <HomeCard
             title="Statistics"
