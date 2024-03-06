@@ -1,6 +1,6 @@
-FROM node:lts
+FROM node:lts-alpine
 
-RUN apt-get update && \
+RUN apk update && \
     npm install -g pnpm
 
 WORKDIR /app

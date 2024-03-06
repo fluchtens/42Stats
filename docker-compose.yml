@@ -20,7 +20,12 @@ services:
     image: 42stats-app
     build:
       context: ./app
-      dockerfile: Dockerfile
+      dockerfile: prod.Dockerfile
+      # args:
+      #   - DATABASE_URL=${DATABASE_URL}
+      #   - FORTY_TWO_UID=${FORTY_TWO_UID}
+      #   - FORTY_TWO_SECRET=${FORTY_TWO_SECRET}
+      #   - AUTH_SECRET=${AUTH_SECRET}
     depends_on:
       - database
     environment:
