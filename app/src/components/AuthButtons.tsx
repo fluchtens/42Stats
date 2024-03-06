@@ -2,6 +2,7 @@
 
 import { signIn, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 export const SigninBtn = () => {
   return (
@@ -12,9 +13,7 @@ export const SigninBtn = () => {
 };
 
 export const LogoutBtn = () => {
-  return (
-    <Button variant="ghost" size="default" onClick={() => signOut()}>
-      Log out
-    </Button>
-  );
+  return <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>;
 };
+
+export const ProfileBtn = () => {};

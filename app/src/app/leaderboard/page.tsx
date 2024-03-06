@@ -7,7 +7,7 @@ import { PoolDate } from "@/types/date.interface";
 import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { UsersPagination } from "@/components/leaderboard/UsersPagination";
 import { getAvailablePoolDates } from "@/services/getAvailablePoolDates";
