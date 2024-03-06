@@ -1,3 +1,10 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 const HomeCard = ({ title, desc }: { title: string; desc: string }) => {
   return (
     <div className="w-full h-auto flex-1 rounded-lg bg-secondary border p-6">
@@ -7,12 +14,22 @@ const HomeCard = ({ title, desc }: { title: string; desc: string }) => {
   );
 };
 
-const FaqQuestion = ({ question, answer }: { question: string; answer: string }) => {
+const FaqQuestion = ({
+  value,
+  question,
+  answer,
+}: {
+  value: string;
+  question: string;
+  answer: string;
+}) => {
   return (
-    <div className="flex-col flex">
-      <h2 className="text-lg font-semibold">{question}</h2>
-      <p className="text-sm font-normal text-zinc-400">{answer}</p>
-    </div>
+    <AccordionItem value={value}>
+      <AccordionTrigger className="text-base font-semibold text-left text-slate-200">
+        {question}
+      </AccordionTrigger>
+      <AccordionContent className="text-sm font-normal text-zinc-400">{answer}</AccordionContent>
+    </AccordionItem>
   );
 };
 
@@ -40,24 +57,30 @@ export default async function Home() {
             desc="Our site retrieves data directly from api.intra.42.fr and updates it once a day in our database."
           />
         </div>
-        <div className="mt-6 md:mt-16 flex-col flex gap-4">
+        <div className="w-full mt-6 md:mt-16 flex-col flex gap-1">
           <h1 className="text-2xl font-semibold">FAQ</h1>
-          <FaqQuestion
-            question="What is the aim of this project?"
-            answer="I did this project to improve my web development skills and learn the Next.js framework. It was inspired by the 42evaluators.com website."
-          />
-          <FaqQuestion
-            question="How often is the data updated?"
-            answer="The data is updated once a day in our database."
-          />
-          <FaqQuestion
-            question="Why save data?"
-            answer="42 API has a rate limit, we are limited to a maximum number of requests per minute. So we can't afford to retrieve data directly from the API for every user request."
-          />
-          <FaqQuestion
-            question="Where is the data stored?"
-            answer="The website and database are hosted by OVH in Strasbourg, France."
-          />
+          <Accordion type="single" collapsible className="w-full">
+            <FaqQuestion
+              value="1"
+              question="What is the aim of this project?"
+              answer="I did this project to improve my web development skills and learn the Next.js framework. It was inspired by the 42evaluators.com website."
+            />
+            <FaqQuestion
+              value="2"
+              question="How often is the data updated?"
+              answer="The data is updated once a day in our database."
+            />
+            <FaqQuestion
+              value="3"
+              question="Why save data?"
+              answer="The api of 42 has a rate limit, we are limited to a maximum number of requests per minute. So we can't afford to retrieve data directly from the API for every user request."
+            />
+            <FaqQuestion
+              value="4"
+              question="Where is the data stored?"
+              answer="The website and database are hosted by OVH in Strasbourg, France."
+            />
+          </Accordion>
         </div>
       </div>
     </main>
