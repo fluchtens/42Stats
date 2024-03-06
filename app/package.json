@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "migrate:dev": "pnpx prisma migrate dev --name transcendence && pnpm run dev",
+    "migrate:dev": "pnpx prisma migrate dev --name 42stats && pnpm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
