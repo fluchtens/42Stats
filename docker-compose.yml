@@ -20,7 +20,7 @@ services:
     image: 42stats-app
     build:
       context: ./app
-      dockerfile: dev.Dockerfile
+      dockerfile: prod.Dockerfile
     depends_on:
       - database
     environment:

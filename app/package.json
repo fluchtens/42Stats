@@ -7,7 +7,7 @@
     "migrate:dev": "pnpx prisma migrate dev --name 42stats && pnpm run dev",
     "build": "next build",
     "migrate:build": "pnpx prisma migrate deploy && pnpm run build && pnpm run start",
-    "start": "next start -p 80",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "clsx": "^2.1.0",
     "geist": "^1.2.2",
     "next": "14.1.0",
-    "next-auth": "5.0.0-beta.15",
+    "next-auth": "5.0.0-beta.13",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.2.1",

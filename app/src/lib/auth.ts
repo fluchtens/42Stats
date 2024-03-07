@@ -11,4 +11,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.FORTY_TWO_SECRET,
     }),
   ],
+  trustHost: true,
+  secret: process.env.AUTH_SECRET,
+  session: {
+    strategy: "database",
+  },
 });
