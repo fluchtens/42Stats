@@ -1,6 +1,6 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from "next-auth";
 import FortyTwoProvider from "next-auth/providers/42-school";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -13,7 +13,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   trustHost: true,
   secret: process.env.AUTH_SECRET,
-  session: {
-    strategy: "database",
-  },
 });
