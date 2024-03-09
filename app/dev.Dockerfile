@@ -11,4 +11,6 @@ COPY . .
 
 RUN pnpx prisma generate
 
+EXPOSE 3000
+
 CMD ["pnpm", "run", "migrate:dev"]
