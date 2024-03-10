@@ -1,9 +1,9 @@
 "use server";
 
-import Link from "next/link";
-import { NavLinks } from "../utils/NavLinks";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
+import Link from "next/link";
+import { NavLinks } from "../utils/NavLinks";
 
 export const Header = async () => {
   const session = await auth();
@@ -16,11 +16,18 @@ export const Header = async () => {
             <h1 className="text-lg md:text-xl font-medium">42Stats</h1>
           </Link>
           {session?.user && (
-            <Link href="/leaderboard">
-              <Button variant="ghost" size="default" className="text-zinc-200">
-                Leaderboard
-              </Button>
-            </Link>
+            <>
+              <Link href="/leaderboard">
+                <Button variant="ghost" size="default" className="text-zinc-200">
+                  Leaderboard
+                </Button>
+              </Link>
+              <Link href="/stats">
+                <Button variant="ghost" size="default" className="text-zinc-200">
+                  Stats
+                </Button>
+              </Link>
+            </>
           )}
         </div>
         <NavLinks />
