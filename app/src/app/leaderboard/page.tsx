@@ -2,22 +2,21 @@
 
 import { CampusSelector } from "@/components/leaderboard/CampusSelector";
 import { PoolDateSelector } from "@/components/leaderboard/PoolDateSelector";
-import { getCampuses } from "@/services/getCampuses";
-import { PoolDate } from "@/types/date.interface";
-import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { UsersPagination } from "@/components/leaderboard/UsersPagination";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getAvailablePoolDates } from "@/services/getAvailablePoolDates";
 import { getCampusUsers } from "@/services/getCampusUsers";
-import { getPoolUsers } from "@/services/getPoolUsers";
 import { getCampusUsersCount } from "@/services/getCampusUsersCount";
-import { getPoolUsersCount } from "@/services/getPoolUsersCount";
-import { SortType } from "@/types/sort.enum";
-import { useSession } from "next-auth/react";
+import { getCampuses } from "@/services/getCampuses";
 import { getMyCampusId } from "@/services/getMyCampusId";
+import { getPoolUsers } from "@/services/getPoolUsers";
+import { getPoolUsersCount } from "@/services/getPoolUsersCount";
+import { PoolDate } from "@/types/date.interface";
+import { SortType } from "@/types/sort.enum";
+import { FortyTwoCampus, FortyTwoUser } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Leaderboard() {
   const session = useSession();
@@ -160,7 +159,7 @@ export default function Leaderboard() {
                         {user.login}
                       </a>
                     </td>
-                    <td className="py-4 text-right">{Number(user.level.toString()).toFixed(2)}</td>
+                    <td className="py-4 text-right">{user.level.toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -78,7 +78,7 @@ model FortyTwoUser {
   image      String?        @db.VarChar(255)
   pool_month String?        @db.VarChar(255)
   pool_year  String?        @db.VarChar(255)
-  level      Decimal
+  level      Float
   campus_id  Int
   Campus     FortyTwoCampus @relation(fields: [campus_id], references: [id])
 }

@@ -1,10 +1,11 @@
 "use server";
 
+import ChartComponent from "@/components/ChartComponent";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-async function getAllCampusNames() {
+async function getAllCampusNames(): Promise<string[]> {
   const campuses = await prisma.fortyTwoCampus.findMany({
     select: {
       name: true,
@@ -15,7 +16,7 @@ async function getAllCampusNames() {
   return campusNames;
 }
 
-async function getAllCampusAvgLevels() {
+async function getAllCampusAvgLevels(): Promise<number[]> {
   const campuses = await prisma.fortyTwoCampus.findMany({
     select: {
       id: true,
@@ -25,7 +26,7 @@ async function getAllCampusAvgLevels() {
   const avgLevels = [];
 
   for (let campus of campuses) {
-    const result = await prisma.fortyTwoUser.aggregate({
+    const res = await prisma.fortyTwoUser.aggregate({
       _avg: {
         level: true,
       },
@@ -34,7 +35,7 @@ async function getAllCampusAvgLevels() {
       },
     });
 
-    avgLevels.push(result._avg.level);
+    avgLevels.push(parseFloat((res._avg.level ?? 0).toFixed(2)));
   }
 
   return avgLevels;
@@ -49,16 +50,23 @@ export default async function Stats() {
   const campusesNames = await getAllCampusNames();
   const campusesAvgLevels = await getAllCampusAvgLevels();
 
-  const data = campusesNames.map((campus, index) => ({
-    campus,
-    averageLevel: campusesAvgLevels[index],
-  }));
+  const chartData = {
+    labels: campusesNames,
+    datasets: [
+      {
+        label: "Average level",
+        data: campusesAvgLevels,
+        backgroundColor: ["red"],
+      },
+    ],
+  };
 
   return (
     <main className="p-6 flex-1">
       <div className="max-w-screen-lg m-auto flex-col flex justify-center gap-1">
         <h1>Statistics about all 42 campuses.</h1>
       </div>
+      <ChartComponent data={chartData} />
     </main>
   );
 }
