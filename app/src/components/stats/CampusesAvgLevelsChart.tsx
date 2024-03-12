@@ -45,10 +45,26 @@ export const CampusesAvgLevelsChart = ({
             plugins: {
               legend: {
                 position: "top",
+                labels: {
+                  color: "#a1a1aa",
+                },
               },
               title: {
                 display: true,
                 text: "Average level by campus",
+                color: "#a1a1aa",
+              },
+            },
+            scales: {
+              y: {
+                ticks: {
+                  color: "#a1a1aa", // Changer la couleur des valeurs de l'axe y
+                },
+              },
+              x: {
+                ticks: {
+                  color: "#a1a1aa", // Changer la couleur des valeurs de l'axe x
+                },
               },
             },
           },
