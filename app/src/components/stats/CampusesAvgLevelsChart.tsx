@@ -1,46 +1,54 @@
 "use client";
 
-import { ChartData } from "chart.js";
 import ChartJS from "chart.js/auto";
 import { useEffect, useRef } from "react";
 
-interface ChartProps {
-  data: ChartData;
+interface CampusesAvgLevelsChartProps {
+  campusesNames: string[];
+  campusesLevels: number[];
 }
 
-const ChartComponent: React.FC<ChartProps> = ({ data }) => {
+export const CampusesAvgLevelsChart = ({
+  campusesNames,
+  campusesLevels,
+}: CampusesAvgLevelsChartProps) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<ChartJS | null>(null);
 
   useEffect(() => {
     if (chartInstance.current) {
-      chartInstance.current.destroy(); // Détruire le graphique existant
+      chartInstance.current.destroy();
     }
 
     if (chartRef.current) {
       const ctx = chartRef.current.getContext("2d");
 
       if (ctx) {
+        const height = campusesNames ? campusesNames.length * 6 : 400;
+        chartRef.current.height = height;
+
         chartInstance.current = new ChartJS(ctx, {
           type: "bar",
-          data: data,
+          data: {
+            labels: campusesNames,
+            datasets: [
+              {
+                label: "Average level",
+                data: campusesLevels,
+                backgroundColor: ["#7364D0"],
+              },
+            ],
+          },
           options: {
             indexAxis: "y",
-            // Elements options apply to all of the options unless overridden in a dataset
-            // In this case, we are setting the border of each horizontal bar to be 2px wide
-            elements: {
-              bar: {
-                borderWidth: 2,
-              },
-            },
             responsive: true,
             plugins: {
               legend: {
-                position: "right",
+                position: "top",
               },
               title: {
                 display: true,
-                text: "Chart.js Horizontal Bar Chart",
+                text: "Average level by campus",
               },
             },
           },
@@ -49,14 +57,11 @@ const ChartComponent: React.FC<ChartProps> = ({ data }) => {
     }
 
     return () => {
-      // Assurez-vous de détruire le graphique lors du démontage du composant
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
     };
-  }, [data]);
+  }, [campusesNames, campusesLevels]);
 
   return <canvas ref={chartRef} />;
 };
-
-export default ChartComponent;
