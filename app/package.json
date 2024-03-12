@@ -6,8 +6,8 @@
     "dev": "next dev",
     "migrate:dev": "pnpx prisma migrate dev --name 42stats && pnpm run dev",
     "build": "next build",
-    "migrate:build": "pnpx prisma migrate deploy && pnpm run build && pnpm run start",
     "start": "next start",
+    "migrate:start": "pnpx prisma migrate deploy && pnpm run build && pnpm run start -p 80",
     "lint": "next lint"
   },
   "dependencies": {

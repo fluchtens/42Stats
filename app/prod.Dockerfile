@@ -13,4 +13,4 @@ RUN pnpx prisma generate
 
 EXPOSE 80
 
-CMD ["pnpm", "run", "migrate:build"]
+CMD ["pnpm", "run", "migrate:start"]
