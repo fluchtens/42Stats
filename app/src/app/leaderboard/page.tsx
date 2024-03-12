@@ -118,7 +118,7 @@ export default function Leaderboard() {
   return (
     <main className="p-6 flex-1">
       <div className="max-w-screen-lg m-auto flex-col flex justify-center gap-12">
-        <div className="w-full flex justify-between items-center gap-2">
+        <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
           <CampusSelector campuses={campuses} setCampusId={setCampusId} />
           <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
         </div>
