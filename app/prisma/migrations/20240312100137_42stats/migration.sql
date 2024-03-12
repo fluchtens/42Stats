@@ -63,7 +63,7 @@ CREATE TABLE "FortyTwoUser" (
     "image" VARCHAR(255),
     "pool_month" VARCHAR(255),
     "pool_year" VARCHAR(255),
-    "level" DECIMAL(65,30) NOT NULL,
+    "level" DOUBLE PRECISION NOT NULL,
     "campus_id" INTEGER NOT NULL,
 
     CONSTRAINT "FortyTwoUser_pkey" PRIMARY KEY ("id")
