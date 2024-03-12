@@ -17,7 +17,6 @@ DATABASE_URL=postgresql://fluchten:19@42stats-db:5432/42stats
 FORTY_TWO_UID=
 FORTY_TWO_SECRET=
 AUTH_SECRET=
-AUTH_URL=
 ```
 
 ### Usage:
