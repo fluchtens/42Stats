@@ -58,12 +58,12 @@ export const CampusesAvgLevelsChart = ({
             scales: {
               y: {
                 ticks: {
-                  color: "#a1a1aa", // Changer la couleur des valeurs de l'axe y
+                  color: "#a1a1aa",
                 },
               },
               x: {
                 ticks: {
-                  color: "#a1a1aa", // Changer la couleur des valeurs de l'axe x
+                  color: "#a1a1aa",
                 },
               },
             },
