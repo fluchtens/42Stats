@@ -3,15 +3,17 @@
 import ChartJS from "chart.js/auto";
 import { useEffect, useRef } from "react";
 
-interface CampusesAvgLevelsChartProps {
+interface HorizontalBarChartProps {
+  label: string;
   campusesNames: string[];
   campusesLevels: number[];
 }
 
-export const CampusesAvgLevelsChart = ({
+export const HorizontalBarChart = ({
+  label,
   campusesNames,
   campusesLevels,
-}: CampusesAvgLevelsChartProps) => {
+}: HorizontalBarChartProps) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<ChartJS | null>(null);
 
@@ -24,7 +26,7 @@ export const CampusesAvgLevelsChart = ({
       const ctx = chartRef.current.getContext("2d");
 
       if (ctx) {
-        const height = campusesNames ? campusesNames.length * 6 : 400;
+        const height = campusesNames.length * 20;
         chartRef.current.height = height;
 
         chartInstance.current = new ChartJS(ctx, {
@@ -33,7 +35,7 @@ export const CampusesAvgLevelsChart = ({
             labels: campusesNames,
             datasets: [
               {
-                label: "Average level",
+                label: label,
                 data: campusesLevels,
                 backgroundColor: ["#7364D0"],
               },
@@ -42,16 +44,18 @@ export const CampusesAvgLevelsChart = ({
           options: {
             indexAxis: "y",
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
+                display: false,
                 position: "top",
                 labels: {
                   color: "#a1a1aa",
                 },
               },
               title: {
-                display: true,
-                text: "Average level by campus",
+                display: false,
+                text: "Chart Title",
                 color: "#a1a1aa",
               },
             },
