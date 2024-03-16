@@ -74,7 +74,7 @@ export const UsersPagination = ({
   };
 
   return (
-    <div className="ml-auto">
+    <div className="sm:ml-auto">
       <Pagination>
         <PaginationContent>
           <PaginationItem>
