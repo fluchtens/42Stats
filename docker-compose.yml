@@ -20,7 +20,7 @@ services:
     image: 42stats-app
     build:
       context: ./app
-      dockerfile: dev.Dockerfile
+      dockerfile: prod.Dockerfile
     depends_on:
       - database
     environment:
@@ -29,7 +29,7 @@ services:
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
       AUTH_SECRET: ${AUTH_SECRET}
     ports:
-      - 3000:3000
+      - 80:80
       - 5555:5555
     volumes:
       - ./app:/app
