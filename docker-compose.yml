@@ -28,6 +28,7 @@ services:
       FORTY_TWO_UID: ${FORTY_TWO_UID}
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
       AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL}
     ports:
       - 80:80
       - 5555:5555
