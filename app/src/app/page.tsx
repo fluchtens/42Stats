@@ -78,7 +78,7 @@ export default async function Home() {
             <FaqQuestion
               value="4"
               question="Where is the data stored?"
-              answer="The website and database are hosted by OVH in Strasbourg, France."
+              answer="The website and database are hosted by OVH in Gravelines, France."
             />
           </Accordion>
         </div>
