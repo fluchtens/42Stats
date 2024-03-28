@@ -24,4 +24,4 @@ AUTH_URL=http://localhost/api/auth
 - Run ```make``` to start the application with docker.
 
 ### Screenshots:
-![1](https://fluchtens.com/projects/42Stats/42Stats_1.png)
+![1](https://fluchtens.com/projects/42Stats/42Stats_1.webp)
