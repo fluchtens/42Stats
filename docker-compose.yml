@@ -3,57 +3,55 @@ version: "3"
 services:
   database:
     container_name: 42stats-db
-    image: postgres:latest
+    image: mysql:latest
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_URL: ${DATABASE_URL}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - database:/var/lib/postgresql/data
+      - database:/var/lib/mysql
+    ports:
+      - 3306:3306
     networks:
       - 42stats_network
     restart: always
 
-  app:
-    container_name: 42stats-app
-    image: 42stats-app
-    build:
-      context: ./app
-      dockerfile: dev.Dockerfile
+  phpmyadmin:
+    container_name: 42stats-phpmyadmin
+    image: phpmyadmin/phpmyadmin
     depends_on:
       - database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-      FORTY_TWO_UID: ${FORTY_TWO_UID}
-      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
-      AUTH_SECRET: ${AUTH_SECRET}
-      AUTH_URL: ${AUTH_URL}
+      PMA_ARBITRARY: ${PMA_ARBITRARY}
+      PMA_HOST: ${PMA_HOST}
     ports:
-      - 3000:3000
-      - 5555:5555
-    volumes:
-      - ./app:/app
-      - /app/node_modules
+      - 5050:80
     networks:
       - 42stats_network
     restart: always
 
-  tasks:
-    container_name: 42stats-tasks
-    image: 42stats-tasks
-    build:
-      context: ./tasks
-      dockerfile: Dockerfile
-    depends_on:
-      - app
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      FORTY_TWO_UID: ${FORTY_TWO_UID}
-      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
-    networks:
-      - 42stats_network
-    restart: always
+  # api:
+  #   container_name: 42stats-api
+  #   image: 42stats-api
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - database
+  #   environment:
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - 42stats_network
+  #   restart: always
 
 networks:
   42stats_network:
