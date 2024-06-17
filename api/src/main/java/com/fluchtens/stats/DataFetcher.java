@@ -199,8 +199,8 @@ public class DataFetcher {
       return;
     }
 
-    campusRepository.deleteAll();
     userRepository.deleteAll();
+    campusRepository.deleteAll();
     this.fetchAllCampuses();
 
     LocalDateTime endTime = LocalDateTime.now();
