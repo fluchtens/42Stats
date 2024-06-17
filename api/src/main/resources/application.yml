@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/42stats
+    username: fluchten
+    password: 19
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          42:
+            client-id: u-s4t2ud-53cc2c719851c28130a9c51e97a950c6c28dbbb5f074786a80c4a28de6568e2b
+            client-secret: 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
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: 42
+            scope: public
+        provider:
+          42:
+            authorization-uri: https://api.intra.42.fr/oauth/authorize
+            token-uri: https://api.intra.42.fr/oauth/token
+            user-info-uri: https://api.intra.42.fr/v2/me
+            user-name-attribute: id
