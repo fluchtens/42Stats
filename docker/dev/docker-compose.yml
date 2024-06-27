@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+  database:
+    container_name: 42stats-db
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - 42stats_network
+    restart: always
+
+  phpmyadmin:
+    container_name: 42stats-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    depends_on:
+      - database
+    environment:
+      PMA_ARBITRARY: ${PMA_ARBITRARY}
+      PMA_HOST: ${PMA_HOST}
+    ports:
+      - 5050:80
+    networks:
+      - 42stats_network
+    restart: always
+
+  # api:
+  #   container_name: 42stats-api
+  #   image: 42stats-api
+  #   build:
+  #     context: ../../api
+  #     dockerfile: dev.Dockerfile
+  #   environment:
+  #     CLIENT_URL: ${CLIENT_URL}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+  #     GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+  #   depends_on:
+  #     - database
+  #   ports:
+  #     - 8080:8080
+  #   volumes:
+  #     - ../../api:/app
+  #   networks:
+  #     - 42stats_network
+  #   restart: always
+
+  # client:
+  #   container_name: 42stats-client
+  #   image: 42stats-client
+  #   build:
+  #     context: ../../client
+  #     dockerfile: dev.Dockerfile
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - 4200:4200
+  #   volumes:
+  #     - ../../client:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - 42stats_network
+  #   restart: always
+
+networks:
+  42stats_network:
+    name: 42stats_network
+
+volumes:
+  database:

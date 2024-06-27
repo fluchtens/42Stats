@@ -1,14 +1,21 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/42stats
-    username: fluchten
-    password: 19
+    url: ${DATABASE_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: false
+
+  session:
+    jdbc:
+      initialize-schema: always
+      schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+      table-name: SPRING_SESSION
+      cleanup-cron: "0 0 * * * *"
 
   security:
     oauth2:
@@ -27,3 +34,10 @@ spring:
             token-uri: https://api.intra.42.fr/oauth/token
             user-info-uri: https://api.intra.42.fr/v2/me
             user-name-attribute: id
+
+server:
+  servlet:
+    session:
+      timeout: 2h
+
+client-url: ${CLIENT_URL}

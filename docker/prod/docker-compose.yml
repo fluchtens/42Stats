@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+  database:
+    container_name: taskly-db
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - taskly_network
+    restart: always
+
+  phpmyadmin:
+    container_name: taskly-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    depends_on:
+      - database
+    environment:
+      PMA_ARBITRARY: ${PMA_ARBITRARY}
+      PMA_HOST: ${PMA_HOST}
+    ports:
+      - 5050:80
+    networks:
+      - taskly_network
+    restart: always
+
+  api:
+    container_name: taskly-api
+    image: taskly-api
+    platform: linux/amd64
+    build:
+      context: ../../api
+      dockerfile: prod.Dockerfile
+    environment:
+      CLIENT_URL: ${CLIENT_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+    networks:
+      - taskly_network
+    restart: always
+
+  client:
+    container_name: taskly-client
+    image: taskly-client
+    build:
+      context: ../../client
+      dockerfile: prod.Dockerfile
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    networks:
+      - taskly_network
+    restart: always
+
+networks:
+  taskly_network:
+    name: taskly_network
+
+volumes:
+  database:

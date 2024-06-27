@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private FortyTwoUserRepository fortyTwoUserRepository;
 
-    @GetMapping("/me")
+    @GetMapping()
     public FortyTwoUser getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

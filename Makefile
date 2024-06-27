@@ -1,24 +1,25 @@
+MODE=dev
+COMPOSE_FILE = docker/${MODE}/docker-compose.yml
+DOCKER_COMPOSE = docker-compose -f ${COMPOSE_FILE}
+
 all: build
 
-install:
-	cd app && pnpm install && pnpx prisma generate
-	cd tasks && pnpm install
-
-build:
-	docker-compose up --build
+build: clean
+	${DOCKER_COMPOSE} up --build
 
 up: down
-	docker-compose up
+	${DOCKER_COMPOSE} up
 
 down:
-	docker-compose down
+	${DOCKER_COMPOSE} down
+
+prune:
+	docker system prune -f
 
 clean:
-	docker-compose down --rmi all
+	${DOCKER_COMPOSE} down --rmi all
+	@make prune
 
 fclean:
-	docker-compose down --rmi all --volumes
-
-.PHONY: all install build up down clean fclean
-
-.SILENT:
+	${DOCKER_COMPOSE} down --rmi all --volumes
+	@make prune
