@@ -26,6 +26,7 @@ services:
     environment:
       PMA_ARBITRARY: ${PMA_ARBITRARY}
       PMA_HOST: ${PMA_HOST}
+      UPLOAD_LIMIT: 10000000000
     ports:
       - 5050:80
     networks:
