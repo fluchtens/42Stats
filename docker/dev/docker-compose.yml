@@ -35,6 +35,7 @@ services:
   api:
     container_name: 42stats-api
     image: 42stats-api
+    platform: linux/amd64
     build:
       context: ../../api
       dockerfile: dev.Dockerfile
@@ -51,28 +52,29 @@ services:
       - 8080:8080
     volumes:
       - ../../api:/app
+      - ~/.m2:/root/.m2
     networks:
       - 42stats_network
     restart: always
 
-  client:
-    container_name: 42stats-client
-    image: 42stats-client
-    build:
-      context: ../../client
-      dockerfile: dev.Dockerfile
-    environment:
-      API_URL: ${API_URL}
-    depends_on:
-      - api
-    ports:
-      - 3000:3000
-    volumes:
-      - ../../client:/app
-      - /app/node_modules
-    networks:
-      - 42stats_network
-    restart: always
+  # client:
+  #   container_name: 42stats-client
+  #   image: 42stats-client
+  #   build:
+  #     context: ../../client
+  #     dockerfile: dev.Dockerfile
+  #   environment:
+  #     API_URL: ${API_URL}
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ../../client:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - 42stats_network
+  #   restart: always
 
 networks:
   42stats_network:
