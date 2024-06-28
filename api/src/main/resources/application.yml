@@ -22,8 +22,8 @@ spring:
       client:
         registration:
           42:
-            client-id: u-s4t2ud-53cc2c719851c28130a9c51e97a950c6c28dbbb5f074786a80c4a28de6568e2b
-            client-secret: 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
+            client-id: ${FORTY_TWO_UID}
+            client-secret: ${FORTY_TWO_SECRET}
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-name: 42

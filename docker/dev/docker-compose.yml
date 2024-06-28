@@ -9,6 +9,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
     volumes:
       - database:/var/lib/mysql
     networks:
@@ -30,45 +32,47 @@ services:
       - 42stats_network
     restart: always
 
-  # api:
-  #   container_name: 42stats-api
-  #   image: 42stats-api
-  #   build:
-  #     context: ../../api
-  #     dockerfile: dev.Dockerfile
-  #   environment:
-  #     CLIENT_URL: ${CLIENT_URL}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
-  #     GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
-  #   depends_on:
-  #     - database
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ../../api:/app
-  #   networks:
-  #     - 42stats_network
-  #   restart: always
+  api:
+    container_name: 42stats-api
+    image: 42stats-api
+    build:
+      context: ../../api
+      dockerfile: dev.Dockerfile
+    environment:
+      CLIENT_URL: ${CLIENT_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      FORTY_TWO_UID: ${FORTY_TWO_UID}
+      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+    volumes:
+      - ../../api:/app
+    networks:
+      - 42stats_network
+    restart: always
 
-  # client:
-  #   container_name: 42stats-client
-  #   image: 42stats-client
-  #   build:
-  #     context: ../../client
-  #     dockerfile: dev.Dockerfile
-  #   depends_on:
-  #     - api
-  #   ports:
-  #     - 4200:4200
-  #   volumes:
-  #     - ../../client:/app
-  #     - /app/node_modules
-  #   networks:
-  #     - 42stats_network
-  #   restart: always
+  client:
+    container_name: 42stats-client
+    image: 42stats-client
+    build:
+      context: ../../client
+      dockerfile: dev.Dockerfile
+    environment:
+      API_URL: ${API_URL}
+    depends_on:
+      - api
+    ports:
+      - 3000:3000
+    volumes:
+      - ../../client:/app
+      - /app/node_modules
+    networks:
+      - 42stats_network
+    restart: always
 
 networks:
   42stats_network:

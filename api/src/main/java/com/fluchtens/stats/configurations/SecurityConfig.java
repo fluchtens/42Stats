@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
             )
 			.oauth2Login((oauth2) -> oauth2
-				.loginPage("/oauth2/authorization/github")
+				.loginPage("/oauth2/authorization/42")
 				.defaultSuccessUrl(clientUrl, true)
 			)
 			.logout((logout) -> logout

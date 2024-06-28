@@ -9,8 +9,6 @@ COPY package.json .
 RUN pnpm install
 COPY . .
 
-RUN pnpx prisma generate
-
 EXPOSE 3000
 
-CMD ["pnpm", "run", "migrate:dev"]
+CMD ["pnpm", "run", "dev"]

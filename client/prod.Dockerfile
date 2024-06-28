@@ -9,8 +9,8 @@ COPY package.json .
 RUN pnpm install
 COPY . .
 
-RUN pnpx prisma generate
+RUN pnpm run build
 
 EXPOSE 80
 
-CMD ["pnpm", "run", "migrate:start"]
+CMD ["pnpm", "run", "start"]
