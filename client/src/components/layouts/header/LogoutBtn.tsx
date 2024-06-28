@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const API_URL = "http://localhost:8080";
 
-const logout = async (): Promise<boolean> => {
+async function logout(): Promise<boolean> {
   try {
     const response = await fetch(`${API_URL}/logout`, {
       method: "GET",
@@ -21,7 +21,7 @@ const logout = async (): Promise<boolean> => {
     console.error(error);
     return false;
   }
-};
+}
 
 export const LogoutBtn = () => {
   const { user, refreshUser } = useAuth();

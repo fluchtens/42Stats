@@ -1,42 +1,32 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { LoginBtn } from "./LoginBtn";
 import { LogoutBtn } from "./LogoutBtn";
 
-export const SigninBtn = () => {
-  const handleButtonClick = () => {
-    window.location.href = `http://localhost:8080/oauth2/authorization/42`;
-  };
-
-  return (
-    <Button variant="ghost" size="default" onClick={handleButtonClick}>
-      Sign in
-    </Button>
-  );
-};
-
 export const ProfileBtn = () => {
-  const { user, refreshUser } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className="flex items-center gap-1 text-sm md:text-base font-medium md:font-normal">
-      {user ? (
+      {user === null && <LoginBtn />}
+      {user && (
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="w-10 h-10 rounded-full">
-              <AvatarImage src={`${user.image ? user.image : "noavatar"}`} className="object-cover pointer-events-none" />
-              {user.login ? <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback> : <AvatarFallback>U</AvatarFallback>}
+              {user.image ? (
+                <AvatarImage src={user.image} className="object-cover pointer-events-none" />
+              ) : (
+                <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
+              )}
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <LogoutBtn />
           </DropdownMenuContent>
         </DropdownMenu>
-      ) : (
-        <SigninBtn />
       )}
     </div>
   );
