@@ -1,8 +1,28 @@
 "use client";
 
-import { getUserInfos } from "@/services/auth.api";
 import { User } from "@/types/user.interface";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+
+const API_URL = "http://localhost:8080";
+
+const getUserInfos = async (): Promise<User | null> => {
+  try {
+    const response = await fetch(`${API_URL}/user/me`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
 
 interface AuthContextProps {
   user: User | null | undefined;

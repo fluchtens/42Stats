@@ -2,13 +2,9 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { LogoutBtn } from "./LogoutBtn";
 
 export const SigninBtn = () => {
   const handleButtonClick = () => {
@@ -22,10 +18,6 @@ export const SigninBtn = () => {
   );
 };
 
-export const LogoutBtn = () => {
-  return <DropdownMenuItem onClick={() => console.log("caca")}>Log out</DropdownMenuItem>;
-};
-
 export const ProfileBtn = () => {
   const { user, refreshUser } = useAuth();
 
@@ -35,15 +27,8 @@ export const ProfileBtn = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="w-10 h-10 rounded-full">
-              <AvatarImage
-                src={`${user.image ? user.image : "noavatar"}`}
-                className="object-cover pointer-events-none"
-              />
-              {user.login ? (
-                <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
-              ) : (
-                <AvatarFallback>U</AvatarFallback>
-              )}
+              <AvatarImage src={`${user.image ? user.image : "noavatar"}`} className="object-cover pointer-events-none" />
+              {user.login ? <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback> : <AvatarFallback>U</AvatarFallback>}
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

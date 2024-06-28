@@ -1,14 +1,13 @@
 package com.fluchtens.stats.configurations;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -26,7 +25,14 @@ public class SecurityConfig {
 				.anyRequest().authenticated()
 			)
 			.exceptionHandling((exceptions) -> exceptions
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .authenticationEntryPoint((request, response, authException) -> {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					JSONObject jsonResponse = new JSONObject();
+					jsonResponse.put("message", "Authentication failed");
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					response.getWriter().write(jsonResponse.toString());
+				})
             )
 			.oauth2Login((oauth2) -> oauth2
 				.loginPage("/oauth2/authorization/42")
