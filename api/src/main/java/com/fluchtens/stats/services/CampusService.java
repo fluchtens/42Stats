@@ -12,7 +12,7 @@ import com.fluchtens.stats.models.FortyTwoCampus;
 import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
 
 @Service
-public class FortyTwoCampusService {
+public class CampusService {
   @Autowired
   private FortyTwoCampusRepository campusRepository;
 

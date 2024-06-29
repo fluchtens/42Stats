@@ -18,6 +18,9 @@ public class FortyTwoCampus {
   @Column(nullable = false)
   private int userCount;
 
+  @Column(nullable = false)
+  private int studentCount;
+
   public FortyTwoCampus() {}
 
   public int getId() {
@@ -50,5 +53,13 @@ public class FortyTwoCampus {
 
   public void setUserCount(int userCount) {
     this.userCount = userCount;
+  }
+
+  public int getStudentCount() {
+    return this.studentCount;
+  }
+
+  public void setStudentCount(int studentCount) {
+    this.studentCount = studentCount;
   }
 }
