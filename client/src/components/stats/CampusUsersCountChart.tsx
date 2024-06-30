@@ -1,30 +1,10 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getCampuses } from "@/services/campus.service";
 import { Campus } from "@/types/campus.interface";
 import { useEffect, useState } from "react";
 import { HorizontalBarChart } from "./HorizontalBarChart";
-
-const API_URL = "http://localhost:8080";
-
-async function getCampuses(): Promise<any> {
-  try {
-    const response = await fetch(`${API_URL}/campuses`, {
-      method: "GET",
-      credentials: "include",
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
-
-    return data;
-  } catch (error: any) {
-    console.error(error);
-    return null;
-  }
-}
 
 export const CampusUsersCountChart = () => {
   const [campuses, setCampuses] = useState<Campus[]>([]);

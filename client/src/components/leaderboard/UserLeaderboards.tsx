@@ -1,40 +1,51 @@
 "use client";
 
-import { getCampuses } from "@/services/campus.service";
+import { getCampuses, getCampusUsers } from "@/services/campus.service";
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 import { SortType } from "@/types/sort.enum";
-import { useRouter, useSearchParams } from "next/navigation";
+import { User } from "@/types/user.interface";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { CampusSelector } from "./CampusSelector";
+import { PoolDateSelector } from "./PoolDateSelector";
+import { UsersPagination } from "./UsersPagination";
 
 export const UserLeaderboards = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
-  const [campusId, setCampusId] = useState<number | null>(null);
-  // const [users, setUsers] = useState<FortyTwoUser[] | null>(null);
+  const [campusId, setCampusId] = useState<number>(Number(useSearchParams().get("campus")) || 0);
+  const [users, setUsers] = useState<User[] | null>(null);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [currentPage, setCurrentPage] = useState<number>(Number(useSearchParams().get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const pageSize: number = 5;
 
-  // const updateCampusUsers = async () => {
-  //   if (campusId) {
-  //     const newUsers = await getCampusUsers(campusId, currentPage, 42);
-  //     setUsers(newUsers);
+  const updateCampusUsers = async () => {
+    const campuses = await getCampuses();
+    setCampuses(campuses);
 
-  //     const newPoolDates = await getAvailablePoolDates(campusId);
-  //     setAvailablePoolDates(newPoolDates);
+    const users = await getCampusUsers(campusId, currentPage, pageSize);
+    console.log("users", users);
+    setUsers(users);
 
-  //     const userCount = await getCampusUsersCount(campusId);
-  //     if (userCount) {
-  //       const totalPages = Math.ceil(userCount / 42);
-  //       setTotalPages(totalPages);
-  //     }
-  //   }
-  // };
+    if (users && users.length > 0) {
+      const campus = campuses?.find((campus) => campus.id === campusId);
+      if (campus) {
+        const totalPages = Math.ceil(campus.studentCount / pageSize);
+        setTotalPages(totalPages);
+      }
+    }
+
+    // const newPoolDates = await getAvailablePoolDates(campusId);
+    // setAvailablePoolDates(newPoolDates);
+  };
 
   // const updatePoolUsers = async () => {
   //   if (campusId && poolDate) {
@@ -53,27 +64,24 @@ export const UserLeaderboards = () => {
     const fetchData = async () => {
       const campuses = await getCampuses();
       setCampuses(campuses);
-
-      // const campusId = await getMyCampusId();
-      setCampusId(12);
-
       setFirstLoad(false);
     };
 
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   if (!firstLoad) {
-  //     setUsers(null);
-  //     setAvailablePoolDates(null);
-  //     setSortBy(SortType.Campus);
-  //     setCurrentPage(1);
-  //     router.push(`/leaderboard/?page=1`);
-  //     setTotalPages(1);
-  //     updateCampusUsers();
-  //   }
-  // }, [campusId]);
+  useEffect(() => {
+    setUsers(null);
+    // setAvailablePoolDates(null);
+    // setSortBy(SortType.Campus);
+    setCurrentPage(1);
+    setTotalPages(1);
+    updateCampusUsers();
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("campus", campusId.toString());
+    params.set("page", currentPage.toString());
+    router.push(pathname + "?" + params.toString());
+  }, [campusId]);
 
   // useEffect(() => {
   //   if (!firstLoad) {
@@ -85,25 +93,31 @@ export const UserLeaderboards = () => {
   //   }
   // }, [poolDate]);
 
-  // useEffect(() => {
-  //   if (!firstLoad) {
-  //     if (sortBy === SortType.Campus) {
-  //       setUsers(null);
-  //       updateCampusUsers();
-  //     } else if (sortBy === SortType.PoolDate) {
-  //       setUsers(null);
-  //       updatePoolUsers();
-  //     }
-  //   }
-  // }, [currentPage]);
+  useEffect(() => {
+    // if (!firstLoad) {
+    //   if (sortBy === SortType.Campus) {
+    //     setUsers(null);
+    //     updateCampusUsers();
+    //   } else if (sortBy === SortType.PoolDate) {
+    //     setUsers(null);
+    //     updatePoolUsers();
+    //   }
+    // }
+    setUsers(null);
+    updateCampusUsers();
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("campus", campusId.toString());
+    params.set("page", currentPage.toString());
+    router.push(pathname + "?" + params.toString());
+  }, [currentPage]);
 
   return (
     <div className="flex-col flex gap-12">
       <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
         <CampusSelector campuses={campuses} setCampusId={setCampusId} />
-        {/* <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} /> */}
+        <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
       </div>
-      {/* {users && (
+      {users && (
         <>
           <table className="w-full">
             <thead>
@@ -115,7 +129,7 @@ export const UserLeaderboards = () => {
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={index} className={`${index !== users.length - 1 ? "border-b border-slate-200 border-opacity-5" : ""} text-base font-normal`}>
+                <tr key={index} className={`${index !== users.length - 1 ? "border-b border-opacity-5" : ""} text-base font-normal`}>
                   <td className="py-4 text-left">{(currentPage - 1) * users.length + index + 1}</td>
                   <td className="py-4 flex justify-start items-center gap-4 text-left">
                     <Avatar className="w-16 h-16 rounded-full">
@@ -130,14 +144,14 @@ export const UserLeaderboards = () => {
                       {user.login}
                     </a>
                   </td>
-                  <td className="py-4 text-right">{user.level.toFixed(2)}</td>
+                  <td className="py-4 text-right">{user.level}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           <UsersPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
         </>
-      )} */}
+      )}
     </div>
   );
 };

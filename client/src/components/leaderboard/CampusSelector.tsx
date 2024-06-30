@@ -12,21 +12,18 @@ export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) =
   };
 
   return (
-    <div className="flex-col flex">
-      <span className="text-base font-medium">Campus:</span>
-      <Select onValueChange={handleSelect}>
-        <SelectTrigger className="w-60">
-          <SelectValue placeholder="Select a campus..." />
-        </SelectTrigger>
-        <SelectContent>
-          {campuses &&
-            campuses.map((campus, index) => (
-              <SelectItem key={index} value={campus.id.toString()}>
-                {campus.name} ({campus.country})
-              </SelectItem>
-            ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select onValueChange={handleSelect}>
+      <SelectTrigger className="mt-1 w-60">
+        <SelectValue placeholder="Campus" />
+      </SelectTrigger>
+      <SelectContent>
+        {campuses &&
+          campuses.map((campus, index) => (
+            <SelectItem key={index} value={campus.id.toString()}>
+              {campus.name} ({campus.country})
+            </SelectItem>
+          ))}
+      </SelectContent>
+    </Select>
   );
 };
