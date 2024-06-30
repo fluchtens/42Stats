@@ -1,6 +1,7 @@
 "use client";
 
-import { getCampuses, getCampusUsers } from "@/services/campus.service";
+import { getCampuses, getCampusPools } from "@/services/campus.service";
+import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 import { SortType } from "@/types/sort.enum";
@@ -25,40 +26,38 @@ export const UserLeaderboards = () => {
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [currentPage, setCurrentPage] = useState<number>(Number(useSearchParams().get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const pageSize: number = 5;
+  const pageSize: number = 42;
 
   const updateCampusUsers = async () => {
     const campuses = await getCampuses();
     setCampuses(campuses);
 
     const users = await getCampusUsers(campusId, currentPage, pageSize);
-    console.log("users", users);
     setUsers(users);
 
-    if (users && users.length > 0) {
-      const campus = campuses?.find((campus) => campus.id === campusId);
-      if (campus) {
-        const totalPages = Math.ceil(campus.studentCount / pageSize);
-        setTotalPages(totalPages);
-      }
+    const campus = campuses?.find((campus) => campus.id === campusId);
+    if (campus) {
+      const totalPages = Math.ceil(campus.studentCount / pageSize);
+      setTotalPages(totalPages);
     }
 
-    // const newPoolDates = await getAvailablePoolDates(campusId);
-    // setAvailablePoolDates(newPoolDates);
+    const pools = await getCampusPools(campusId);
+    setAvailablePoolDates(pools);
   };
 
-  // const updatePoolUsers = async () => {
-  //   if (campusId && poolDate) {
-  //     const newUsers = await getPoolUsers(campusId, poolDate.month, poolDate.year, currentPage, 42);
-  //     setUsers(newUsers);
+  const updatePoolUsers = async () => {
+    if (!campusId || !poolDate) return;
 
-  //     const userCount = await getPoolUsersCount(campusId, poolDate.month, poolDate.year);
-  //     if (userCount) {
-  //       const totalPages = Math.ceil(userCount / 42);
-  //       setTotalPages(totalPages);
-  //     }
-  //   }
-  // };
+    const users = await getCampusPoolUsers(campusId, poolDate.month, poolDate.year, currentPage, pageSize);
+    console.log(users);
+    setUsers(users);
+
+    const userCount = await getCampusPoolUsersCount(campusId, poolDate.month, poolDate.year);
+    if (userCount) {
+      const totalPages = Math.ceil(userCount / pageSize);
+      setTotalPages(totalPages);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,8 +71,8 @@ export const UserLeaderboards = () => {
 
   useEffect(() => {
     setUsers(null);
-    // setAvailablePoolDates(null);
-    // setSortBy(SortType.Campus);
+    setAvailablePoolDates(null);
+    setSortBy(SortType.Campus);
     setCurrentPage(1);
     setTotalPages(1);
     updateCampusUsers();
@@ -83,28 +82,21 @@ export const UserLeaderboards = () => {
     router.push(pathname + "?" + params.toString());
   }, [campusId]);
 
-  // useEffect(() => {
-  //   if (!firstLoad) {
-  //     setUsers(null);
-  //     setSortBy(SortType.PoolDate);
-  //     setCurrentPage(1);
-  //     setTotalPages(1);
-  //     updatePoolUsers();
-  //   }
-  // }, [poolDate]);
+  useEffect(() => {
+    setUsers(null);
+    setSortBy(SortType.PoolDate);
+    setCurrentPage(1);
+    setTotalPages(1);
+    updatePoolUsers();
+  }, [poolDate]);
 
   useEffect(() => {
-    // if (!firstLoad) {
-    //   if (sortBy === SortType.Campus) {
-    //     setUsers(null);
-    //     updateCampusUsers();
-    //   } else if (sortBy === SortType.PoolDate) {
-    //     setUsers(null);
-    //     updatePoolUsers();
-    //   }
-    // }
     setUsers(null);
-    updateCampusUsers();
+    if (sortBy === SortType.Campus) {
+      updateCampusUsers();
+    } else if (sortBy === SortType.PoolDate) {
+      updatePoolUsers();
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.set("campus", campusId.toString());
     params.set("page", currentPage.toString());
@@ -144,7 +136,7 @@ export const UserLeaderboards = () => {
                       {user.login}
                     </a>
                   </td>
-                  <td className="py-4 text-right">{user.level}</td>
+                  <td className="py-4 text-right">{user.level.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

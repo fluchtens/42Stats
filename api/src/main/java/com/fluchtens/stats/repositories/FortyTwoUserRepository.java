@@ -12,10 +12,19 @@ import com.fluchtens.stats.models.FortyTwoUser;
 
 @Repository
 public interface FortyTwoUserRepository extends JpaRepository<FortyTwoUser, Integer> {
-    int countUsersByCampusId(int campusId);
+    @Query("SELECT COUNT(u) FROM FortyTwoUser u WHERE u.campus.id = ?1")
+    int countByCampus(int campusId);
     
     @Query("SELECT AVG(e.level) FROM FortyTwoUser e WHERE e.campus = ?1")
     double findAverageLevelByCampusId(FortyTwoCampus campus);
 
+    List<FortyTwoUser> findByCampusId(int campusId);
+
     List<FortyTwoUser> findByCampusId(int campusId, Pageable pageable);
+
+    @Query("SELECT u FROM FortyTwoUser u WHERE u.campus.id = ?1 AND u.poolMonth = ?2 AND u.poolYear = ?3")
+    List<FortyTwoUser> findByCampusPool(int campusId, String poolMonth, String poolYear, Pageable pageable);
+
+    @Query("SELECT COUNT(u) FROM FortyTwoUser u WHERE u.campus.id = ?1 AND u.poolMonth = ?2 AND u.poolYear = ?3")
+    int countByCampusPool(int campusId, String poolMonth, String poolYear);
 }

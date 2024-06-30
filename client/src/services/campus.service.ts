@@ -1,5 +1,5 @@
 import { Campus } from "@/types/campus.interface";
-import { User } from "@/types/user.interface";
+import { PoolDate } from "@/types/date.interface";
 
 const API_URL = "http://localhost:8080/campus";
 
@@ -41,9 +41,9 @@ async function getCampus(id: number): Promise<Campus | null> {
   }
 }
 
-async function getCampusUsers(id: number, page: number, pageSize: number): Promise<User[] | null> {
+async function getCampusPools(id: number): Promise<PoolDate[] | null> {
   try {
-    const response = await fetch(`${API_URL}/${id}/users?page=${page}&pageSize=${pageSize}`, {
+    const response = await fetch(`${API_URL}/${id}/pools`, {
       method: "GET",
       credentials: "include",
     });
@@ -60,4 +60,4 @@ async function getCampusUsers(id: number, page: number, pageSize: number): Promi
   }
 }
 
-export { getCampus, getCampuses, getCampusUsers };
+export { getCampus, getCampuses, getCampusPools };

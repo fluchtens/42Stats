@@ -2,17 +2,16 @@ package com.fluchtens.stats.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.models.FortyTwoCampus;
 import com.fluchtens.stats.models.FortyTwoUser;
+import com.fluchtens.stats.models.PoolDate;
 import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
 import com.fluchtens.stats.repositories.FortyTwoUserRepository;
 
@@ -28,7 +27,7 @@ public class CampusService {
         return this.campusRepository.findAll();
     }
 
-    public FortyTwoCampus getCampuse(int id) {
+    public FortyTwoCampus getCampus(int id) {
         Optional<FortyTwoCampus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
@@ -36,12 +35,22 @@ public class CampusService {
         return campusOptional.get();
     }
 
-    public List<FortyTwoUser> getCampusUsers(int id, Pageable pageable) {
+    public List<PoolDate> getCampusPools(int id) {
         Optional<FortyTwoCampus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("level").descending());
-        return this.userRepository.findByCampusId(id, pageable);
+        
+        List<FortyTwoUser> users = this.userRepository.findByCampusId(id);    
+        List<PoolDate> poolDates = users.stream()
+            .map(user -> new PoolDate(user.getPoolMonth(), user.getPoolYear()))
+            .distinct()
+            .sorted((a, b) -> {
+                int yearComparison = a.getYear().compareTo(b.getYear());
+                return yearComparison != 0 ? yearComparison : a.getMonth().compareTo(b.getMonth());
+            })
+            .collect(Collectors.toList());
+        return poolDates;
     }
+    
 }
