@@ -10,28 +10,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fluchtens.stats.models.FortyTwoCampus;
-import com.fluchtens.stats.models.FortyTwoUser;
+import com.fluchtens.stats.models.Campus;
 import com.fluchtens.stats.models.PoolDate;
-import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
-import com.fluchtens.stats.repositories.FortyTwoUserRepository;
+import com.fluchtens.stats.models.User;
+import com.fluchtens.stats.repositories.CampusRepository;
+import com.fluchtens.stats.repositories.UserRepository;
 
 @Service
 public class CampusService {
     @Autowired
-    private FortyTwoCampusRepository campusRepository;
+    private CampusRepository campusRepository;
 
     @Autowired
-    private FortyTwoUserRepository userRepository;
+    private UserRepository userRepository;
 
     private List<String> monthNames = Arrays.asList("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
 
-    public List<FortyTwoCampus> getCampuses() {
+    public List<Campus> getCampuses() {
         return this.campusRepository.findAll();
     }
 
-    public FortyTwoCampus getCampus(int id) {
-        Optional<FortyTwoCampus> campusOptional = this.campusRepository.findById(id);
+    public Campus getCampus(int id) {
+        Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
@@ -39,12 +39,12 @@ public class CampusService {
     }
 
     public List<PoolDate> getCampusPools(int id) {
-        Optional<FortyTwoCampus> campusOptional = this.campusRepository.findById(id);
+        Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
 
-        List<FortyTwoUser> users = this.userRepository.findByCampusId(id);    
+        List<User> users = this.userRepository.findByCampusId(id);    
         List<PoolDate> poolDates = users.stream()
             .map(user -> new PoolDate(user.getPoolMonth(), user.getPoolYear()))
             .distinct()

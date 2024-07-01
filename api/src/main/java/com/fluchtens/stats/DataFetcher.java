@@ -17,17 +17,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.fluchtens.stats.models.FortyTwoCampus;
-import com.fluchtens.stats.models.FortyTwoUser;
-import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
-import com.fluchtens.stats.repositories.FortyTwoUserRepository;
+import com.fluchtens.stats.models.Campus;
+import com.fluchtens.stats.models.User;
+import com.fluchtens.stats.repositories.CampusRepository;
+import com.fluchtens.stats.repositories.UserRepository;
 
 @Component
 public class DataFetcher {
     @Autowired
-    private FortyTwoCampusRepository campusRepository;
+    private CampusRepository campusRepository;
+
     @Autowired
-    private FortyTwoUserRepository userRepository;
+    private UserRepository userRepository;
 
     private String apiUrl = "https://api.intra.42.fr/v2";
     private String accessToken;
@@ -145,7 +146,7 @@ public class DataFetcher {
             }
             for (int i = 0; i < campusesJson.length(); i++) {
                 JSONObject campusJson = campusesJson.getJSONObject(i);
-                FortyTwoCampus campus = new FortyTwoCampus();
+                Campus campus = new Campus();
                 campus.setId(campusJson.getInt("id"));
                 campus.setName(campusJson.getString("name"));
                 campus.setCountry(campusJson.getString("country"));
@@ -169,7 +170,7 @@ public class DataFetcher {
         }
     }
 
-    private void fetchAllCampusUsers(FortyTwoCampus campus) {
+    private void fetchAllCampusUsers(Campus campus) {
         int campusId = campus.getId();
         int page = 1;
 
@@ -180,7 +181,7 @@ public class DataFetcher {
             }
             for (int i = 0; i < usersJson.length(); i++) {
                 JSONObject userJson = usersJson.getJSONObject(i);
-                FortyTwoUser user = new FortyTwoUser();
+                User user = new User();
                 user.setId(userJson.getJSONObject("user").getInt("id"));
                 user.setEmail(userJson.getJSONObject("user").getString("email"));
                 user.setLogin(userJson.getJSONObject("user").getString("login"));

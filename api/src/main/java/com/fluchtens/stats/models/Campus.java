@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class FortyTwoCampus {
+public class Campus {
   @Id
   private int id;
 
@@ -24,7 +24,7 @@ public class FortyTwoCampus {
   @Column(nullable = false)
   private double averageLevel;
 
-  public FortyTwoCampus() {}
+  public Campus() {}
 
   public int getId() {
     return this.id;

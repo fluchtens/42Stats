@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fluchtens.stats.models.FortyTwoCampus;
+import com.fluchtens.stats.models.Campus;
 import com.fluchtens.stats.models.PoolDate;
 import com.fluchtens.stats.services.CampusService;
 
@@ -19,12 +19,12 @@ public class CampusController {
     private CampusService campusService;
 
     @GetMapping()
-    public List<FortyTwoCampus> getCampuses() {
+    public List<Campus> getCampuses() {
         return this.campusService.getCampuses();
     }
 
     @GetMapping("/{id}")
-    public FortyTwoCampus getCampus(@PathVariable int id) {
+    public Campus getCampus(@PathVariable int id) {
         return this.campusService.getCampus(id);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fluchtens.stats.models.Account;
-import com.fluchtens.stats.models.FortyTwoUser;
+import com.fluchtens.stats.models.User;
 import com.fluchtens.stats.services.UserService;
 
 @RestController
@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
-    public List<FortyTwoUser> getUsers() {
+    public List<User> getUsers() {
         return this.userService.getUsers();
     }
 
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/campus/{id}")
-    public List<FortyTwoUser> getCampusUsers(
+    public List<User> getCampusUsers(
         @PathVariable int id,
         @RequestParam(required = false) String poolMonth,
         @RequestParam(required = false) String poolYear,

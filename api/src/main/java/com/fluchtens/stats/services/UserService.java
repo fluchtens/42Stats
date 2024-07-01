@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.models.Account;
-import com.fluchtens.stats.models.FortyTwoCampus;
-import com.fluchtens.stats.models.FortyTwoUser;
+import com.fluchtens.stats.models.Campus;
+import com.fluchtens.stats.models.User;
 import com.fluchtens.stats.repositories.AccountRepository;
-import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
-import com.fluchtens.stats.repositories.FortyTwoUserRepository;
+import com.fluchtens.stats.repositories.CampusRepository;
+import com.fluchtens.stats.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -24,13 +24,13 @@ public class UserService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private FortyTwoUserRepository fortyTwoUserRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private FortyTwoCampusRepository fortyTwoCampusRepository;
+    private CampusRepository campusRepository;
     
-    public List<FortyTwoUser> getUsers() {
-        return this.fortyTwoUserRepository.findAll();
+    public List<User> getUsers() {
+        return this.userRepository.findAll();
     }
 
     public Account getUserInfo(int id) {
@@ -41,31 +41,31 @@ public class UserService {
         return user.get();
     }
 
-    public List<FortyTwoUser> getCampusUsers(int id, String poolMonth, String poolYear, Pageable pageable) {
-        Optional<FortyTwoCampus> campusOptional = this.fortyTwoCampusRepository.findById(id);
+    public List<User> getCampusUsers(int id, String poolMonth, String poolYear, Pageable pageable) {
+        Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
 
         if (poolMonth != null && poolYear != null) {
             pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("level").descending());
-            return this.fortyTwoUserRepository.findByCampusPool(id, poolMonth, poolYear, pageable);
+            return this.userRepository.findByCampusPool(id, poolMonth, poolYear, pageable);
         }
 
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("level").descending());
-        return this.fortyTwoUserRepository.findByCampusId(id, pageable);
+        return this.userRepository.findByCampusId(id, pageable);
     }
 
     public int getCampusUsersCount(int id, String poolMonth, String poolYear) {
-        Optional<FortyTwoCampus> campusOptional = this.fortyTwoCampusRepository.findById(id);
+        Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
 
         if (poolMonth != null && poolYear != null) {
-            return this.fortyTwoUserRepository.countByCampusPool(id, poolMonth, poolYear);
+            return this.userRepository.countByCampusPool(id, poolMonth, poolYear);
         }
 
-        return this.fortyTwoUserRepository.countByCampus(id);
+        return this.userRepository.countByCampus(id);
     }
 }

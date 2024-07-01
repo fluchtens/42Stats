@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class FortyTwoUser {
+public class User {
   @Id
   private int id;
 
@@ -37,9 +37,9 @@ public class FortyTwoUser {
 
   @ManyToOne()
   @JoinColumn(nullable = false)
-  private FortyTwoCampus campus;
+  private Campus campus;
 
-  public FortyTwoUser() {}
+  public User() {}
 
   public int getId() {
     return this.id;
@@ -113,11 +113,11 @@ public class FortyTwoUser {
     this.level = level;
   }
 
-  public FortyTwoCampus getCampus() {
+  public Campus getCampus() {
     return this.campus;
   }
 
-  public void setCampus(FortyTwoCampus campus) {
+  public void setCampus(Campus campus) {
     this.campus = campus;
   }
 
