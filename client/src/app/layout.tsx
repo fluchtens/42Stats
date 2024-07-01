@@ -3,6 +3,7 @@ import { Header } from "@/components/layouts/header/Header";
 import { AuthProvider } from "@/hooks/useAuth";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
       <body className={`min-h-screen flex flex-col ${GeistSans.className}`}>
         <AuthProvider>
           <Header />
-          {children}
+          <Suspense>{children}</Suspense>
           <Footer />
         </AuthProvider>
       </body>
