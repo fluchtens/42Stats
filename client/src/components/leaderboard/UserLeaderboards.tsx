@@ -182,7 +182,7 @@ export const UserLeaderboards = () => {
               ))}
             </tbody>
           </table>
-          <UsersPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+          {totalPages > 1 && <UsersPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
         </>
       )}
     </div>
