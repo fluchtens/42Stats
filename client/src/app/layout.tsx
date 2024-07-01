@@ -1,4 +1,4 @@
-import { Footer } from "@/components/layouts/Footer";
+import { Footer } from "@/components/layouts/footer/Footer";
 import { Header } from "@/components/layouts/header/Header";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/lib/ThemeProvider";
