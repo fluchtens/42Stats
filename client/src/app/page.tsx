@@ -37,7 +37,7 @@ export default async function Home() {
           <h1 className="text-2xl font-semibold text-foreground">FAQ</h1>
           <Accordion type="single" collapsible className="w-full">
             {config.faq.map((question, index) => (
-              <FaqQuestion value={index.toString()} question={question.question} answer={question.answer} />
+              <FaqQuestion key={index} value={index.toString()} question={question.question} answer={question.answer} />
             ))}
           </Accordion>
         </div>
