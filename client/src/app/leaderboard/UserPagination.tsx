@@ -14,7 +14,7 @@ interface UsersPaginationProps {
   setCurrentPage: (newPage: number) => void;
 }
 
-export const UsersPagination = ({ currentPage, totalPages, setCurrentPage }: UsersPaginationProps) => {
+export const UserPagination = ({ currentPage, totalPages, setCurrentPage }: UsersPaginationProps) => {
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages || page === currentPage) {
       return;

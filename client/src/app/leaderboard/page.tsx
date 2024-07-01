@@ -1,12 +1,20 @@
-"use server";
+"use client";
 
-import { UserLeaderboards } from "@/components/leaderboard/UserLeaderboards";
+import { useAuth } from "@/hooks/useAuth";
+import { redirect } from "next/navigation";
+import { UserLeaderboard } from "./UserLeaderboard";
 
-export default async function Leaderboard() {
+export default function Leaderboard() {
+  const { user } = useAuth();
+
+  if (user === null) {
+    redirect("/");
+  }
+
   return (
     <main className="p-6 flex-1">
       <div className="max-w-screen-lg m-auto flex-col flex gap-4">
-        <UserLeaderboards />
+        <UserLeaderboard />
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateUrlParams } from "@/lib/updateUrlParams";
 import { getCampuses, getCampusPools } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
@@ -9,12 +10,11 @@ import { SortType } from "@/types/sort.enum";
 import { User } from "@/types/user.interface";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { CampusSelector } from "./CampusSelector";
 import { PoolDateSelector } from "./PoolDateSelector";
-import { UsersPagination } from "./UsersPagination";
+import { UserPagination } from "./UserPagination";
 
-export const UserLeaderboards = () => {
+export const UserLeaderboard = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -161,8 +161,8 @@ export const UserLeaderboards = () => {
                   <td className="py-4 text-left">{(currentPage - 1) * users.length + index + 1}</td>
                   <td className="py-4 flex justify-start items-center gap-4 text-left">
                     <Avatar className="w-16 h-16 rounded-full">
-                      <AvatarImage src={`${user.image ? user.image : "noavatar"}`} className="object-cover pointer-events-none" />
                       <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
+                      {user.image && <AvatarImage src={user.image} className="object-cover pointer-events-none" />}
                     </Avatar>
                     <a
                       href={`https://profile.intra.42.fr/users/${user.login}`}
@@ -177,7 +177,7 @@ export const UserLeaderboards = () => {
               ))}
             </tbody>
           </table>
-          {totalPages > 1 && <UsersPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
+          {totalPages > 1 && <UserPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
         </>
       )}
     </div>
