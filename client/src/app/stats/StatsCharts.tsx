@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { getCampuses } from "@/services/campus.service";
 import { Campus } from "@/types/campus.interface";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AverageLevelChart } from "./AverageLevelChart";
 import { StudentCountChart } from "./StudentCountChart";
@@ -13,7 +12,6 @@ import { UserCountChart } from "./UserCountChart";
 export const StatsCharts = () => {
   const [campuses, setCampuses] = useState<Campus[] | null | undefined>(undefined);
   const { user } = useAuth();
-  if (user === null) redirect("/");
 
   useEffect(() => {
     const fetchCampuses = async () => {
