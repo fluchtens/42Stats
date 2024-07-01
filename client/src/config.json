@@ -1,0 +1,32 @@
+{
+  "faq": [
+    {
+      "question": "What is the aim of this project?",
+      "answer": "I did this project to improve my web development skills. It was inspired by the 42evaluators.com website."
+    },
+    {
+      "question": "What technologies were used in this project?",
+      "answer": "This project was built using Java Spring Boot and Next.js."
+    },
+    {
+      "question": "Is the project open source?",
+      "answer": "Yes, the project is open source. You can find the GitHub repository at https://github.com/fluchtens/42Stats"
+    },
+    {
+      "question": "How can I contribute to this project?",
+      "answer": "You can contribute to this project by creating a pull request on the GitHub repository."
+    },
+    {
+      "question": "How often is the data updated?",
+      "answer": "The data is updated once a day in our database."
+    },
+    {
+      "question": "Why save data?",
+      "answer": "The api of 42 has a rate limit, we are limited to a maximum number of requests per minute. So we can't afford to retrieve data directly from the API for every user request."
+    },
+    {
+      "question": "Where is the data stored?",
+      "answer": "The website and database are hosted by OVH in Gravelines, France."
+    }
+  ]
+}
