@@ -4,16 +4,13 @@ import ChartJS from "chart.js/auto";
 import { useEffect, useRef } from "react";
 
 interface HorizontalBarChartProps {
+  title: string;
   label: string;
-  campusesNames: string[];
-  campusesLevels: number[];
+  labels: string[];
+  datas: number[];
 }
 
-export const HorizontalBarChart = ({
-  label,
-  campusesNames,
-  campusesLevels,
-}: HorizontalBarChartProps) => {
+export const HorizontalBarChart = ({ title, label, labels, datas }: HorizontalBarChartProps) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<ChartJS | null>(null);
 
@@ -26,17 +23,17 @@ export const HorizontalBarChart = ({
       const ctx = chartRef.current.getContext("2d");
 
       if (ctx) {
-        const height = campusesNames.length * 20;
+        const height = labels.length * 20;
         chartRef.current.height = height;
 
         chartInstance.current = new ChartJS(ctx, {
           type: "bar",
           data: {
-            labels: campusesNames,
+            labels: labels,
             datasets: [
               {
                 label: label,
-                data: campusesLevels,
+                data: datas,
                 backgroundColor: ["#7364D0"],
               },
             ],
@@ -54,8 +51,8 @@ export const HorizontalBarChart = ({
                 },
               },
               title: {
-                display: false,
-                text: "Chart Title",
+                display: true,
+                text: title,
                 color: "#a1a1aa",
               },
             },
@@ -81,7 +78,7 @@ export const HorizontalBarChart = ({
         chartInstance.current.destroy();
       }
     };
-  }, [campusesNames, campusesLevels]);
+  }, [labels, datas]);
 
   return <canvas ref={chartRef} />;
 };
