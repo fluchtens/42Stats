@@ -1,5 +1,6 @@
 package com.fluchtens.stats.services;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +23,8 @@ public class CampusService {
 
     @Autowired
     private FortyTwoUserRepository userRepository;
+
+    private List<String> monthNames = Arrays.asList("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
 
     public List<FortyTwoCampus> getCampuses() {
         return this.campusRepository.findAll();
@@ -46,11 +49,15 @@ public class CampusService {
             .map(user -> new PoolDate(user.getPoolMonth(), user.getPoolYear()))
             .distinct()
             .sorted((a, b) -> {
-                int yearComparison = a.getYear().compareTo(b.getYear());
-                return yearComparison != 0 ? yearComparison : a.getMonth().compareTo(b.getMonth());
+                int yearComparison = Integer.compare(Integer.parseInt(a.getYear()), Integer.parseInt(b.getYear()));
+                if (yearComparison != 0) {
+                    return yearComparison;
+                }
+                int monthA = this.monthNames.indexOf(a.getMonth().toLowerCase());
+                int monthB = this.monthNames.indexOf(b.getMonth().toLowerCase());
+                return Integer.compare(monthA, monthB);
             })
             .collect(Collectors.toList());
         return poolDates;
     }
-    
 }

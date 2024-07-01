@@ -83,8 +83,8 @@ export const UserLeaderboards = () => {
       setCampuses(fetchedCampuses);
 
       if (campusId) {
-        const pools = await getCampusPools(campusId);
-        setAvailablePoolDates(pools);
+        const fetchedPools = await getCampusPools(campusId);
+        setAvailablePoolDates(fetchedPools);
 
         if (poolDate) {
           setSortBy(SortType.PoolDate);
