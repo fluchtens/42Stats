@@ -8,7 +8,7 @@ export const LoginBtn = () => {
   };
 
   return (
-    <Button variant="ghost" size="default" onClick={handleLogin}>
+    <Button variant="default" size="default" onClick={handleLogin} className="ml-1.5">
       Sign in
     </Button>
   );
