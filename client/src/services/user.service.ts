@@ -2,7 +2,7 @@
 
 import { User } from "@/types/user.interface";
 
-const API_URL = "http://localhost:8080/users";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
 const getUsers = async (): Promise<User[] | null> => {
   try {
