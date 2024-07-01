@@ -1,8 +1,10 @@
 import { Footer } from "@/components/layouts/Footer";
 import { Header } from "@/components/layouts/header/Header";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ThemeProvider } from "@/lib/ThemeProvider";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import * as React from "react";
 import { Suspense } from "react";
 import "../styles/globals.css";
 
@@ -19,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`min-h-screen flex flex-col ${GeistSans.className}`}>
-        <AuthProvider>
-          <Header />
-          <Suspense>{children}</Suspense>
-          <Footer />
-        </AuthProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <AuthProvider>
+            <Header />
+            <Suspense>{children}</Suspense>
+            <Footer />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

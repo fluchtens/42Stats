@@ -10,7 +10,7 @@ export const ProfileBtn = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex items-center gap-1 text-sm md:text-base font-medium md:font-normal">
+    <>
       {user === null && <LoginBtn />}
       {user && (
         <DropdownMenu>
@@ -25,6 +25,6 @@ export const ProfileBtn = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       )}
-    </div>
+    </>
   );
 };

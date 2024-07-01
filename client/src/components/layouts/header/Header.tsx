@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ProfileBtn } from "./NavLinks";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Header = async () => {
   return (
@@ -23,7 +24,10 @@ export const Header = async () => {
             </Button>
           </Link>
         </div>
-        <ProfileBtn />
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <ProfileBtn />
+        </div>
       </div>
     </header>
   );
