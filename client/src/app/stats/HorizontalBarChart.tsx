@@ -78,7 +78,7 @@ export const HorizontalBarChart = ({ title, label, labels, datas }: HorizontalBa
         chartInstance.current.destroy();
       }
     };
-  }, [labels, datas]);
+  }, [title, label, labels, datas]);
 
   return <canvas ref={chartRef} />;
 };
