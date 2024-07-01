@@ -29,7 +29,7 @@ export const Links = () => {
         42Stats
       </Link>
       <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
-      <NavLink label="Stats" link="/stats" pathname={pathname} />
+      <NavLink label="Statistics" link="/stats" pathname={pathname} />
     </div>
   );
 };
