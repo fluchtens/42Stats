@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class User {
+public class Account {
     @Id
     private int id;
 
@@ -26,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public User() {}
+    public Account() {}
 
     public int getId() {
         return this.id;

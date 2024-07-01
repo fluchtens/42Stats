@@ -3,7 +3,7 @@ package com.fluchtens.stats.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.fluchtens.stats.models.User;
+import com.fluchtens.stats.models.Account;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {}
+public interface AccountRepository extends JpaRepository<Account, Integer> {}

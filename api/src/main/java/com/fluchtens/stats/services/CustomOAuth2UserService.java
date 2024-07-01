@@ -10,13 +10,13 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.fluchtens.stats.models.User;
-import com.fluchtens.stats.repositories.UserRepository;
+import com.fluchtens.stats.models.Account;
+import com.fluchtens.stats.repositories.AccountRepository;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
@@ -37,19 +37,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             image = (String) imageAttributes.get("link");
         }
 
-        Optional<User> existingUser = userRepository.findById(id);
+        Optional<Account> existingUser = accountRepository.findById(id);
         if (existingUser.isPresent()) {
-            User user = existingUser.get();
+            Account user = existingUser.get();
             user.setId(id);
             user.setEmail(email);
             user.setLogin(login);
             user.setImage(image);
             user.setUpdatedAt(LocalDateTime.now());
             if (user.isValid()) {
-                userRepository.save(user);
+                accountRepository.save(user);
             }
         } else {
-            User user = new User();
+            Account user = new Account();
             user.setId(id);
             user.setEmail(email);
             user.setLogin(login);
@@ -57,7 +57,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
             if (user.isValid()) {
-                userRepository.save(user);
+                accountRepository.save(user);
             }
         }
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.models.FortyTwoUser;
-import com.fluchtens.stats.models.User;
 import com.fluchtens.stats.services.UserService;
 
 @RestController
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public User getUserInfo() {
+    public Account getUserInfo() {
         int id = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName());
         return this.userService.getUserInfo(id);
     }

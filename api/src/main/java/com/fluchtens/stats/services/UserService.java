@@ -11,17 +11,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.models.FortyTwoCampus;
 import com.fluchtens.stats.models.FortyTwoUser;
-import com.fluchtens.stats.models.User;
+import com.fluchtens.stats.repositories.AccountRepository;
 import com.fluchtens.stats.repositories.FortyTwoCampusRepository;
 import com.fluchtens.stats.repositories.FortyTwoUserRepository;
-import com.fluchtens.stats.repositories.UserRepository;
 
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
     private FortyTwoUserRepository fortyTwoUserRepository;
@@ -33,8 +33,8 @@ public class UserService {
         return this.fortyTwoUserRepository.findAll();
     }
 
-    public User getUserInfo(int id) {
-        Optional<User> user = this.userRepository.findById(id);
+    public Account getUserInfo(int id) {
+        Optional<Account> user = this.accountRepository.findById(id);
         if (!user.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user data found");
         }
