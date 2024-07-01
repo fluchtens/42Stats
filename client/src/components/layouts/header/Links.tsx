@@ -9,16 +9,20 @@ interface NavLinkProps {
   pathname: string;
 }
 
-const NavLink = ({ label, link, pathname }: NavLinkProps) => (
-  <Link
-    href={link}
-    className={`${
-      pathname === link ? "text-foreground" : "text-foreground/60"
-    } p-2 text-sm font-light hover:text-foreground/80 text-foreground/60 transition-colors`}
-  >
-    {label}
-  </Link>
-);
+const NavLink = ({ label, link, pathname }: NavLinkProps) => {
+  console.log(label, link, pathname);
+  if (pathname === link) {
+    console.log("true");
+  }
+  return (
+    <Link
+      href={link}
+      className={`${pathname === link ? "text-foregound" : "text-foreground/60"} p-2 text-sm font-light hover:text-foreground/80 transition-colors`}
+    >
+      {label}
+    </Link>
+  );
+};
 
 export const Links = () => {
   const pathname = usePathname();
