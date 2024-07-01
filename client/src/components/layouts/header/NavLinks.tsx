@@ -16,11 +16,8 @@ export const ProfileBtn = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="w-10 h-10 rounded-full">
-              {user.image ? (
-                <AvatarImage src={user.image} className="object-cover pointer-events-none" />
-              ) : (
-                <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
-              )}
+              <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
+              {user.image && <AvatarImage src={user.image} className="object-cover pointer-events-none" />}
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
