@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUrlParams } from "@/lib/updateUrlParams";
 import { getCampuses, getCampusPools } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
 import { Campus } from "@/types/campus.interface";
@@ -17,18 +18,37 @@ export const UserLeaderboards = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-  const [campuses, setCampuses] = useState<Campus[] | null>(null);
-  const [campusId, setCampusId] = useState<number>(Number(useSearchParams().get("campus")) || 0);
+
   const [users, setUsers] = useState<User[] | null>(null);
+
+  const [campuses, setCampuses] = useState<Campus[] | null>(null);
+  const [campusId, setCampusId] = useState<number | null>(Number(searchParams.get("campus")) || null);
+
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
-  const [poolDate, setPoolDate] = useState<PoolDate | null>(null);
+
+  let poolDateParams: PoolDate | null = null;
+  const poolMonthParam = searchParams.get("poolMonth");
+  const poolYearParam = searchParams.get("poolYear");
+  if (poolMonthParam && poolYearParam) {
+    poolDateParams = {
+      month: poolMonthParam,
+      year: poolYearParam,
+    };
+  }
+  const [poolDate, setPoolDate] = useState<PoolDate | null>(poolDateParams);
+
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
-  const [currentPage, setCurrentPage] = useState<number>(Number(useSearchParams().get("page")) || 1);
+  const [currentPage, setCurrentPage] = useState<number>(Number(searchParams.get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const pageSize: number = 42;
+  const pageSize = 42;
 
   const updateCampusUsers = async () => {
+    if (!campusId) return;
+
+    console.log("updateCampusUsers", campusId, currentPage);
+
     const campuses = await getCampuses();
     setCampuses(campuses);
 
@@ -49,7 +69,6 @@ export const UserLeaderboards = () => {
     if (!campusId || !poolDate) return;
 
     const users = await getCampusPoolUsers(campusId, poolDate.month, poolDate.year, currentPage, pageSize);
-    console.log(users);
     setUsers(users);
 
     const userCount = await getCampusPoolUsersCount(campusId, poolDate.month, poolDate.year);
@@ -61,36 +80,58 @@ export const UserLeaderboards = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const campuses = await getCampuses();
-      setCampuses(campuses);
-      setFirstLoad(false);
+      const fetchedCampuses = await getCampuses();
+      if (!fetchedCampuses) return console.error("Failed to fetch campuses");
+      setCampuses(fetchedCampuses);
+
+      if (campusId) {
+        const pools = await getCampusPools(campusId);
+        setAvailablePoolDates(pools);
+
+        if (poolDate) {
+          setSortBy(SortType.PoolDate);
+          await updatePoolUsers();
+        } else {
+          setSortBy(SortType.Campus);
+          await updateCampusUsers();
+        }
+      }
     };
 
     fetchData();
+    setFirstLoad(false);
   }, []);
 
   useEffect(() => {
+    if (firstLoad || !campusId) return;
+    console.log("campusId", campusId);
+
     setUsers(null);
     setAvailablePoolDates(null);
+    setPoolDate(null);
     setSortBy(SortType.Campus);
     setCurrentPage(1);
     setTotalPages(1);
     updateCampusUsers();
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("campus", campusId.toString());
-    params.set("page", currentPage.toString());
-    router.push(pathname + "?" + params.toString());
+    updateUrlParams(router, pathname, searchParams, { campus: campusId, page: 1, poolMonth: null, poolYear: null });
   }, [campusId]);
 
   useEffect(() => {
+    if (firstLoad || !campusId || !poolDate) return;
+    console.log("poolDate", poolDate);
+
     setUsers(null);
     setSortBy(SortType.PoolDate);
     setCurrentPage(1);
     setTotalPages(1);
     updatePoolUsers();
+    updateUrlParams(router, pathname, searchParams, { campus: campusId, page: 1, poolMonth: poolDate.month, poolYear: poolDate.year });
   }, [poolDate]);
 
   useEffect(() => {
+    if (firstLoad || !campusId) return;
+    console.log("currentPage", currentPage, sortBy);
+
     setUsers(null);
     if (sortBy === SortType.Campus) {
       updateCampusUsers();
