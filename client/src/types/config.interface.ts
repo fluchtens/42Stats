@@ -4,5 +4,6 @@ export interface Faq {
 }
 
 export interface Config {
+  repository: string;
   faq: Faq[];
 }
