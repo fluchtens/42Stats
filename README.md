@@ -1,23 +1,31 @@
 # 42Stats
 
 ### What's this about?
-Web application in Next.js that retrieves data from the 42 api to display statistics.
+Web application in Java Spring Boot and Next.js for 42 users to discover detailed information and statistics retrieved from 42 API.
 
 ### Installation :
 - Clone the repository.
 
 ### Configuration:
-- Create an .env file at the root of the directory and add the following content to it.
+- Create an .env file in docker/dev or docker/prod and add the following content to it.
 - Configure variables for url, api keys, database information, etc.
+- Set the MODE variable to dev or prod in the Makefile.
 ```env
-POSTGRES_DB=42stats
-POSTGRES_USER=fluchten
-POSTGRES_PASSWORD=19
-DATABASE_URL=postgresql://fluchten:19@42stats-db:5432/42stats
+NEXT_PUBLIC_API_URL=http://localhost:8080
+CLIENT_URL=http://localhost:3000
+
+MYSQL_DATABASE=42stats
+MYSQL_ROOT_PASSWORD=42
+MYSQL_USER=fluchten
+MYSQL_PASSWORD=19
+DATABASE_URL=jdbc:mysql://42stats-db:3306/42stats
+
+PMA_ARBITRARY=1
+PMA_HOST=database
+
 FORTY_TWO_UID=
 FORTY_TWO_SECRET=
-AUTH_SECRET=
-AUTH_URL=http://localhost/api/auth
+
 ```
 
 ### Usage:

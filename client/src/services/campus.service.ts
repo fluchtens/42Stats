@@ -1,7 +1,7 @@
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 
-const API_URL = "http://localhost:8080/campus";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/campus`;
 
 async function getCampuses(): Promise<Campus[] | null> {
   try {
