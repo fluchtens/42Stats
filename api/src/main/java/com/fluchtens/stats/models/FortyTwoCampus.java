@@ -21,6 +21,9 @@ public class FortyTwoCampus {
   @Column(nullable = false)
   private int studentCount;
 
+  @Column(nullable = false)
+  private double averageLevel;
+
   public FortyTwoCampus() {}
 
   public int getId() {
@@ -61,5 +64,13 @@ public class FortyTwoCampus {
 
   public void setStudentCount(int studentCount) {
     this.studentCount = studentCount;
+  }
+
+  public double getAverageLevel() {
+    return this.averageLevel;
+  }
+
+  public void setAverageLevel(double averageLevel) {
+    this.averageLevel = averageLevel;
   }
 }

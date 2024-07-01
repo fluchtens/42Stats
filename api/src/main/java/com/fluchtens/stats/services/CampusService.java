@@ -43,7 +43,7 @@ public class CampusService {
         if (!campusOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
         }
-        
+
         List<FortyTwoUser> users = this.userRepository.findByCampusId(id);    
         List<PoolDate> poolDates = users.stream()
             .map(user -> new PoolDate(user.getPoolMonth(), user.getPoolYear()))

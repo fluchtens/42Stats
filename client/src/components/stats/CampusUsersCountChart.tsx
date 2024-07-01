@@ -7,23 +7,21 @@ import { useEffect, useState } from "react";
 import { HorizontalBarChart } from "./HorizontalBarChart";
 
 export const CampusUsersCountChart = () => {
-  const [campuses, setCampuses] = useState<Campus[]>([]);
   const [campusesNames, setCampusesNames] = useState<string[]>([]);
   const [campusesUsersCount, setCampusesUsersCount] = useState<number[]>([]);
   const [campusesStudentsCount, setCampusesStudentsCount] = useState<number[]>([]);
+  const [campusesAvgLevels, setCampusesAvgLevels] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchCampuses = async () => {
       const campuses = await getCampuses();
-      if (!campuses || campuses.length === 0) {
-        return;
-      }
+      if (!campuses || campuses.length === 0) return;
 
-      campuses.sort((a: Campus, b: Campus) => b.studentCount - a.studentCount);
-      setCampuses(campuses);
+      // campuses.sort((a: Campus, b: Campus) => b.studentCount - a.studentCount);
       setCampusesNames(campuses.map((campus: Campus) => campus.name + ` (${campus.country})`));
       setCampusesUsersCount(campuses.map((campus: Campus) => campus.userCount));
       setCampusesStudentsCount(campuses.map((campus: Campus) => campus.studentCount));
+      setCampusesAvgLevels(campuses.map((campus: Campus) => campus.averageLevel));
     };
 
     fetchCampuses();
@@ -43,7 +41,7 @@ export const CampusUsersCountChart = () => {
         <HorizontalBarChart label="Students" campusesNames={campusesNames} campusesLevels={campusesStudentsCount} />
       </TabsContent>
       <TabsContent value="averageLevel" className="w-full">
-        {/* <HorizontalBarChart label="Average level" campusesNames={campusesNames} campusesLevels={campusesAvgLevels} /> */}
+        <HorizontalBarChart label="Average level" campusesNames={campusesNames} campusesLevels={campusesAvgLevels} />
       </TabsContent>
     </Tabs>
   );

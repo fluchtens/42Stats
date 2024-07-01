@@ -4,4 +4,5 @@ export interface Campus {
   country: string;
   userCount: number;
   studentCount: number;
+  averageLevel: number;
 }
