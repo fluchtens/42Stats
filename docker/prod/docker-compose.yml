@@ -23,6 +23,7 @@ services:
       context: ../../api
       dockerfile: prod.Dockerfile
     environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       CLIENT_URL: ${CLIENT_URL}
       DATABASE_URL: ${DATABASE_URL}
       MYSQL_USER: ${MYSQL_USER}

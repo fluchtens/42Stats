@@ -9,8 +9,6 @@ COPY package.json .
 RUN pnpm install
 COPY . .
 
-RUN pnpm run build
-
 EXPOSE 80
 
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "run", "start:prod"]
