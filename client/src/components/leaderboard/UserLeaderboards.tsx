@@ -47,8 +47,6 @@ export const UserLeaderboards = () => {
   const updateCampusUsers = async () => {
     if (!campusId) return;
 
-    console.log("updateCampusUsers", campusId, currentPage);
-
     const campuses = await getCampuses();
     setCampuses(campuses);
 
@@ -104,7 +102,6 @@ export const UserLeaderboards = () => {
 
   useEffect(() => {
     if (firstLoad || !campusId) return;
-    console.log("campusId", campusId);
 
     setUsers(null);
     setAvailablePoolDates(null);
@@ -118,7 +115,6 @@ export const UserLeaderboards = () => {
 
   useEffect(() => {
     if (firstLoad || !campusId || !poolDate) return;
-    console.log("poolDate", poolDate);
 
     setUsers(null);
     setSortBy(SortType.PoolDate);
@@ -130,7 +126,6 @@ export const UserLeaderboards = () => {
 
   useEffect(() => {
     if (firstLoad || !campusId) return;
-    console.log("currentPage", currentPage, sortBy);
 
     setUsers(null);
     if (sortBy === SortType.Campus) {
