@@ -10,7 +10,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - database:/var/lib/mysql
+      - 42stats_database:/var/lib/mysql
     networks:
       - 42stats_network
     restart: always
@@ -58,4 +58,5 @@ networks:
     name: 42stats_network
 
 volumes:
-  database:
+  42stats_database:
+    name: 42stats_database
