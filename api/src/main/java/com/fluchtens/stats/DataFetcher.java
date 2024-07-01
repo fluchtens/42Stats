@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,12 @@ public class DataFetcher {
     private String apiUrl = "https://api.intra.42.fr/v2";
     private String accessToken;
 
+    @Value("${spring.security.oauth2.client.registration.42.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.42.client-secret}")
+    private String clientSecret;
+
     private String fetchAccessToken() {
         try {
             URL url = new URL("https://api.intra.42.fr/oauth/token");
@@ -39,8 +46,8 @@ public class DataFetcher {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
         
-            String fortyTwoClient = "u-s4t2ud-53cc2c719851c28130a9c51e97a950c6c28dbbb5f074786a80c4a28de6568e2b";
-            String fortyTwoSecret = "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";
+            String fortyTwoClient = this.clientId;
+            String fortyTwoSecret = this.clientSecret;
             JSONObject requestBody = new JSONObject();
             requestBody.put("grant_type", "client_credentials");
             requestBody.put("client_id", fortyTwoClient);
@@ -152,7 +159,7 @@ public class DataFetcher {
                 campus.setStudentCount(userCount);
                 Double averageLevel = this.userRepository.findAverageLevelByCampus(campus.getId());
                 if (averageLevel != null && averageLevel != 0) {
-                    campus.setAverageLevel(averageLevel);
+                    campus.setAverageLevel(Math.round(averageLevel * 100.0) / 100.0);
                 } else {
                     campus.setAverageLevel(0.0);
                 }
@@ -208,6 +215,7 @@ public class DataFetcher {
 
         this.accessToken = this.fetchAccessToken();
         if (this.accessToken.isEmpty()) {
+            System.err.println("Failed to fetch access token.");
             return;
         }
 
