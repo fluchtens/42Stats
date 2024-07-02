@@ -24,11 +24,11 @@ prune:
 	docker system prune -f
 
 clean:
-	${DOCKER_COMPOSE} down -p ${PROJECT} --rmi all
+	${DOCKER_COMPOSE} -p ${PROJECT} down --rmi all
 	@make prune
 
 fclean:
-	${DOCKER_COMPOSE} down -p ${PROJECT} --rmi all --volumes
+	${DOCKER_COMPOSE} -p ${PROJECT} down --rmi all --volumes
 	@make prune
 
 .PHONY: all build up down prune clean fclean
