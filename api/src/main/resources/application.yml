@@ -25,7 +25,7 @@ spring:
             client-id: ${FORTY_TWO_UID}
             client-secret: ${FORTY_TWO_SECRET}
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "${NEXT_PUBLIC_API_URL}/login/oauth2/code/{registrationId}"
             client-name: 42
             scope: public
         provider:
