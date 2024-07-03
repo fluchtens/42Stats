@@ -167,7 +167,7 @@ export const UserLeaderboard = () => {
                     <a
                       href={`https://profile.intra.42.fr/users/${user.login}`}
                       target="_blank"
-                      className="cursor-pointer hover:text-zinc-400 hover:underline"
+                      className="cursor-pointer hover:text-muted-foreground hover:underline"
                     >
                       {user.login}
                     </a>
