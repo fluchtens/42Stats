@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { HeaderMobileMenu } from "./HeaderMobileMenu";
 
 interface NavLinkProps {
   label: string;
@@ -22,12 +23,15 @@ export const Links = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex justify-normal items-center gap-0">
-      <Link href="/" className="p-2 text-lg md:text-xl font-medium">
-        42Stats
-      </Link>
-      <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
-      <NavLink label="Statistics" link="/stats" pathname={pathname} />
-    </div>
+    <>
+      <HeaderMobileMenu pathname={pathname} />
+      <div className="hidden sm:flex sm:justify-normal sm:items-center sm:gap-0">
+        <Link href="/" className="p-2 text-lg md:text-xl font-medium">
+          42Stats
+        </Link>
+        <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
+        <NavLink label="Statistics" link="/stats" pathname={pathname} />
+      </div>
+    </>
   );
 };
