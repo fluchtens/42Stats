@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 interface NavLinkProps {
@@ -23,19 +25,16 @@ const NavLink = ({ label, link, pathname }: NavLinkProps) => (
 
 export const HeaderMobileMenu = ({ pathname }: { pathname: string }) => (
   <Sheet>
-    <SheetTrigger asChild className="block sm:hidden">
-      <Button variant="transparent" size="icon" className="cursor-pointer" asChild>
-        <svg strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5">
-          <path d="M3 5H11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-          <path d="M3 12H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-          <path d="M3 19H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
-        </svg>
+    <SheetTrigger className="block sm:hidden" asChild>
+      <Button variant="transparent" size="icon" className="cursor-pointer">
+        <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
       </Button>
     </SheetTrigger>
     <SheetContent side="left">
       <SheetClose asChild>
         <Link className="text-xl font-semibold text-left" href="/">
-          42Stats
+          <DialogTitle>42Stats</DialogTitle>
+          <DialogDescription className="text-sm font-light text-muted-foreground">Statistics for 42 students</DialogDescription>
         </Link>
       </SheetClose>
       <div className="mt-1 flex-col flex justify-start items-start gap-0">
