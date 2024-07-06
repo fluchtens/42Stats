@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY . .
 
+ENV TZ=Europe/Paris
+
 EXPOSE 8080
 
 CMD mvn spring-boot:run
