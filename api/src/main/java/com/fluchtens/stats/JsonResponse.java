@@ -3,6 +3,9 @@ package com.fluchtens.stats;
 public class JsonResponse {
     private String message;
 
+    public JsonResponse() {
+    }
+
     public JsonResponse(String message) {
         this.message = message;
     }

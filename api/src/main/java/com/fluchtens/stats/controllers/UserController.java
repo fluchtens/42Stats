@@ -32,6 +32,16 @@ public class UserController {
         return this.userService.getUserInfo(id);
     }
 
+    @GetMapping("/count")
+    public long getCampusCount() {
+        return this.userService.getUsersCount();
+    }
+
+    @GetMapping("/levels/average")
+    public Double getUsersAverageLevel() {
+        return this.userService.getUsersAverageLevel();
+    }
+
     @GetMapping("/campus/{id}")
     public List<User> getCampusUsers(
         @PathVariable int id,
