@@ -31,8 +31,8 @@ export const FortyTwoStats = () => {
 
   return (
     <section>
-      <h1 className="text-3xl font-bold">Statistics about 42</h1>
-      <p className="text-lg font-light text-muted-foreground">These statistics concern data from api.intra.42.fr</p>
+      <h1 className="text-2xl md:text-3xl font-bold">Statistics about 42</h1>
+      <p className="text-sm md:text-lg font-light text-muted-foreground">These statistics concern data from api.intra.42.fr</p>
       <div className="mt-4 grid md:grid-cols-3 gap-2 md:gap-4">
         <StatsCard title="Campuses" desc="Number of 42 campuses." value={campusesCount} />
         <StatsCard title="Users" desc="Number of 42 users." value={usersCount} />
