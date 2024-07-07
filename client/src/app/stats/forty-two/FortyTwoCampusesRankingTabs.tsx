@@ -7,7 +7,7 @@ import { UserCountChart } from "./charts/UserCountChart";
 
 export const FortyTwoCampusesRankingTabs = () => (
   <Tabs defaultValue="studentCount">
-    <TabsList>
+    <TabsList className="w-full h-full flex flex-col md:flex-row">
       <TabsTrigger value="studentCount" className="w-full">
         Student count
       </TabsTrigger>
