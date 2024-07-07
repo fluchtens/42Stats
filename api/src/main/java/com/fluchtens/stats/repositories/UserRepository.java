@@ -15,6 +15,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findByCampusId(int campusId, Pageable pageable);
 
+    @Query("SELECT AVG(u.level) FROM User u")
+    Double findAverageLevel();
+
     @Query("SELECT COUNT(u) FROM User u WHERE u.campus.id = ?1")
     int countByCampus(int campusId);
     

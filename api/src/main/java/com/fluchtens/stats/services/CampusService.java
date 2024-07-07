@@ -30,6 +30,10 @@ public class CampusService {
         return this.campusRepository.findAll();
     }
 
+    public long getCampusCount() {
+        return this.campusRepository.count();
+    }
+
     public Campus getCampus(int id) {
         Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {

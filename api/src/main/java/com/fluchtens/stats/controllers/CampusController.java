@@ -23,6 +23,11 @@ public class CampusController {
         return this.campusService.getCampuses();
     }
 
+    @GetMapping("/count")
+    public long getCampusCount() {
+        return this.campusService.getCampusCount();
+    }
+
     @GetMapping("/{id}")
     public Campus getCampus(@PathVariable int id) {
         return this.campusService.getCampus(id);

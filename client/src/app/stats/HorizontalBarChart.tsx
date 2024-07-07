@@ -51,7 +51,7 @@ export const HorizontalBarChart = ({ title, label, labels, datas }: HorizontalBa
                 },
               },
               title: {
-                display: true,
+                display: false,
                 text: title,
                 color: "#a1a1aa",
               },

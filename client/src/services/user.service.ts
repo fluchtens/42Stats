@@ -4,6 +4,25 @@ import { User } from "@/types/user.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
+const getUserInfos = async (): Promise<User | null> => {
+  try {
+    const response = await fetch(`${API_URL}/me`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
+
 const getUsers = async (): Promise<User[] | null> => {
   try {
     const response = await fetch(API_URL, {
@@ -23,9 +42,28 @@ const getUsers = async (): Promise<User[] | null> => {
   }
 };
 
-const getUserInfos = async (): Promise<User | null> => {
+const getUsersCount = async (): Promise<Promise<number | null>> => {
   try {
-    const response = await fetch(`${API_URL}/me`, {
+    const response = await fetch(`${API_URL}/count`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
+
+const getUsersAverageLevel = async (): Promise<Promise<number | null>> => {
+  try {
+    const response = await fetch(`${API_URL}/levels/average`, {
       method: "GET",
       credentials: "include",
     });
@@ -99,4 +137,4 @@ async function getCampusPoolUsersCount(id: number, month: string, year: string):
   }
 }
 
-export { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers, getUserInfos, getUsers };
+export { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers, getUserInfos, getUsers, getUsersAverageLevel, getUsersCount };

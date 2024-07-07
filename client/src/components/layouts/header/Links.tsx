@@ -26,7 +26,7 @@ export const Links = () => {
     <>
       <HeaderMobileMenu pathname={pathname} />
       <div className="hidden sm:flex sm:justify-normal sm:items-center sm:gap-0">
-        <Link href="/" className="p-2 text-lg md:text-xl font-medium">
+        <Link href="/" className="py-2 text-lg md:text-xl font-medium">
           42Stats
         </Link>
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />

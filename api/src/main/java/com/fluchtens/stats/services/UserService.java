@@ -33,6 +33,14 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public long getUsersCount() {
+        return this.userRepository.count();
+    }
+
+    public Double getUsersAverageLevel() {
+        return this.userRepository.findAverageLevel();
+    }
+
     public Account getUserInfo(int id) {
         Optional<Account> user = this.accountRepository.findById(id);
         if (!user.isPresent()){
