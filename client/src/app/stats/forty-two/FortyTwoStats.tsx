@@ -1,11 +1,11 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCampusCount } from "@/services/campus.service";
 import { getUsersAverageLevel, getUsersCount } from "@/services/user.service";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../StatsCard";
-import { FortyTwoCampusesRankingTabs } from "./FortyTwoCampusesRankingTabs";
+import { AverageLevelsChart } from "./AverageLevelsChart";
+import { StudentsCountsChart } from "./StudentsCountsChart";
 
 export const FortyTwoStats = () => {
   const [campusesCount, setCampusesCount] = useState<number | null>(null);
@@ -34,18 +34,14 @@ export const FortyTwoStats = () => {
       <h1 className="text-2xl md:text-3xl font-bold">Statistics about 42</h1>
       <p className="text-sm md:text-lg font-light text-muted-foreground">These statistics concern data from api.intra.42.fr</p>
       <div className="mt-4 grid md:grid-cols-3 gap-2 md:gap-4">
-        <StatsCard title="Campuses" desc="Number of 42 campuses." value={campusesCount} />
-        <StatsCard title="Users" desc="Number of 42 users." value={usersCount} />
-        <StatsCard title="Average level" desc="Average level of 42 users." value={usersAverageLevel} />
+        <StatsCard title="Campuses" desc="Number of campuses." value={campusesCount} />
+        <StatsCard title="Students" desc="Number of students." value={usersCount} />
+        <StatsCard title="Average level" desc="Average level of students." value={usersAverageLevel} />
       </div>
-      <Card className="mt-2 md:mt-4">
-        <CardHeader className="pb-4">
-          <CardTitle>Campuses ranking</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FortyTwoCampusesRankingTabs />
-        </CardContent>
-      </Card>
+      <div className="mt-2 md:mt-4 grid gap-2 md:gap-4">
+        <StudentsCountsChart />
+        <AverageLevelsChart />
+      </div>
     </section>
   );
 };
