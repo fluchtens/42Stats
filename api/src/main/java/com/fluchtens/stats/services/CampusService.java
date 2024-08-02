@@ -42,6 +42,18 @@ public class CampusService {
         return campusOptional.get();
     }
 
+    public Campus getUserCampus(int id) {
+        Optional<User> user = this.userRepository.findById(id);
+        if (!user.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        Optional<Campus> campusOptional = this.campusRepository.findById(user.get().getCampus().getId());
+        if (!campusOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campus not found");
+        }
+        return campusOptional.get();
+    }
+
     public List<PoolDate> getCampusPools(int id) {
         Optional<Campus> campusOptional = this.campusRepository.findById(id);
         if (!campusOptional.isPresent()) {

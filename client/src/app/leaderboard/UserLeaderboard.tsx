@@ -1,8 +1,9 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 import { updateUrlParams } from "@/lib/updateUrlParams";
-import { getCampuses, getCampusPools } from "@/services/campus.service";
+import { getCampuses, getCampusPools, getUserCampus } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
@@ -17,6 +18,7 @@ import { UserPagination } from "./UserPagination";
 export const UserLeaderboard = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [users, setUsers] = useState<User[] | null>(null);
@@ -38,6 +40,31 @@ export const UserLeaderboard = () => {
   const [currentPage, setCurrentPage] = useState<number>(Number(searchParams.get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
+
+  const updateAuthUserCampus = async () => {
+    if (!user) return;
+
+    const userCampus = await getUserCampus(user.id);
+    if (userCampus) {
+      setCampusId(userCampus.id);
+    }
+  };
+
+  const updateCampuses = async () => {
+    const fetchedCampuses = await getCampuses();
+    if (fetchedCampuses && fetchedCampuses.length) {
+      setCampuses(fetchedCampuses);
+    }
+  };
+
+  const updateCampusPools = async () => {
+    if (!campusId) return;
+
+    const fetchedPools = await getCampusPools(campusId);
+    if (fetchedPools && fetchedPools.length) {
+      setAvailablePoolDates(fetchedPools);
+    }
+  };
 
   const updateCampusUsers = async () => {
     if (!campusId) return;
@@ -72,28 +99,22 @@ export const UserLeaderboard = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedCampuses = await getCampuses();
-      if (!fetchedCampuses) return console.error("Failed to fetch campuses");
-      setCampuses(fetchedCampuses);
-
-      if (campusId) {
-        const fetchedPools = await getCampusPools(campusId);
-        setAvailablePoolDates(fetchedPools);
-
-        if (poolDate) {
-          setSortBy(SortType.PoolDate);
-          await updatePoolUsers();
-        } else {
-          setSortBy(SortType.Campus);
-          await updateCampusUsers();
-        }
+    updateCampuses();
+    if (!campusId) {
+      updateAuthUserCampus();
+    }
+    if (campusId) {
+      updateCampusPools();
+      if (poolDate) {
+        setSortBy(SortType.PoolDate);
+        updatePoolUsers();
+      } else {
+        setSortBy(SortType.Campus);
+        updateCampusUsers();
       }
-    };
-
-    fetchData();
+    }
     setFirstLoad(false);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (firstLoad || !campusId) return;
