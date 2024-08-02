@@ -1,6 +1,6 @@
 "use server";
 
-import { UserLeaderboard } from "./UserLeaderboard";
+import { UserLeaderboard } from "./user-leaderboard";
 
 export default async function Leaderboard() {
   return (

@@ -11,14 +11,14 @@ import { SortType } from "@/types/sort.enum";
 import { User } from "@/types/user.interface";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CampusSelector } from "./CampusSelector";
+import { CampusSelector } from "./campus-selector";
 import { PoolDateSelector } from "./PoolDateSelector";
 import { UserPagination } from "./UserPagination";
 
 export const UserLeaderboard = () => {
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const { user } = useAuth();
   const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [users, setUsers] = useState<User[] | null>(null);
@@ -40,16 +40,12 @@ export const UserLeaderboard = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
 
-  const [error, setError] = useState<string | null>(null);
-
   const updateAuthUserCampus = async () => {
     if (!user) return;
 
     const userCampus = await getUserCampus(user.id);
     if (userCampus) {
       setCampusId(userCampus.id);
-    } else {
-      setError("Your campus data has not yet been retrieved, please try again later.");
     }
   };
 
@@ -142,7 +138,7 @@ export const UserLeaderboard = () => {
     updatePoolUsers();
     updateUrlParams(router, pathname, searchParams, { campus: campusId, page: 1, poolMonth: poolDate.month, poolYear: poolDate.year });
   }, [poolDate]);
-
+  ``;
   useEffect(() => {
     if (firstLoad || !campusId) return;
 
@@ -161,7 +157,7 @@ export const UserLeaderboard = () => {
   return (
     <div className="flex-col flex gap-12">
       <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
-        <CampusSelector campuses={campuses} setCampusId={setCampusId} />
+        <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
         <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
       </div>
       {!users || !users.length ? (
