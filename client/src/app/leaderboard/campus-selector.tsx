@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { SelectSeparator } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Campus } from "@/types/campus.interface";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
@@ -88,7 +87,6 @@ export const CampusSelector = ({ campuses, campusId, setCampusId }: CampusSelect
                       <CheckIcon className={cn("ml-auto h-4 w-4", value === campus.name ? "opacity-100" : "opacity-0")} />
                     </CommandItem>
                   ))}
-                  <SelectSeparator />
                 </CommandGroup>
               ))}
             </CommandList>
