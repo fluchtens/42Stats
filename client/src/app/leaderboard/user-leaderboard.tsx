@@ -1,5 +1,6 @@
 "use client";
 
+import { NotAuthAlert } from "@/components/not-auth-alert";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
@@ -158,53 +159,58 @@ export const UserLeaderboard = () => {
 
   return (
     <div className="flex-col flex gap-10">
-      <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
-        <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
-        <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
-      </div>
-      {(users === null || (users && users.length < 1)) && (
-        <Alert variant="destructive">
-          <ExclamationTriangleIcon className="h-4 w-4" />
-          <AlertTitle>No users found</AlertTitle>
-          <AlertDescription>
-            <p>No user was found with the specified parameters.</p>
-            <p>If data is currently being updated from API 42, please try again later.</p>
-          </AlertDescription>
-        </Alert>
-      )}
-      {users && users.length > 1 && (
+      {user === null && <NotAuthAlert />}
+      {user && (
         <>
-          <table className="w-full">
-            <thead>
-              <tr className="text-base font-semibold">
-                <th className="text-left">#</th>
-                <th className="text-left">User</th>
-                <th className="text-right">Level</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={index} className={`${index !== users.length - 1 ? "border-b border-opacity-5" : ""} text-base font-normal`}>
-                  <td className="py-4 text-left">{(currentPage - 1) * users.length + index + 1}</td>
-                  <td className="py-4 flex justify-start items-center gap-4 text-left">
-                    <Avatar className="w-16 h-16 rounded-full">
-                      <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
-                      {user.image && <AvatarImage src={user.image} className="object-cover pointer-events-none" />}
-                    </Avatar>
-                    <a
-                      href={`https://profile.intra.42.fr/users/${user.login}`}
-                      target="_blank"
-                      className="cursor-pointer hover:text-muted-foreground hover:underline"
-                    >
-                      {user.login}
-                    </a>
-                  </td>
-                  <td className="py-4 text-right">{user.level.toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {totalPages > 1 && <UserPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
+          <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
+            <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
+            <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
+          </div>
+          {(users === null || (users && users.length < 1)) && (
+            <Alert variant="destructive">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>No users found</AlertTitle>
+              <AlertDescription>
+                <p>No user was found with the specified parameters.</p>
+                <p>If data is currently being updated from API 42, please try again later.</p>
+              </AlertDescription>
+            </Alert>
+          )}
+          {users && users.length > 1 && (
+            <>
+              <table className="w-full">
+                <thead>
+                  <tr className="text-base font-semibold">
+                    <th className="text-left">#</th>
+                    <th className="text-left">User</th>
+                    <th className="text-right">Level</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user, index) => (
+                    <tr key={index} className={`${index !== users.length - 1 ? "border-b border-opacity-5" : ""} text-base font-normal`}>
+                      <td className="py-4 text-left">{(currentPage - 1) * users.length + index + 1}</td>
+                      <td className="py-4 flex justify-start items-center gap-4 text-left">
+                        <Avatar className="w-16 h-16 rounded-full">
+                          <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>
+                          {user.image && <AvatarImage src={user.image} className="object-cover pointer-events-none" />}
+                        </Avatar>
+                        <a
+                          href={`https://profile.intra.42.fr/users/${user.login}`}
+                          target="_blank"
+                          className="cursor-pointer hover:text-muted-foreground hover:underline"
+                        >
+                          {user.login}
+                        </a>
+                      </td>
+                      <td className="py-4 text-right">{user.level.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {totalPages > 1 && <UserPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
+            </>
+          )}
         </>
       )}
     </div>
