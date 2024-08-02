@@ -176,7 +176,7 @@ export const UserLeaderboard = () => {
               </AlertDescription>
             </Alert>
           )}
-          {users && users.length > 1 && (
+          {users && users.length > 0 && (
             <>
               <table className="w-full">
                 <thead>
