@@ -2,6 +2,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { User } from "./types/user.interface";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const getUserInfos = async (token: string): Promise<User | null> => {
   try {
     const response = await fetch(`http://42stats-api:8080/users/me`, {
@@ -28,12 +30,12 @@ export default async function middleware(request: NextRequest) {
   const token = request.cookies.get("SESSION");
 
   if (!token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(`${API_URL}/oauth2/authorization/42`, request.url));
   }
 
   const user = await getUserInfos(token.value);
   if (!user) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL(`${API_URL}/oauth2/authorization/42`, request.url));
   }
 
   return NextResponse.next();
