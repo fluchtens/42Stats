@@ -18,16 +18,11 @@ export const UserLeaderboard = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-
   const [users, setUsers] = useState<User[] | null>(null);
-
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(Number(searchParams.get("campus")) || null);
-
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
-
   let poolDateParams: PoolDate | null = null;
   const poolMonthParam = searchParams.get("poolMonth");
   const poolYearParam = searchParams.get("poolYear");

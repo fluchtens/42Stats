@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Campus } from "@/types/campus.interface";
 
 interface CampusSelectorProps {
@@ -11,18 +11,37 @@ export const CampusSelector = ({ campuses, setCampusId }: CampusSelectorProps) =
     setCampusId(Number(id));
   };
 
+  const groupCampusesByCountry = (campuses: Campus[]) => {
+    const groupedCampuses = campuses.reduce((groups, campus) => {
+      const { country } = campus;
+      if (!groups[country]) {
+        groups[country] = [];
+      }
+      groups[country].push(campus);
+      return groups;
+    }, {} as { [key: string]: Campus[] });
+    return groupedCampuses;
+  };
+
+  const groupedCampuses = campuses ? groupCampusesByCountry(campuses) : {};
+
   return (
     <Select onValueChange={handleSelect}>
       <SelectTrigger className="mt-1 w-60">
         <SelectValue placeholder="Campus" />
       </SelectTrigger>
       <SelectContent>
-        {campuses &&
-          campuses.map((campus, index) => (
-            <SelectItem key={index} value={campus.id.toString()}>
-              {campus.name} ({campus.country})
-            </SelectItem>
-          ))}
+        {Object.entries(groupedCampuses).map(([country, campuses]) => (
+          <SelectGroup key={country}>
+            <SelectLabel>{country}</SelectLabel>
+            {campuses.map((campus) => (
+              <SelectItem key={campus.id} value={campus.id.toString()}>
+                {campus.name}
+              </SelectItem>
+            ))}
+            <SelectSeparator />
+          </SelectGroup>
+        ))}
       </SelectContent>
     </Select>
   );
