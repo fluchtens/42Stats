@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { updateUrlParams } from "@/lib/updateUrlParams";
@@ -9,6 +10,7 @@ import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 import { SortType } from "@/types/sort.enum";
 import { User } from "@/types/user.interface";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CampusSelector } from "./campus-selector";
@@ -21,7 +23,7 @@ export const UserLeaderboard = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-  const [users, setUsers] = useState<User[] | null>(null);
+  const [users, setUsers] = useState<User[] | null | undefined>(undefined);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(Number(searchParams.get("campus")) || null);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
@@ -118,7 +120,7 @@ export const UserLeaderboard = () => {
   useEffect(() => {
     if (firstLoad || !campusId) return;
 
-    setUsers(null);
+    setUsers(undefined);
     setAvailablePoolDates(null);
     setPoolDate(null);
     setSortBy(SortType.Campus);
@@ -131,18 +133,18 @@ export const UserLeaderboard = () => {
   useEffect(() => {
     if (firstLoad || !campusId || !poolDate) return;
 
-    setUsers(null);
+    setUsers(undefined);
     setSortBy(SortType.PoolDate);
     setCurrentPage(1);
     setTotalPages(1);
     updatePoolUsers();
     updateUrlParams(router, pathname, searchParams, { campus: campusId, page: 1, poolMonth: poolDate.month, poolYear: poolDate.year });
   }, [poolDate]);
-  ``;
+
   useEffect(() => {
     if (firstLoad || !campusId) return;
 
-    setUsers(null);
+    setUsers(undefined);
     if (sortBy === SortType.Campus) {
       updateCampusUsers();
     } else if (sortBy === SortType.PoolDate) {
@@ -160,9 +162,17 @@ export const UserLeaderboard = () => {
         <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
         <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
       </div>
-      {!users || !users.length ? (
-        <p className="text-destructive text-center">No users found</p>
-      ) : (
+      {(users === null || (users && users.length < 1)) && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>No users found</AlertTitle>
+          <AlertDescription>
+            <p>No user was found with the specified parameters.</p>
+            <p>If data is currently being updated from API 42, please try again later.</p>
+          </AlertDescription>
+        </Alert>
+      )}
+      {users && users.length > 1 && (
         <>
           <table className="w-full">
             <thead>
