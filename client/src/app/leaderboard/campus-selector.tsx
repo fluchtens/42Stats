@@ -18,7 +18,7 @@ export const CampusSelector = ({ campuses, campusId, setCampusId }: CampusSelect
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
-  const groupCampusesByCountry = (campuses: Campus[]) => {
+  const sortDataByCategory = (campuses: Campus[]) => {
     const sortedCampuses = campuses.sort((a, b) => {
       if (a.country < b.country) return -1;
       if (a.country > b.country) return 1;
@@ -38,27 +38,19 @@ export const CampusSelector = ({ campuses, campusId, setCampusId }: CampusSelect
     return groupedCampuses;
   };
 
-  const groupedCampuses = campuses ? groupCampusesByCountry(campuses) : {};
-
-  const setInitalCampus = (): string => {
-    if (!campuses || !campusId) {
-      return "";
-    }
-    const campusName = campuses.find((campus) => {
-      if (campus.id === campusId) {
-        return campus.name;
-      }
-    });
-    return "";
-  };
+  const groupedCampuses = campuses ? sortDataByCategory(campuses) : {};
 
   useEffect(() => {
-    if (campuses && campusId) {
-      const campus = campuses.find((campus) => {
-        return campus.id === campusId;
-      });
-      if (campus) {
-        setValue(campus.name);
+    if (campuses) {
+      if (!campusId) {
+        setValue("");
+      } else {
+        const campus = campuses.find((campus) => {
+          return campus.id === campusId;
+        });
+        if (campus) {
+          setValue(campus.name);
+        }
       }
     }
   }, [campuses, campusId]);
@@ -90,7 +82,7 @@ export const CampusSelector = ({ campuses, campusId, setCampusId }: CampusSelect
                         setCampusId(campus.id);
                         setOpen(false);
                       }}
-                      className="py-1.5"
+                      className="py-1.5 text-muted-foreground"
                     >
                       {campus.name}
                       <CheckIcon className={cn("ml-auto h-4 w-4", value === campus.name ? "opacity-100" : "opacity-0")} />

@@ -12,7 +12,7 @@ import { User } from "@/types/user.interface";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CampusSelector } from "./campus-selector";
-import { PoolDateSelector } from "./PoolDateSelector";
+import { PoolDateSelector } from "./pool-date-selector";
 import { UserPagination } from "./UserPagination";
 
 export const UserLeaderboard = () => {
@@ -155,10 +155,10 @@ export const UserLeaderboard = () => {
   }, [currentPage]);
 
   return (
-    <div className="flex-col flex gap-12">
+    <div className="flex-col flex gap-10">
       <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
         <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
-        <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
+        <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
       </div>
       {!users || !users.length ? (
         <p className="text-destructive text-center">No users found</p>
