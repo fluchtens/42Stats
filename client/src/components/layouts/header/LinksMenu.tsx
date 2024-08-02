@@ -23,14 +23,14 @@ const NavLink = ({ label, link, pathname }: NavLinkProps) => (
   </SheetClose>
 );
 
-export const HeaderMobileMenu = ({ pathname }: { pathname: string }) => (
+export const LinksMenu = ({ pathname }: { pathname: string }) => (
   <Sheet>
     <SheetTrigger className="block sm:hidden" asChild>
       <Button variant="transparent" size="icon" className="cursor-pointer">
         <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
       </Button>
     </SheetTrigger>
-    <SheetContent side="left">
+    <SheetContent side="left" onOpenAutoFocus={(e) => e.preventDefault()}>
       <SheetClose asChild>
         <Link className="text-xl font-semibold text-left" href="/">
           <DialogTitle>42Stats</DialogTitle>

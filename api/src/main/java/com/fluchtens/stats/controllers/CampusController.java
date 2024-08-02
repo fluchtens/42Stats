@@ -33,6 +33,11 @@ public class CampusController {
         return this.campusService.getCampus(id);
     }
 
+    @GetMapping("/user/{id}")
+    public Campus getUserCampus(@PathVariable int id){
+        return this.campusService.getUserCampus(id);   
+    }
+
     @GetMapping("{id}/pools")
     public List<PoolDate> getCampusPools(@PathVariable int id) {
         return this.campusService.getCampusPools(id);

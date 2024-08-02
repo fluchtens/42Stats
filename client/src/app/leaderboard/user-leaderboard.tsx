@@ -1,33 +1,32 @@
 "use client";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 import { updateUrlParams } from "@/lib/updateUrlParams";
-import { getCampuses, getCampusPools } from "@/services/campus.service";
+import { getCampuses, getCampusPools, getUserCampus } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 import { SortType } from "@/types/sort.enum";
 import { User } from "@/types/user.interface";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CampusSelector } from "./CampusSelector";
-import { PoolDateSelector } from "./PoolDateSelector";
+import { CampusSelector } from "./campus-selector";
+import { PoolDateSelector } from "./pool-date-selector";
 import { UserPagination } from "./UserPagination";
 
 export const UserLeaderboard = () => {
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-
-  const [users, setUsers] = useState<User[] | null>(null);
-
+  const [users, setUsers] = useState<User[] | null | undefined>(undefined);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
   const [campusId, setCampusId] = useState<number | null>(Number(searchParams.get("campus")) || null);
-
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
-
   let poolDateParams: PoolDate | null = null;
   const poolMonthParam = searchParams.get("poolMonth");
   const poolYearParam = searchParams.get("poolYear");
@@ -38,11 +37,35 @@ export const UserLeaderboard = () => {
     };
   }
   const [poolDate, setPoolDate] = useState<PoolDate | null>(poolDateParams);
-
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [currentPage, setCurrentPage] = useState<number>(Number(searchParams.get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
+
+  const updateAuthUserCampus = async () => {
+    if (!user) return;
+
+    const userCampus = await getUserCampus(user.id);
+    if (userCampus) {
+      setCampusId(userCampus.id);
+    }
+  };
+
+  const updateCampuses = async () => {
+    const fetchedCampuses = await getCampuses();
+    if (fetchedCampuses && fetchedCampuses.length) {
+      setCampuses(fetchedCampuses);
+    }
+  };
+
+  const updateCampusPools = async () => {
+    if (!campusId) return;
+
+    const fetchedPools = await getCampusPools(campusId);
+    if (fetchedPools && fetchedPools.length) {
+      setAvailablePoolDates(fetchedPools);
+    }
+  };
 
   const updateCampusUsers = async () => {
     if (!campusId) return;
@@ -77,33 +100,27 @@ export const UserLeaderboard = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedCampuses = await getCampuses();
-      if (!fetchedCampuses) return console.error("Failed to fetch campuses");
-      setCampuses(fetchedCampuses);
-
-      if (campusId) {
-        const fetchedPools = await getCampusPools(campusId);
-        setAvailablePoolDates(fetchedPools);
-
-        if (poolDate) {
-          setSortBy(SortType.PoolDate);
-          await updatePoolUsers();
-        } else {
-          setSortBy(SortType.Campus);
-          await updateCampusUsers();
-        }
+    updateCampuses();
+    if (!campusId) {
+      updateAuthUserCampus();
+    }
+    if (campusId) {
+      updateCampusPools();
+      if (poolDate) {
+        setSortBy(SortType.PoolDate);
+        updatePoolUsers();
+      } else {
+        setSortBy(SortType.Campus);
+        updateCampusUsers();
       }
-    };
-
-    fetchData();
+    }
     setFirstLoad(false);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (firstLoad || !campusId) return;
 
-    setUsers(null);
+    setUsers(undefined);
     setAvailablePoolDates(null);
     setPoolDate(null);
     setSortBy(SortType.Campus);
@@ -116,7 +133,7 @@ export const UserLeaderboard = () => {
   useEffect(() => {
     if (firstLoad || !campusId || !poolDate) return;
 
-    setUsers(null);
+    setUsers(undefined);
     setSortBy(SortType.PoolDate);
     setCurrentPage(1);
     setTotalPages(1);
@@ -127,7 +144,7 @@ export const UserLeaderboard = () => {
   useEffect(() => {
     if (firstLoad || !campusId) return;
 
-    setUsers(null);
+    setUsers(undefined);
     if (sortBy === SortType.Campus) {
       updateCampusUsers();
     } else if (sortBy === SortType.PoolDate) {
@@ -140,12 +157,22 @@ export const UserLeaderboard = () => {
   }, [currentPage]);
 
   return (
-    <div className="flex-col flex gap-12">
+    <div className="flex-col flex gap-10">
       <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
-        <CampusSelector campuses={campuses} setCampusId={setCampusId} />
-        <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
+        <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
+        <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
       </div>
-      {users && (
+      {(users === null || (users && users.length < 1)) && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>No users found</AlertTitle>
+          <AlertDescription>
+            <p>No user was found with the specified parameters.</p>
+            <p>If data is currently being updated from API 42, please try again later.</p>
+          </AlertDescription>
+        </Alert>
+      )}
+      {users && users.length > 1 && (
         <>
           <table className="w-full">
             <thead>

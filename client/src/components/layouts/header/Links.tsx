@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HeaderMobileMenu } from "./HeaderMobileMenu";
+import { LinksMenu } from "./LinksMenu";
 
 interface NavLinkProps {
   label: string;
@@ -24,7 +24,7 @@ export const Links = () => {
 
   return (
     <>
-      <HeaderMobileMenu pathname={pathname} />
+      <LinksMenu pathname={pathname} />
       <div className="hidden sm:flex sm:justify-normal sm:items-center sm:gap-4">
         <Link href="/" className="py-2 text-lg md:text-xl font-medium">
           42Stats
