@@ -23,7 +23,7 @@ const NavLink = ({ label, link, pathname }: NavLinkProps) => (
   </SheetClose>
 );
 
-export const HeaderMobileMenu = ({ pathname }: { pathname: string }) => (
+export const LinksMenu = ({ pathname }: { pathname: string }) => (
   <Sheet>
     <SheetTrigger className="block sm:hidden" asChild>
       <Button variant="transparent" size="icon" className="cursor-pointer">
