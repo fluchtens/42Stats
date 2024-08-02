@@ -30,7 +30,7 @@ export const HeaderMobileMenu = ({ pathname }: { pathname: string }) => (
         <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
       </Button>
     </SheetTrigger>
-    <SheetContent side="left">
+    <SheetContent side="left" onOpenAutoFocus={(e) => e.preventDefault()}>
       <SheetClose asChild>
         <Link className="text-xl font-semibold text-left" href="/">
           <DialogTitle>42Stats</DialogTitle>
