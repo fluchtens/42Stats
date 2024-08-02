@@ -35,11 +35,12 @@ export const UserLeaderboard = () => {
     };
   }
   const [poolDate, setPoolDate] = useState<PoolDate | null>(poolDateParams);
-
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
   const [currentPage, setCurrentPage] = useState<number>(Number(searchParams.get("page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
+
+  const [error, setError] = useState<string | null>(null);
 
   const updateAuthUserCampus = async () => {
     if (!user) return;
@@ -47,6 +48,8 @@ export const UserLeaderboard = () => {
     const userCampus = await getUserCampus(user.id);
     if (userCampus) {
       setCampusId(userCampus.id);
+    } else {
+      setError("Your campus data has not yet been retrieved, please try again later.");
     }
   };
 
@@ -161,7 +164,9 @@ export const UserLeaderboard = () => {
         <CampusSelector campuses={campuses} setCampusId={setCampusId} />
         <PoolDateSelector dates={availablePoolDates} setPoolDate={setPoolDate} />
       </div>
-      {users && (
+      {!users || !users.length ? (
+        <p className="text-destructive text-center">No users found</p>
+      ) : (
         <>
           <table className="w-full">
             <thead>

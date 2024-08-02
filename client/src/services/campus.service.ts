@@ -68,7 +68,6 @@ async function getUserCampus(id: number): Promise<Campus | null> {
     });
 
     const data = await response.json();
-    console.log(data);
     if (!response.ok) {
       return null;
     }
