@@ -202,7 +202,7 @@ public class DataFetcher {
                     user.setPoolYear(userObj.getString("pool_year"));
                 }
                 user.setLevel(userJson.getDouble("level"));
-                if (!userJson.isNull("end_at")) {
+                if (!userJson.isNull("end_at") && userObj.getBoolean("alumni?") != true) {
                     String blackholedAtStr = userJson.getString("end_at");
                     ZonedDateTime blackholedAt = ZonedDateTime.parse(blackholedAtStr, DateTimeFormatter.ISO_ZONED_DATE_TIME);
                     if (blackholedAt.isBefore(ZonedDateTime.now())) {
