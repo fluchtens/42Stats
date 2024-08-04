@@ -8,4 +8,5 @@ export interface User {
   poolMonth: String;
   poolYear: String;
   level: number;
+  blackholed: boolean;
 }

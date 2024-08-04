@@ -35,6 +35,9 @@ public class User {
   @Column(nullable = false)
   private double level;
 
+  @Column(nullable = false)
+  private boolean blackholed;
+
   @ManyToOne()
   @JoinColumn(nullable = false)
   private Campus campus;
@@ -111,6 +114,14 @@ public class User {
 
   public void setLevel(double level) {
     this.level = level;
+  }
+
+  public boolean getBlackholed() {
+    return this.blackholed;
+  }
+
+  public void setBlackholed(boolean blackholed) {
+    this.blackholed = blackholed;
   }
 
   public Campus getCampus() {

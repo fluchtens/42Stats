@@ -14,6 +14,7 @@ import { User } from "@/types/user.interface";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { GiBlackHoleBolas } from "react-icons/gi";
 import { CampusSelector } from "./campus-selector";
 import { PoolDateSelector } from "./pool-date-selector";
 import { UserPagination } from "./UserPagination";
@@ -181,7 +182,7 @@ export const UserLeaderboard = () => {
               <table className="w-full">
                 <thead>
                   <tr className="text-base font-semibold">
-                    <th className="text-left">#</th>
+                    <th className="text-left w-1/12">#</th>
                     <th className="text-left">User</th>
                     <th className="text-right">Level</th>
                   </tr>
@@ -202,6 +203,7 @@ export const UserLeaderboard = () => {
                         >
                           {user.login}
                         </a>
+                        {user.blackholed && <GiBlackHoleBolas className="w-[1.5rem] h-[1.5rem] text-destructive" />}
                       </td>
                       <td className="py-4 text-right">{user.level.toFixed(2)}</td>
                     </tr>
