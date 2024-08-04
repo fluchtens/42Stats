@@ -181,6 +181,9 @@ public class DataFetcher {
             }
             for (int i = 0; i < usersJson.length(); i++) {
                 JSONObject userJson = usersJson.getJSONObject(i);
+                if (userJson.getJSONObject("user").getBoolean("staff?") == true) {
+                    continue;
+                }
                 User user = new User();
                 user.setId(userJson.getJSONObject("user").getInt("id"));
                 user.setEmail(userJson.getJSONObject("user").getString("email"));
@@ -198,7 +201,6 @@ public class DataFetcher {
                 }
                 user.setLevel(userJson.getDouble("level"));
                 user.setCampus(campus);
-
                 if (user.isValid()) {
                     userRepository.save(user);
                 }
