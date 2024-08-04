@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.json.JSONArray;
@@ -181,25 +182,33 @@ public class DataFetcher {
             }
             for (int i = 0; i < usersJson.length(); i++) {
                 JSONObject userJson = usersJson.getJSONObject(i);
-                if (userJson.getJSONObject("user").getBoolean("staff?") == true) {
+                JSONObject userObj = userJson.getJSONObject("user");
+                if (userObj.getBoolean("staff?") == true) {
                     continue;
                 }
                 User user = new User();
-                user.setId(userJson.getJSONObject("user").getInt("id"));
-                user.setEmail(userJson.getJSONObject("user").getString("email"));
-                user.setLogin(userJson.getJSONObject("user").getString("login"));
-                user.setFirstName(userJson.getJSONObject("user").getString("first_name"));
-                user.setLastName(userJson.getJSONObject("user").getString("last_name"));
-                if (!userJson.getJSONObject("user").getJSONObject("image").isNull("link")) {
-                    user.setImage(userJson.getJSONObject("user").getJSONObject("image").getString("link"));
+                user.setId(userObj.getInt("id"));
+                user.setEmail(userObj.getString("email"));
+                user.setLogin(userObj.getString("login"));
+                user.setFirstName(userObj.getString("first_name"));
+                user.setLastName(userObj.getString("last_name"));
+                if (!userObj.getJSONObject("image").isNull("link")) {
+                    user.setImage(userObj.getJSONObject("image").getString("link"));
                 }
-                if (!userJson.getJSONObject("user").isNull("pool_month")) {
-                    user.setPoolMonth(userJson.getJSONObject("user").getString("pool_month"));
+                if (!userObj.isNull("pool_month")) {
+                    user.setPoolMonth(userObj.getString("pool_month"));
                 }
-                if (!userJson.getJSONObject("user").isNull("pool_year")) {
-                    user.setPoolYear(userJson.getJSONObject("user").getString("pool_year"));
+                if (!userObj.isNull("pool_year")) {
+                    user.setPoolYear(userObj.getString("pool_year"));
                 }
                 user.setLevel(userJson.getDouble("level"));
+                if (!userJson.isNull("end_at")) {
+                    String blackholedAtStr = userJson.getString("end_at");
+                    ZonedDateTime blackholedAt = ZonedDateTime.parse(blackholedAtStr, DateTimeFormatter.ISO_ZONED_DATE_TIME);
+                    if (blackholedAt.isBefore(ZonedDateTime.now())) {
+                        user.setBlackholed(true);
+                    }
+                }
                 user.setCampus(campus);
                 if (user.isValid()) {
                     userRepository.save(user);
