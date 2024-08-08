@@ -13,14 +13,32 @@ import org.springframework.stereotype.Service;
 import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.repositories.AccountRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private HttpSession session;
+
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oauth2User = super.loadUser(userRequest);
+
+        String ipAddress = request.getRemoteAddr();
+        session.setAttribute("IP_ADDRESS", ipAddress);
+        System.out.println("IP_ADDRESS: " + session.getAttribute("IP_ADDRESS"));
+
+        String userAgent = request.getHeader("User-Agent");
+        session.setAttribute("USER_AGENT", userAgent);
+        System.out.println("USER_AGENT: " + session.getAttribute("USER_AGENT"));
 
         // Map<String, Object> attributes = oauth2User.getAttributes();
         // System.out.println("All attributes:");

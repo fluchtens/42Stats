@@ -38,8 +38,8 @@ spring:
 server:
   servlet:
     session:
-      timeout: 30d
+      timeout: 7d
       cookie:
-        max-age: 2592000
+        max-age: 604800
 
 client-url: ${CLIENT_URL}
