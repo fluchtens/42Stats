@@ -1,8 +1,9 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import Link from "next/link";
 import { LoginBtn } from "./LoginBtn";
 import { LogoutBtn } from "./LogoutBtn";
 
@@ -21,6 +22,9 @@ export const ProfileBtn = () => {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <Link href="/settings">Settings</Link>
+            </DropdownMenuItem>
             <LogoutBtn />
           </DropdownMenuContent>
         </DropdownMenu>
