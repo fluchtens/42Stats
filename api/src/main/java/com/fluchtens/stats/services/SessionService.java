@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.fluchtens.stats.JsonResponse;
+
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -41,5 +43,14 @@ public class SessionService {
             sessionsWithAttributes.add(sessionWithAttributes);
         }
         return sessionsWithAttributes;
+    }
+
+    public JsonResponse deleteSession(String primaryId) {
+        String deleteSessionQuery = "DELETE FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
+        int rowsAffected = jdbcTemplate.update(deleteSessionQuery, primaryId);
+        if (rowsAffected == 0) {
+            return new JsonResponse("Session not found");
+        }
+        return new JsonResponse("Device successfully disconnected");
     }
 }
