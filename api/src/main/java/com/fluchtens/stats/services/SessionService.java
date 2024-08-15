@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.JsonResponse;
 
@@ -46,10 +49,20 @@ public class SessionService {
     }
 
     public JsonResponse deleteSession(String primaryId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String sessionQuery = "SELECT PRINCIPAL_NAME FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
+        try {
+            String sessionPrincipalName = jdbcTemplate.queryForObject(sessionQuery, String.class, primaryId);
+            if (!userId.equals(sessionPrincipalName)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this session");
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found");
+        }
         String deleteSessionQuery = "DELETE FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
         int rowsAffected = jdbcTemplate.update(deleteSessionQuery, primaryId);
         if (rowsAffected == 0) {
-            return new JsonResponse("Session not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found");
         }
         return new JsonResponse("Device successfully disconnected");
     }
