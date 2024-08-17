@@ -23,4 +23,23 @@ async function getSessions(): Promise<Promise<Session[] | null>> {
   }
 }
 
-export { getSessions };
+async function deleteSession(id: string): Promise<Promise<String | null>> {
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+}
+
+export { deleteSession, getSessions };
