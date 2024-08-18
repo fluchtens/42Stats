@@ -24,6 +24,7 @@ export const DeviceTab = () => {
 
   const fetchData = async () => {
     const data = await getSessions();
+    console.log(data);
     if (data && data.length) {
       setSessions(data);
     } else {
@@ -54,12 +55,16 @@ export const DeviceTab = () => {
           <tbody>
             {sessions &&
               sessions.map((session, index) => (
-                <tr key={session.id} className={cn(index !== sessions.length - 1 && "border-b")}>
+                <tr key={session.session_id} className={cn(index !== sessions.length - 1 && "border-b")}>
                   <td className="py-5 text-left">{session.attributes.ip_address}</td>
                   <td className="py-5 text-right">
-                    <Button onClick={() => deleteDevice(session.id)} variant="destructive" size="sm">
-                      Log out
-                    </Button>
+                    {session.current ? (
+                      <span className="text-base text-muted-foreground">This device</span>
+                    ) : (
+                      <Button onClick={() => deleteDevice(session.primary_id)} variant="destructive">
+                        Log out
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}

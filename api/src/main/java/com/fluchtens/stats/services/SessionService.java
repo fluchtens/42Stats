@@ -25,28 +25,35 @@ public class SessionService {
     @Autowired
     private HttpSession httpSession;
 
-    public List<Map<String, Object>> getSessions() {
+    public List<Map<String, Object>> getSessions(String currentSessionId) {
         String principalName = SecurityContextHolder.getContext().getAuthentication().getName();
-        String sessionQuery = "SELECT PRIMARY_ID FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
-        List<String> primaryIds = jdbcTemplate.queryForList(sessionQuery, String.class, principalName);
+    
+        String sessionsQuery = "SELECT PRIMARY_ID, SESSION_ID FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
+        List<Map<String, Object>> sessions = jdbcTemplate.queryForList(sessionsQuery, principalName);
+        System.out.println(sessions);
+    
         List<Map<String, Object>> sessionsWithAttributes = new ArrayList<>();
-        for (String primaryId : primaryIds) {
+        for (Map<String, Object> session : sessions) {
+            String primaryId = (String) session.get("PRIMARY_ID");
+            String sessionId = (String) session.get("SESSION_ID");
+            boolean isCurrentSession = currentSessionId.equals(sessionId);
+    
             Map<String, Object> attributesMap = new HashMap<>();
             Object ipAddress = httpSession.getAttribute("IP_ADDRESS");
             if (ipAddress != null) {
                 attributesMap.put("ip_address", ipAddress);
             }
-            Object device = httpSession.getAttribute("DEVICE");
-            if (device != null) {
-                attributesMap.put("device", device);
-            }
+    
             Map<String, Object> sessionWithAttributes = new HashMap<>();
-            sessionWithAttributes.put("id", primaryId);
+            sessionWithAttributes.put("primary_id", primaryId);
+            sessionWithAttributes.put("session_id", sessionId);
             sessionWithAttributes.put("attributes", attributesMap);
+            sessionWithAttributes.put("current", isCurrentSession);
             sessionsWithAttributes.add(sessionWithAttributes);
-        }   
+        }
         return sessionsWithAttributes;
     }
+    
 
     public JsonResponse deleteSession(String primaryId, String sessionId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();

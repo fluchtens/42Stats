@@ -22,8 +22,8 @@ public class SessionController {
     private SessionService sessionService;
     
     @GetMapping()
-    public List<Map<String, Object>> getSessions() {
-        return this.sessionService.getSessions();
+    public List<Map<String, Object>> getSessions(HttpSession session) {
+        return this.sessionService.getSessions(session.getId());
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 export interface Session {
-  id: string;
+  primary_id: string;
+  session_id: string;
+  current: boolean;
   attributes: {
     ip_address: string;
   };
