@@ -14,7 +14,7 @@ export const SettingsTabs = () => {
       {user === null && <NotAuthAlert />}
       {user && (
         <Tabs defaultValue="account">
-          <TabsList className="w-full h-full grid sm:grid-cols-2">
+          <TabsList className="w-full h-full grid grid-cols-1 md:grid-cols-2">
             <TabsTrigger value="account">Account settings</TabsTrigger>
             <TabsTrigger value="device">Device management</TabsTrigger>
           </TabsList>

@@ -37,8 +37,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
-        String ipAddress = request.getRemoteAddr();
-        session.setAttribute("IP_ADDRESS", ipAddress);
+        String ip = request.getRemoteAddr();
+        session.setAttribute("IP", ip);
 
         String userAgentString = request.getHeader("User-Agent");
         UserAgent userAgent = userAgentAnalyzer.parse(userAgentString);

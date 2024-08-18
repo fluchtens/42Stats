@@ -1,5 +1,9 @@
 package com.fluchtens.stats.services;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,31 +32,46 @@ public class SessionService {
     public List<Map<String, Object>> getSessions(String currentSessionId) {
         String principalName = SecurityContextHolder.getContext().getAuthentication().getName();
     
-        String sessionsQuery = "SELECT PRIMARY_ID, SESSION_ID FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
+        String sessionsQuery = "SELECT PRIMARY_ID, SESSION_ID, CREATION_TIME, EXPIRY_TIME FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
         List<Map<String, Object>> sessions = jdbcTemplate.queryForList(sessionsQuery, principalName);
-    
         List<Map<String, Object>> sessionsWithAttributes = new ArrayList<>();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
+
         for (Map<String, Object> session : sessions) {
             String primaryId = (String) session.get("PRIMARY_ID");
             String sessionId = (String) session.get("SESSION_ID");
+
+            Long creationTimeMillis = (Long) session.get("CREATION_TIME");
+            LocalDateTime creationDateTime = Instant.ofEpochMilli(creationTimeMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String formattedCreationDate = creationDateTime.format(dateFormatter);
+
+            Long expiryTimeMillis = (Long) session.get("EXPIRY_TIME");
+            LocalDateTime expiryDateTime = Instant.ofEpochMilli(expiryTimeMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String formattedExpiryDate = expiryDateTime.format(dateFormatter);
+            
             boolean isCurrentSession = currentSessionId.equals(sessionId);
-    
+
             Map<String, Object> attributesMap = new HashMap<>();
-            Object ipAddress = httpSession.getAttribute("IP_ADDRESS");
-            if (ipAddress != null) {
-                attributesMap.put("ip_address", ipAddress);
-            }
+            Object ip = httpSession.getAttribute("IP");
+            Object browser = httpSession.getAttribute("BROWSER");
+            Object os = httpSession.getAttribute("OS");
+            Object device = httpSession.getAttribute("DEVICE");
+            attributesMap.put("ip", ip);
+            attributesMap.put("browser", browser);
+            attributesMap.put("os", os);
+            attributesMap.put("device", device);
     
             Map<String, Object> sessionWithAttributes = new HashMap<>();
             sessionWithAttributes.put("primary_id", primaryId);
             sessionWithAttributes.put("session_id", sessionId);
-            sessionWithAttributes.put("attributes", attributesMap);
+            sessionWithAttributes.put("creation_date", formattedCreationDate);
+            sessionWithAttributes.put("expiry_date", formattedExpiryDate);
             sessionWithAttributes.put("current", isCurrentSession);
+            sessionWithAttributes.put("attributes", attributesMap);
             sessionsWithAttributes.add(sessionWithAttributes);
         }
         return sessionsWithAttributes;
     }
-    
 
     public JsonResponse deleteSession(String primaryId, String sessionId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();

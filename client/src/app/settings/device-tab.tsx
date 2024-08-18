@@ -24,7 +24,6 @@ export const DeviceTab = () => {
 
   const fetchData = async () => {
     const data = await getSessions();
-    console.log(data);
     if (data && data.length) {
       setSessions(data);
     } else {
@@ -44,24 +43,35 @@ export const DeviceTab = () => {
       </div>
       <Separator className="my-4" />
       <div>
-        <p className="text-muted-foreground">You are currently logged in to your 42Stats account on these devices.</p>
-        <table className="w-full">
+        <p className="text-sm font-semibold text-muted-foreground">You are currently logged in to your 42Stats account on these devices.</p>
+        <table className="mt-1 w-full">
           <thead className="border-b">
             <tr>
-              <th className="py-3 text-left">IP Address</th>
-              <th className="py-3 text-right">Actions</th>
+              <th className="py-3 text-left">Device</th>
+              <th className="hidden sm:table-cell py-3 text-center">Creation date</th>
+              <th className="hidden sm:table-cell py-3 text-center">Expiry date</th>
+              <th className="py-3 text-center">IP address</th>
+              <th className="py-3 text-right">Action</th>
             </tr>
           </thead>
           <tbody>
             {sessions &&
               sessions.map((session, index) => (
-                <tr key={session.session_id} className={cn(index !== sessions.length - 1 && "border-b")}>
-                  <td className="py-5 text-left">{session.attributes.ip_address}</td>
-                  <td className="py-5 text-right">
+                <tr key={session.session_id} className={cn(index !== sessions.length - 1 && "border-b w-full")}>
+                  <td className="py-5 flex flex-col text-sm text-left">
+                    <span>{session.attributes.browser}</span>
+                    <span>{session.attributes.os}</span>
+                  </td>
+                  <td className="hidden sm:table-cell text-sm text-center">{session.creation_date}</td>
+                  <td className="hidden sm:table-cell text-sm text-center">{session.expiry_date}</td>
+                  <td className="py-5 text-sm text-center">{session.attributes.ip}</td>
+                  <td className="py-5 text-sm text-right">
                     {session.current ? (
-                      <span className="text-base text-muted-foreground">This device</span>
+                      <span className="text-sm font-medium text-muted-foreground">
+                        <i>This device</i>
+                      </span>
                     ) : (
-                      <Button onClick={() => deleteDevice(session.primary_id)} variant="destructive">
+                      <Button onClick={() => deleteDevice(session.primary_id)} variant="destructive" size="sm">
                         Log out
                       </Button>
                     )}
