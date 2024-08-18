@@ -4,25 +4,6 @@ import { User } from "@/types/user.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 
-const getUserInfos = async (): Promise<User | null> => {
-  try {
-    const response = await fetch(`${API_URL}/me`, {
-      method: "GET",
-      credentials: "include",
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
-
-    return data;
-  } catch (error: any) {
-    console.error(error);
-    return null;
-  }
-};
-
 const getUsers = async (): Promise<User[] | null> => {
   try {
     const response = await fetch(API_URL, {
@@ -137,4 +118,4 @@ async function getCampusPoolUsersCount(id: number, month: string, year: string):
   }
 }
 
-export { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers, getUserInfos, getUsers, getUsersAverageLevel, getUsersCount };
+export { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers, getUsers, getUsersAverageLevel, getUsersCount };
