@@ -43,7 +43,7 @@ export const DeviceTab = () => {
       </div>
       <Separator className="my-4" />
       <div>
-        <p className="text-sm font-semibold text-muted-foreground">You are currently logged in to your 42Stats account on these devices.</p>
+        <p className="text-sm font-medium text-muted-foreground">You are currently logged in to your 42Stats account on these devices.</p>
         <table className="mt-1 w-full">
           <thead className="border-b">
             <tr>
