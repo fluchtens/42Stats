@@ -13,20 +13,38 @@ import org.springframework.stereotype.Service;
 import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.repositories.AccountRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private HttpSession session;
+
+    private final UserAgentAnalyzer userAgentAnalyzer = UserAgentAnalyzer.newBuilder().build();
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
-        // Map<String, Object> attributes = oauth2User.getAttributes();
-        // System.out.println("All attributes:");
-        // for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-        //     System.out.println(entry.getKey() + " : " + entry.getValue());
-        // }
+        String ip = request.getRemoteAddr();
+        session.setAttribute("ip", ip);
+
+        String userAgentString = request.getHeader("User-Agent");
+        UserAgent userAgent = userAgentAnalyzer.parse(userAgentString);
+        session.setAttribute("browser", userAgent.getValue("AgentName"));
+        session.setAttribute("os", userAgent.getValue("OperatingSystemName"));
+        session.setAttribute("device", userAgent.getValue("DeviceName"));
 
         int id = oauth2User.getAttribute("id");
         String email = oauth2User.getAttribute("email");

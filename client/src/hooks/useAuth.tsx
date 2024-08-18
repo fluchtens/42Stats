@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserInfos } from "@/services/user.service";
+import { getAccount } from "@/services/account.service";
 import { User } from "@/types/user.interface";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
 
   const refreshUser = async () => {
-    const fetchedUser = await getUserInfos();
+    const fetchedUser = await getAccount();
     if (!fetchedUser) {
       setUser(null);
     } else {

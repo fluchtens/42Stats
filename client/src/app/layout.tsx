@@ -1,5 +1,6 @@
 import { Footer } from "@/components/layouts/footer/Footer";
 import { Header } from "@/components/layouts/header/Header";
+import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/lib/ThemeProvider";
 import { GeistSans } from "geist/font/sans";
@@ -26,6 +27,7 @@ export default function RootLayout({
             <Header />
             <Suspense>{children}</Suspense>
             <Footer />
+            <Toaster />
           </AuthProvider>
         </ThemeProvider>
       </body>

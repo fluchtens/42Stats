@@ -11,18 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.models.Campus;
 import com.fluchtens.stats.models.User;
-import com.fluchtens.stats.repositories.AccountRepository;
 import com.fluchtens.stats.repositories.CampusRepository;
 import com.fluchtens.stats.repositories.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired
-    private AccountRepository accountRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -39,14 +34,6 @@ public class UserService {
 
     public Double getUsersAverageLevel() {
         return this.userRepository.findAverageLevel();
-    }
-
-    public Account getUserInfo(int id) {
-        Optional<Account> user = this.accountRepository.findById(id);
-        if (!user.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user data found");
-        }
-        return user.get();
     }
 
     public List<User> getCampusUsers(int id, String poolMonth, String poolYear, Pageable pageable) {
