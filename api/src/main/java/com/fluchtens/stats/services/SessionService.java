@@ -44,23 +44,35 @@ public class SessionService {
             sessionWithAttributes.put("id", primaryId);
             sessionWithAttributes.put("attributes", attributesMap);
             sessionsWithAttributes.add(sessionWithAttributes);
-        }
+        }   
         return sessionsWithAttributes;
     }
 
-    public JsonResponse deleteSession(String primaryId) {
+    public JsonResponse deleteSession(String primaryId, String sessionId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         String sessionQuery = "SELECT PRINCIPAL_NAME FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
         try {
-            String sessionPrincipalName = jdbcTemplate.queryForObject(sessionQuery, String.class, primaryId);
+            String sessionPrincipalName = this.jdbcTemplate.queryForObject(sessionQuery, String.class, primaryId);
             if (!userId.equals(sessionPrincipalName)) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this session");
             }
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found");
         }
+
+        String sessionIdQuery = "SELECT SESSION_ID FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
+        try {
+            String targetSessionId = this.jdbcTemplate.queryForObject(sessionIdQuery, String.class, primaryId);
+            if (sessionId.equals(targetSessionId)) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You cannot delete your current session");
+            }
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found");
+        }
+
         String deleteSessionQuery = "DELETE FROM SPRING_SESSION WHERE PRIMARY_ID = ?";
-        int rowsAffected = jdbcTemplate.update(deleteSessionQuery, primaryId);
+        int rowsAffected = this.jdbcTemplate.update(deleteSessionQuery, primaryId);
         if (rowsAffected == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found");
         }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fluchtens.stats.JsonResponse;
 import com.fluchtens.stats.services.SessionService;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/sessions")
 public class SessionController {
@@ -25,7 +27,7 @@ public class SessionController {
     }
 
     @DeleteMapping("/{id}")
-    public JsonResponse deleteSession(@PathVariable String id) {
-        return this.sessionService.deleteSession(id);
+    public JsonResponse deleteSession(@PathVariable String id, HttpSession session) {
+        return this.sessionService.deleteSession(id, session.getId());
     }
 }

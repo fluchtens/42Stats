@@ -11,15 +11,13 @@ export const DeviceTab = () => {
 
   const deleteDevice = async (id: string) => {
     const data = await deleteSession(id);
-    console.log(data);
-    if (data) {
+    if (data.success) {
       await fetchData();
     }
   };
 
   const fetchData = async () => {
     const data = await getSessions();
-    console.log(data);
     if (data && data.length) {
       setSessions(data);
     } else {

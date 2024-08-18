@@ -1,5 +1,6 @@
 "use client";
 
+import { RequestResponse } from "@/types/request.interface";
 import { Session } from "@/types/session.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/sessions`;
@@ -23,7 +24,7 @@ async function getSessions(): Promise<Promise<Session[] | null>> {
   }
 }
 
-async function deleteSession(id: string): Promise<Promise<String | null>> {
+async function deleteSession(id: string): Promise<RequestResponse> {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
@@ -32,13 +33,13 @@ async function deleteSession(id: string): Promise<Promise<String | null>> {
 
     const data = await response.json();
     if (!response.ok) {
-      return null;
+      return { success: false, message: data.message };
     }
 
-    return data;
+    return { success: true, message: data.message };
   } catch (error: any) {
     console.error(error);
-    return null;
+    return { success: false, message: "An error occurred while trying to delete the session." };
   }
 }
 
