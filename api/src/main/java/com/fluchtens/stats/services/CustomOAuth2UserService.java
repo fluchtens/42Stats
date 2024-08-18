@@ -38,13 +38,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
         String ip = request.getRemoteAddr();
-        session.setAttribute("IP", ip);
+        session.setAttribute("ip", ip);
 
         String userAgentString = request.getHeader("User-Agent");
         UserAgent userAgent = userAgentAnalyzer.parse(userAgentString);
-        session.setAttribute("BROWSER", userAgent.getValue("AgentName"));
-        session.setAttribute("OS", userAgent.getValue("OperatingSystemName"));
-        session.setAttribute("DEVICE", userAgent.getValue("DeviceName"));
+        session.setAttribute("browser", userAgent.getValue("AgentName"));
+        session.setAttribute("os", userAgent.getValue("OperatingSystemName"));
+        session.setAttribute("device", userAgent.getValue("DeviceName"));
 
         int id = oauth2User.getAttribute("id");
         String email = oauth2User.getAttribute("email");

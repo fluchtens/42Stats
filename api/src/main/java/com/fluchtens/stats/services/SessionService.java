@@ -1,5 +1,8 @@
 package com.fluchtens.stats.services;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,19 +22,23 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.JsonResponse;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public class SessionService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private HttpSession httpSession;
+    private Object deserialize(byte[] bytes) {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bis)) {
+            return ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Erreur lors de la désérialisation de l'objet", e);
+        }
+    }
 
     public List<Map<String, Object>> getSessions(String currentSessionId) {
         String principalName = SecurityContextHolder.getContext().getAuthentication().getName();
-    
+
         String sessionsQuery = "SELECT PRIMARY_ID, SESSION_ID, CREATION_TIME, EXPIRY_TIME FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
         List<Map<String, Object>> sessions = jdbcTemplate.queryForList(sessionsQuery, principalName);
         List<Map<String, Object>> sessionsWithAttributes = new ArrayList<>();
@@ -48,19 +55,20 @@ public class SessionService {
             Long expiryTimeMillis = (Long) session.get("EXPIRY_TIME");
             LocalDateTime expiryDateTime = Instant.ofEpochMilli(expiryTimeMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
             String formattedExpiryDate = expiryDateTime.format(dateFormatter);
-            
+
             boolean isCurrentSession = currentSessionId.equals(sessionId);
 
+            String attributesQuery = "SELECT ATTRIBUTE_NAME, ATTRIBUTE_BYTES FROM SPRING_SESSION_ATTRIBUTES WHERE SESSION_PRIMARY_ID = ? AND ATTRIBUTE_NAME IN ('browser', 'device', 'ip', 'os')";
+            List<Map<String, Object>> attributesList = jdbcTemplate.queryForList(attributesQuery, primaryId);
             Map<String, Object> attributesMap = new HashMap<>();
-            Object ip = httpSession.getAttribute("IP");
-            Object browser = httpSession.getAttribute("BROWSER");
-            Object os = httpSession.getAttribute("OS");
-            Object device = httpSession.getAttribute("DEVICE");
-            attributesMap.put("ip", ip);
-            attributesMap.put("browser", browser);
-            attributesMap.put("os", os);
-            attributesMap.put("device", device);
-    
+
+            for (Map<String, Object> attribute : attributesList) {
+                String attributeName = (String) attribute.get("ATTRIBUTE_NAME");
+                byte[] attributeBytes = (byte[]) attribute.get("ATTRIBUTE_BYTES");
+                Object attributeValue = deserialize(attributeBytes);
+                attributesMap.put(attributeName, attributeValue);
+            }
+
             Map<String, Object> sessionWithAttributes = new HashMap<>();
             sessionWithAttributes.put("primary_id", primaryId);
             sessionWithAttributes.put("session_id", sessionId);

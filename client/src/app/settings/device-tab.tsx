@@ -61,6 +61,7 @@ export const DeviceTab = () => {
                   <td className="py-5 flex flex-col text-sm text-left">
                     <span>{session.attributes.browser}</span>
                     <span>{session.attributes.os}</span>
+                    <span>{session.attributes.device}</span>
                   </td>
                   <td className="hidden sm:table-cell text-sm text-center">{session.creation_date}</td>
                   <td className="hidden sm:table-cell text-sm text-center">{session.expiry_date}</td>
