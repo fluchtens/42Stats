@@ -18,12 +18,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { deleteAccount } from "@/services/account.service";
 
 export const AccountTab = () => {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { toast } = useToast();
 
   const closeAccount = async () => {
     const data = await deleteAccount();
     if (data.success) {
+      await refreshUser();
       toast({
         title: data.message,
         description: "Your account is deleted from our database",
