@@ -15,9 +15,13 @@ import com.fluchtens.stats.repositories.AccountRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+
     @Autowired
     private AccountRepository accountRepository;
 
@@ -27,6 +31,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private HttpSession session;
 
+    private final UserAgentAnalyzer userAgentAnalyzer = UserAgentAnalyzer.newBuilder().build();
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
@@ -34,17 +39,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String ipAddress = request.getRemoteAddr();
         session.setAttribute("IP_ADDRESS", ipAddress);
-        System.out.println("IP_ADDRESS: " + session.getAttribute("IP_ADDRESS"));
 
-        String userAgent = request.getHeader("User-Agent");
-        session.setAttribute("USER_AGENT", userAgent);
-        System.out.println("USER_AGENT: " + session.getAttribute("USER_AGENT"));
-
-        // Map<String, Object> attributes = oauth2User.getAttributes();
-        // System.out.println("All attributes:");
-        // for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-        //     System.out.println(entry.getKey() + " : " + entry.getValue());
-        // }
+        String userAgentString = request.getHeader("User-Agent");
+        UserAgent userAgent = userAgentAnalyzer.parse(userAgentString);
+        session.setAttribute("BROWSER", userAgent.getValue("AgentName"));
+        session.setAttribute("OS", userAgent.getValue("OperatingSystemName"));
+        session.setAttribute("DEVICE", userAgent.getValue("DeviceName"));
 
         int id = oauth2User.getAttribute("id");
         String email = oauth2User.getAttribute("email");
