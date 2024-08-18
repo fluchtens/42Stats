@@ -30,7 +30,6 @@ public class SessionService {
     
         String sessionsQuery = "SELECT PRIMARY_ID, SESSION_ID FROM SPRING_SESSION WHERE PRINCIPAL_NAME = ?";
         List<Map<String, Object>> sessions = jdbcTemplate.queryForList(sessionsQuery, principalName);
-        System.out.println(sessions);
     
         List<Map<String, Object>> sessionsWithAttributes = new ArrayList<>();
         for (Map<String, Object> session : sessions) {
