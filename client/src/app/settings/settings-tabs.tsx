@@ -3,17 +3,25 @@
 import { NotAuthAlert } from "@/components/not-auth-alert";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AccountTab } from "./account-tab";
 import { DeviceTab } from "./device-tab";
 
 export const SettingsTabs = () => {
   const { user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "account";
+
+  const handleTabChange = (value: string) => {
+    router.push(`?tab=${value}`);
+  };
 
   return (
     <div>
       {user === null && <NotAuthAlert />}
       {user && (
-        <Tabs defaultValue="account">
+        <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
           <TabsList className="w-full h-full grid grid-cols-1 md:grid-cols-2">
             <TabsTrigger value="account">Account settings</TabsTrigger>
             <TabsTrigger value="device">Device management</TabsTrigger>
