@@ -38,6 +38,14 @@ public class SecurityConfig {
 			.oauth2Login((oauth2) -> oauth2
 				.loginPage("/oauth2/authorization/42")
 				.defaultSuccessUrl(clientUrl, true)
+				.failureHandler((request, response, exception) -> {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    JSONObject jsonResponse = new JSONObject();
+                    jsonResponse.put("message", exception.getMessage());
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(jsonResponse.toString());
+				})
 			)
 			.logout((logout) -> logout
 				.logoutSuccessHandler((request, response, authentication) -> {
