@@ -50,7 +50,7 @@ export const DeviceTab = () => {
               <th className="py-3 text-left">Device</th>
               <th className="hidden sm:table-cell py-3 text-center">Creation date</th>
               <th className="hidden sm:table-cell py-3 text-center">Expiry date</th>
-              <th className="py-3 text-center">IP address</th>
+              {/* <th className="py-3 text-center">IP address</th> */}
               <th className="py-3 text-right">Action</th>
             </tr>
           </thead>
@@ -65,7 +65,7 @@ export const DeviceTab = () => {
                   </td>
                   <td className="hidden sm:table-cell text-sm text-center">{session.creation_date}</td>
                   <td className="hidden sm:table-cell text-sm text-center">{session.expiry_date}</td>
-                  <td className="py-5 text-sm text-center">{session.attributes.ip}</td>
+                  {/* <td className="py-5 text-sm text-center">{session.attributes.ip}</td> */}
                   <td className="py-5 text-sm text-right">
                     {session.current ? (
                       <span className="text-sm font-medium text-muted-foreground">
