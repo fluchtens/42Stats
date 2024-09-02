@@ -1,10 +1,11 @@
-package com.fluchtens.stats;
+package com.fluchtens.stats.utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -42,7 +43,9 @@ public class DataFetcher {
 
     private String fetchAccessToken() {
         try {
-            URL url = new URL("https://api.intra.42.fr/oauth/token");
+            // URL url = new URL("https://api.intra.42.fr/oauth/token");
+            URI uri = new URI("https://api.intra.42.fr/oauth/token");
+            URL url = uri.toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -82,7 +85,8 @@ public class DataFetcher {
     private JSONArray fetchCampusesPage(int page) {
         try {
             String apiUrl = String.format("https://api.intra.42.fr/v2/campus?page=%d&?page[size]=100", page);
-            URL url = new URL(apiUrl);
+            URI uri = new URI(apiUrl);
+            URL url = uri.toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -111,7 +115,8 @@ public class DataFetcher {
     private JSONArray fetchCampusUsersPage(int campusId, int page) {
         try {
             String apiUrl = String.format(this.apiUrl + "/cursus_users?filter[cursus_id]=21&filter[campus_id]=%s&page[number]=%d&page[size]=100", campusId, page);
-            URL url = new URL(apiUrl);
+            URI uri = new URI(apiUrl);
+            URL url = uri.toURL();
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Content-Type", "application/json");
