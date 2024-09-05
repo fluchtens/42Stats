@@ -58,6 +58,25 @@ public class DataFetcher {
         this.accessToken = accessToken;
     }
 
+    private void print(String message, boolean error) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now();
+        String formattedTime = time.format(formatter);
+
+        String CYAN = "\033[1;36m";
+        String RED = "\033[0;31m";
+        String GREEN = "\033[0;32m";
+        String RESET = "\033[0m";
+        String WHITE = "\u001B[37m";
+
+        String TEXT = GREEN;
+        if (error) {
+            TEXT = RED;
+        }
+
+        System.out.println(CYAN + "[DataFetcher]" + WHITE + " [" + formattedTime + "] " + TEXT + message + RESET);
+    }
+
     private String fetchAccessToken() {
         try {
             URI uri = new URI("https://api.intra.42.fr/oauth/token");
@@ -92,24 +111,21 @@ public class DataFetcher {
             JSONObject jsonResponse = new JSONObject(strResponse);
             return jsonResponse.getString("access_token");
         } catch (Exception e) {
-            System.err.println("[fetchAccessToken] catched exception" + e.getMessage());
+            this.print("fetchAccessToken() catched exception" + e.getMessage(), true);
             return null;
         }
     }
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
     public void fetchData() throws IOException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime startTime = LocalDateTime.now();
-        String formattedStartTime = startTime.format(formatter);
-        System.out.println("[" + formattedStartTime + "] Start of 42 api fetching...");
+        this.print("Start scrapping data from api.intra.42.fr", false);
 
         this.accessToken = this.fetchAccessToken();
         this.campusDataFetcher.setAccessToken(this.accessToken);
         this.userDataFetcher.setAccessToken(this.accessToken);
         this.projectDataFetcher.setAccessToken(this.accessToken);
         if (this.accessToken.isEmpty()) {
-            System.err.println("Failed to fetch access token.");
+            this.print("Failed to fetch access token.", true);
             return;
         }
 
@@ -120,8 +136,6 @@ public class DataFetcher {
         this.campusDataFetcher.fetchAllCampuses();
         this.projectDataFetcher.fetchAllProjects();
 
-        LocalDateTime endTime = LocalDateTime.now();
-        String formattedEndTime = endTime.format(formatter);
-        System.out.println("[" + formattedEndTime + "] End of 42 api fetching.");
+        this.print("End of data scrapping from api.intra.42.fr", false);
     }
 }

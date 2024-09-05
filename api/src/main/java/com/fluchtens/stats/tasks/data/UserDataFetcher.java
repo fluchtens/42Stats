@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,6 +23,25 @@ public class UserDataFetcher extends DataFetcher {
     @Autowired
     private UserRepository userRepository;
 
+    private void print(String message, boolean error) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now();
+        String formattedTime = time.format(formatter);
+
+        String CYAN = "\033[1;36m";
+        String RED = "\033[0;31m";
+        String GREEN = "\033[0;32m";
+        String RESET = "\033[0m";
+        String WHITE = "\u001B[37m";
+
+        String TEXT = GREEN;
+        if (error) {
+            TEXT = RED;
+        }
+
+        System.out.println(CYAN + "[UserDataFetcher]" + WHITE + " [" + formattedTime + "] " + TEXT + message + RESET);
+    }
+
     private JSONArray fetchCampusUsersPage(int campusId, int page) {
         try {
             String apiUrl = String.format(this.apiUrl + "/cursus_users?filter[cursus_id]=21&filter[campus_id]=%s&page[number]=%d&page[size]=100", campusId, page);
@@ -34,7 +54,7 @@ public class UserDataFetcher extends DataFetcher {
             connection.setRequestProperty("Authorization", "Bearer " + this.accessToken);
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                System.err.println("[fetchCampusUsersPage] An error occurred while retrieving data, retry in 15 seconds...");
+                this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
                 return this.fetchCampusUsersPage(campusId, page);
             }
@@ -48,7 +68,7 @@ public class UserDataFetcher extends DataFetcher {
             bf.close();
             return new JSONArray(response.toString());
         } catch (Exception e) {
-            System.err.println("[fetchCampusUsersPage] catched exception" + e.getMessage());
+            this.print("fetchCampusUsersPage() catched exception" + e.getMessage(), true);
             return new JSONArray();
         }
     }

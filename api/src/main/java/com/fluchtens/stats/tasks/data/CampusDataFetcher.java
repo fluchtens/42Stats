@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,6 +28,25 @@ public class CampusDataFetcher extends DataFetcher {
     @Autowired
     private UserDataFetcher userDataFetcher;
 
+    private void print(String message, boolean error) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now();
+        String formattedTime = time.format(formatter);
+
+        String CYAN = "\033[1;36m";
+        String RED = "\033[0;31m";
+        String GREEN = "\033[0;32m";
+        String RESET = "\033[0m";
+        String WHITE = "\u001B[37m";
+
+        String TEXT = GREEN;
+        if (error) {
+            TEXT = RED;
+        }
+
+        System.out.println(CYAN + "[CampusDataFetcher]" + WHITE + " [" + formattedTime + "] " + TEXT + message + RESET);
+    }
+
     private JSONArray fetchCampusesPage(int page) {
         try {
             String apiUrl = String.format(this.apiUrl + "/campus?page=%d&?page[size]=100", page);
@@ -38,10 +59,7 @@ public class CampusDataFetcher extends DataFetcher {
             connection.setRequestProperty("Authorization", "Bearer " + this.accessToken);
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                System.err.println("[fetchCampusesPage] An error occurred while retrieving data, retry in 15 seconds...");
-                System.err.println("[fetchCampusesPage] Response code: " + connection.getResponseCode());
-                System.err.println("[fetchCampusesPage] Response message: " + connection.getResponseMessage());
-                System.err.println("[fetchCampusesPage] access token " + this.accessToken);
+                this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
                 return this.fetchCampusesPage(page);
             }
@@ -55,7 +73,7 @@ public class CampusDataFetcher extends DataFetcher {
             bf.close();
             return new JSONArray(response.toString());
         } catch (Exception e) {
-            System.err.println("[fetchCampusesPage] catched exception" + e.getMessage());
+            this.print("fetchCampusesPage() catched exception" + e.getMessage(), true);
             return new JSONArray();
         }
     }

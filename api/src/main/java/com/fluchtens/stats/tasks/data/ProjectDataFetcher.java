@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +21,25 @@ public class ProjectDataFetcher extends DataFetcher {
     @Autowired
     private ProjectRepository projectRepository;
 
+    private void print(String message, boolean error) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime time = LocalDateTime.now();
+        String formattedTime = time.format(formatter);
+
+        String CYAN = "\033[1;36m";
+        String RED = "\033[0;31m";
+        String GREEN = "\033[0;32m";
+        String RESET = "\033[0m";
+        String WHITE = "\u001B[37m";
+
+        String TEXT = GREEN;
+        if (error) {
+            TEXT = RED;
+        }
+
+        System.out.println(CYAN + "[ProjectDataFetcher]" + WHITE + " [" + formattedTime + "] " + TEXT + message + RESET);
+    }
+
     private JSONArray fetchProjectsPage(int page) {
         try {
             String apiUrl = String.format(this.apiUrl + "/projects?page[number]=%d&page[size]=100&cursus_id=21&sort=id", page);
@@ -31,7 +52,7 @@ public class ProjectDataFetcher extends DataFetcher {
             connection.setRequestProperty("Authorization", "Bearer " + this.accessToken);
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                System.err.println("[fetchProjectsPage] An error occurred while retrieving data, retry in 15 seconds...");
+                this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
                 return this.fetchProjectsPage(page);
             }
@@ -45,7 +66,7 @@ public class ProjectDataFetcher extends DataFetcher {
             bf.close();
             return new JSONArray(response.toString());
         } catch (Exception e) {
-            System.err.println("[fetchProjectsPage] catched exception" + e.getMessage());
+            this.print("fetchProjectsPage() catched exception" + e.getMessage(), true);
             return new JSONArray();
         }
     }
