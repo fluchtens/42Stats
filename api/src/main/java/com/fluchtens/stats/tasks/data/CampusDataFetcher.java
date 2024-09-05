@@ -39,6 +39,9 @@ public class CampusDataFetcher extends DataFetcher {
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 System.err.println("[fetchCampusesPage] An error occurred while retrieving data, retry in 15 seconds...");
+                System.err.println("[fetchCampusesPage] Response code: " + connection.getResponseCode());
+                System.err.println("[fetchCampusesPage] Response message: " + connection.getResponseMessage());
+                System.err.println("[fetchCampusesPage] access token " + this.accessToken);
                 Thread.sleep(15 * 1000);
                 return this.fetchCampusesPage(page);
             }

@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.fluchtens.stats.models.Project;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, Integer> {}
+public interface ProjectRepository extends JpaRepository<Project, Integer> {
+    boolean existsBySlug(String slug);
+    boolean existsByName(String name);
+}

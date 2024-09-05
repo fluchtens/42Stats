@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.fluchtens.stats.repositories.CampusRepository;
+import com.fluchtens.stats.repositories.ProjectRepository;
 import com.fluchtens.stats.repositories.UserRepository;
 
 @Component
@@ -28,6 +29,9 @@ public class DataFetcher {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
     protected String apiUrl = "https://api.intra.42.fr/v2";
     protected String accessToken;
@@ -44,7 +48,15 @@ public class DataFetcher {
 
     @Autowired
     @Lazy
+    private UserDataFetcher userDataFetcher;
+
+    @Autowired
+    @Lazy
     private ProjectDataFetcher projectDataFetcher;
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
     private String fetchAccessToken() {
         try {
@@ -93,13 +105,18 @@ public class DataFetcher {
         System.out.println("[" + formattedStartTime + "] Start of 42 api fetching...");
 
         this.accessToken = this.fetchAccessToken();
+        this.campusDataFetcher.setAccessToken(this.accessToken);
+        this.userDataFetcher.setAccessToken(this.accessToken);
+        this.projectDataFetcher.setAccessToken(this.accessToken);
         if (this.accessToken.isEmpty()) {
             System.err.println("Failed to fetch access token.");
             return;
         }
 
-        userRepository.deleteAll();
-        campusRepository.deleteAll();
+        this.userRepository.deleteAll();
+        this.campusRepository.deleteAll();
+        this.projectRepository.deleteAll();
+
         this.campusDataFetcher.fetchAllCampuses();
         this.projectDataFetcher.fetchAllProjects();
 

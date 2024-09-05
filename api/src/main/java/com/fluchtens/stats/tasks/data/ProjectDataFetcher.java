@@ -62,16 +62,33 @@ public class ProjectDataFetcher extends DataFetcher {
             for (int i = 0; i < projectsJson.length(); i++) {
                 JSONObject projectJson = projectsJson.getJSONObject(i);
 
-                int id = projectJson.getInt("id");
-                String name = projectJson.getString("name");
-                String slug = projectJson.getString("slug");
-                int difficulty = projectJson.getInt("difficulty");
+                int id = -1;
+                String name = null;
+                String slug = null;
+                int difficulty = -1;
+
+                if (!projectJson.isNull("id")) 
+                    id = projectJson.getInt("id");
+                if (!projectJson.isNull("name")) 
+                    name = projectJson.getString("name");
+                if (!projectJson.isNull("slug")) 
+                    slug = projectJson.getString("slug");
+                if (!projectJson.isNull("difficulty")) 
+                    difficulty = projectJson.getInt("difficulty");
 
                 if (id <= 0 || name == null || slug == null || difficulty <= 0) {
                     continue;
                 }
 
                 if (this.projectRepository.existsById(id)) {
+                    continue;
+                }
+
+                if (this.projectRepository.existsBySlug(slug)) {
+                    continue;
+                }
+
+                if (this.projectRepository.existsByName(name)) {
                     continue;
                 }
 
