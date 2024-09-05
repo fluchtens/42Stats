@@ -42,6 +42,10 @@ public class DataFetcher {
     @Lazy
     private CampusDataFetcher campusDataFetcher;
 
+    @Autowired
+    @Lazy
+    private ProjectDataFetcher projectDataFetcher;
+
     private String fetchAccessToken() {
         try {
             URI uri = new URI("https://api.intra.42.fr/oauth/token");
@@ -97,6 +101,7 @@ public class DataFetcher {
         userRepository.deleteAll();
         campusRepository.deleteAll();
         this.campusDataFetcher.fetchAllCampuses();
+        this.projectDataFetcher.fetchAllProjects();
 
         LocalDateTime endTime = LocalDateTime.now();
         String formattedEndTime = endTime.format(formatter);
