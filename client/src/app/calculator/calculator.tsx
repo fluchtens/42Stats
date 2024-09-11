@@ -24,11 +24,21 @@ export const Calculator = () => {
   const { user } = useAuth();
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLevel(Number(e.target.value));
+    const value = e.target.value;
+    if (!value) {
+      setLevel(NaN);
+    } else {
+      setLevel(Number(value));
+    }
   };
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGrade(Number(e.target.value));
+    const value = e.target.value;
+    if (!value) {
+      setGrade(NaN);
+    } else {
+      setGrade(Number(value));
+    }
   };
 
   const handleCoalitionBonusChange = (cheked: boolean) => {
@@ -110,7 +120,7 @@ export const Calculator = () => {
                         min="0"
                         max="50"
                         placeholder="Your current level"
-                        value={level}
+                        value={isNaN(level) ? "" : level}
                         onChange={handleLevelChange}
                       />
                     </div>
@@ -126,7 +136,7 @@ export const Calculator = () => {
                         min="1"
                         max="125"
                         placeholder="Your project grade"
-                        value={grade}
+                        value={isNaN(grade) ? "" : grade}
                         onChange={handleGradeChange}
                       />
                     </div>
