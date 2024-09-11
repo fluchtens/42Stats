@@ -119,6 +119,9 @@ public class DataFetcher {
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    this.accessToken = this.fetchAccessToken();
+                }
                 return this.fetchCampusesPage(page);
             }
 
@@ -185,6 +188,9 @@ public class DataFetcher {
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    this.accessToken = this.fetchAccessToken();
+                }
                 return this.fetchCampusUsersPage(campusId, page);
             }
 
@@ -266,6 +272,9 @@ public class DataFetcher {
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 this.print(connection.getResponseCode() + " " + connection.getResponseMessage() + ", retry in 15 seconds...", true);
                 Thread.sleep(15 * 1000);
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    this.accessToken = this.fetchAccessToken();
+                }
                 return this.fetchProjectsPage(page);
             }
 
@@ -341,8 +350,8 @@ public class DataFetcher {
         this.campusRepository.deleteAll();
         this.projectRepository.deleteAll();
 
-        this.fetchAllCampuses();
         this.fetchAllProjects();
+        this.fetchAllCampuses();
 
         this.print("End of data scrapping from api.intra.42.fr", false);
     }
