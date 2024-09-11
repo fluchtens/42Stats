@@ -37,6 +37,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oauth2User = super.loadUser(userRequest);
 
+        // Map<String, Object> attributes = oauth2User.getAttributes();
+        // System.out.println("Attributs OAuth2User : ");
+        // for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+        //     System.out.println(entry.getKey() + ": " + entry.getValue());
+        // }
+
         String ip = request.getRemoteAddr();
         session.setAttribute("ip", ip);
 
