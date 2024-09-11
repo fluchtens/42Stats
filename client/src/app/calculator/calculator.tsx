@@ -3,6 +3,7 @@
 import { NotAuthAlert } from "@/components/not-auth-alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
@@ -17,7 +18,9 @@ export const Calculator = () => {
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [grade, setGrade] = useState<number>(100);
+  const [bonus, setBonus] = useState<boolean>(false);
   const [newLevel, setNewLevel] = useState<number>(0);
+  const [progression, setProgression] = useState<number>(0);
   const { user } = useAuth();
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +29,19 @@ export const Calculator = () => {
 
   const handleGradeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGrade(Number(e.target.value));
+  };
+
+  const handleCoalitionBonusChange = (cheked: boolean) => {
+    setBonus(cheked);
+  };
+
+  const resetCalculator = () => {
+    setLevel(0);
+    setSelectedProject(null);
+    setGrade(100);
+    setBonus(false);
+    setNewLevel(0);
+    setProgression(0);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,22 +58,24 @@ export const Calculator = () => {
     const currentLevel = level;
     const projectXp = selectedProject.difficulty;
     const projectGrade = grade;
+    const coalitionBonus = bonus ? 1.042 : 1;
 
     const currentLevelFloor = Math.floor(currentLevel);
     const xpRequiredAtCurrentLevel = xpRequired[currentLevelFloor];
     const xpRequiredToNextLevel = xpRequired[currentLevelFloor + 1] - xpRequiredAtCurrentLevel;
     const newXp = xpRequiredAtCurrentLevel + (currentLevel - currentLevelFloor) * xpRequiredToNextLevel;
-    const earnedXp = (projectGrade * projectXp) / 100;
+    const earnedXp = ((projectGrade * projectXp) / 100) * coalitionBonus;
     const nextXp = newXp + earnedXp;
 
-    let newLevel = 0;
+    let newLevel: number = 0;
     while (xpRequired[newLevel + 1] < nextXp) {
       newLevel++;
     }
     const diff = (nextXp - xpRequired[newLevel]) / (xpRequired[newLevel + 1] - xpRequired[newLevel]);
     newLevel += diff;
 
-    setNewLevel(Number(newLevel.toFixed(2)));
+    setNewLevel(newLevel);
+    setProgression(newLevel - level);
   };
 
   const fetchProjects = async () => {
@@ -83,21 +101,47 @@ export const Calculator = () => {
               <form onSubmit={handleFormSubmit}>
                 <CardContent className="pt-6">
                   <div className="grid items-center gap-4">
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="level">Level</Label>
-                      <Input id="level" type="number" step="0.01" placeholder="Your current level" value={level} onChange={handleLevelChange} />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="level-calculator">Level</Label>
+                      <Input
+                        id="level-calculator"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="50"
+                        placeholder="Your current level"
+                        value={level}
+                        onChange={handleLevelChange}
+                      />
                     </div>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="project">Project</Label>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="projects">Project</Label>
                       <ProjectSelector projects={projects} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />
                     </div>
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="grade">Grade</Label>
-                      <Input id="grade" type="number" placeholder="Your project grade" value={grade} onChange={handleGradeChange} />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="grade-calculator">Grade</Label>
+                      <Input
+                        id="grade-calculator"
+                        type="number"
+                        min="1"
+                        max="125"
+                        placeholder="Your project grade"
+                        value={grade}
+                        onChange={handleGradeChange}
+                      />
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Checkbox id="coalition-calculator" checked={bonus} onCheckedChange={handleCoalitionBonusChange} />
+                      <Label htmlFor="coalition-calculator" className="text-sm font-medium">
+                        Coalition bonus (+4.2%)
+                      </Label>
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex justify-end">
+                <CardFooter className="flex justify-end gap-1.5">
+                  <Button type="button" variant="ghost" onClick={resetCalculator}>
+                    Reset
+                  </Button>
                   <Button type="submit">Calculate</Button>
                 </CardFooter>
               </form>
@@ -107,8 +151,8 @@ export const Calculator = () => {
                 <FaCalculator className="w-20 h-20" />
                 <div className="flex-col flex items-center">
                   <span className="text-base font-medium text-muted-foreground">Level</span>
-                  <span className="text-2xl font-bold">{newLevel}</span>
-                  <span className="text-base font-medium text-green-600">+{(newLevel - level).toFixed(2)}</span>
+                  <span className="text-2xl font-bold">{newLevel.toFixed(2)}</span>
+                  <span className="text-base font-medium text-green-600">+{progression.toFixed(2)}</span>
                 </div>
               </CardContent>
             </Card>

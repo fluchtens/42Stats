@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { Project } from "@/types/project.interface";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ProjectSelectorProps {
   projects: Project[] | null;
@@ -15,6 +15,12 @@ interface ProjectSelectorProps {
 export const ProjectSelector = ({ projects, selectedProject, setSelectedProject }: ProjectSelectorProps) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    if (!selectedProject) {
+      setValue("");
+    }
+  }, [selectedProject]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
