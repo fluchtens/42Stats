@@ -1,4 +1,4 @@
-package com.fluchtens.stats.utils;
+package com.fluchtens.stats.tasks;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

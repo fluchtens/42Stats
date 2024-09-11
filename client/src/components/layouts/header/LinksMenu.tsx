@@ -38,6 +38,7 @@ export const LinksMenu = ({ pathname }: { pathname: string }) => (
         </Link>
       </SheetClose>
       <div className="mt-1 flex-col flex justify-start items-start gap-0">
+        <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
       </div>

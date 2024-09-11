@@ -29,6 +29,7 @@ export const Links = () => {
         <Link href="/" className="py-2 text-lg md:text-xl font-medium">
           42Stats
         </Link>
+        <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
       </div>
