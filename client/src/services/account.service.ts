@@ -1,5 +1,6 @@
 "use client";
 
+import { MonthlyRegistration } from "@/types/monthly-registration";
 import { RequestResponse } from "@/types/request.interface";
 import { User } from "@/types/user.interface";
 
@@ -81,4 +82,23 @@ async function getActiveAccountsCount(): Promise<Promise<number | null>> {
   }
 }
 
-export { deleteAccount, getAccount, getAccountsCount, getActiveAccountsCount };
+async function getMonthlyRegistrations(): Promise<Promise<MonthlyRegistration[] | null>> {
+  try {
+    const response = await fetch(`${API_URL}/monthly-registrations`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+}
+
+export { deleteAccount, getAccount, getAccountsCount, getActiveAccountsCount, getMonthlyRegistrations };

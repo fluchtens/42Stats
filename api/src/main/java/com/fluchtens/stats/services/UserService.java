@@ -33,6 +33,10 @@ public class UserService {
     }
 
     public Double getUsersAverageLevel() {
+        List<User> users = this.userRepository.findAll();
+        if (users.isEmpty()) {
+            return 0.0;
+        }
         return this.userRepository.findAverageLevel();
     }
 

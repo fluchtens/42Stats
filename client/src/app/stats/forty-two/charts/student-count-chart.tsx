@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
-  averageLevel: {
-    label: "Level",
+  studentCount: {
+    label: "Students",
     color: "hsl(var(--chart))",
   },
 } satisfies ChartConfig;
 
-export function AverageLevelsChart() {
+export function StudentCountChart() {
   const [campuses, setCampuses] = useState<Campus[]>([]);
 
   const fetchCampuses = async () => {
@@ -21,7 +21,7 @@ export function AverageLevelsChart() {
     if (!fetchedCampuses || fetchedCampuses.length === 0) {
       return;
     }
-    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.averageLevel - a.averageLevel);
+    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.studentCount - a.studentCount);
     const newCampuses = sortedCampuses.map((campus, index) => ({ ...campus, displayName: `${index + 1}. ${campus.name}` }));
     setCampuses(newCampuses);
   };
@@ -32,12 +32,12 @@ export function AverageLevelsChart() {
 
   return (
     <>
-      {campuses.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Campuses average levels</CardTitle>
-            <CardDescription>Ranking of campuses by average level.</CardDescription>
-          </CardHeader>
+      <Card>
+        <CardHeader>
+          <CardTitle>Campuses students counters</CardTitle>
+          <CardDescription>Ranking of campuses by number of students.</CardDescription>
+        </CardHeader>
+        {campuses.length > 0 && (
           <CardContent>
             <ChartContainer config={chartConfig} className={`aspect-auto`} style={{ height: `${campuses.length + 15}rem` }}>
               <BarChart
@@ -49,18 +49,18 @@ export function AverageLevelsChart() {
                 barCategoryGap={2}
               >
                 <CartesianGrid horizontal={false} />
-                <XAxis type="number" dataKey="averageLevel" hide />
+                <XAxis type="number" dataKey="studentCount" hide />
                 <YAxis type="category" dataKey="name" tickLine={false} tickMargin={0} axisLine={false} hide />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                <Bar dataKey="averageLevel" fill="var(--color-averageLevel)" radius={4}>
+                <Bar dataKey="studentCount" fill="var(--color-studentCount)" radius={4}>
                   <LabelList dataKey="displayName" position="insideLeft" offset={-120} fontSize={12} width={200} className="fill-muted-foreground" />
-                  <LabelList dataKey="averageLevel" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
+                  <LabelList dataKey="studentCount" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
                 </Bar>
               </BarChart>
             </ChartContainer>
           </CardContent>
-        </Card>
-      )}
+        )}
+      </Card>
     </>
   );
 }

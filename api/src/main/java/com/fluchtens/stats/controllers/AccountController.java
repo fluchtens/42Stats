@@ -1,5 +1,7 @@
 package com.fluchtens.stats.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fluchtens.stats.JsonResponse;
 import com.fluchtens.stats.models.Account;
+import com.fluchtens.stats.models.MonthlyRegistration;
 import com.fluchtens.stats.services.AccountService;
 
 @RestController
@@ -37,5 +40,10 @@ public class AccountController {
     @GetMapping("/active/count")
     public long getActiveAccountsCount() {
         return this.accountService.getActiveAccountsCount();
+    }
+
+    @GetMapping("/monthly-registrations")
+    public List<MonthlyRegistration> getMonthlyRegistrations() {
+        return this.accountService.getMonthlyRegistrations();
     }
 }
