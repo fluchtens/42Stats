@@ -1,5 +1,5 @@
 import { Footer } from "@/components/layouts/footer/Footer";
-import { Header } from "@/components/layouts/header/Header";
+import { Header } from "@/components/layouts/header/header";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/lib/ThemeProvider";
