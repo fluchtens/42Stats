@@ -5,8 +5,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { AccountTab } from "./account-tab";
-import { DeviceTab } from "./device-tab";
+import { AccountTab } from "./tabs/account-tab";
+import { DeviceTab } from "./tabs/device-tab";
 
 export const SettingsTabs = () => {
   const { user } = useAuth();
