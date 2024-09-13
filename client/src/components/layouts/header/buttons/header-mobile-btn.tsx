@@ -6,26 +6,22 @@ import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
-interface NavLinkProps {
-  label: string;
-  link: string;
-  pathname: string;
-}
-
-const NavLink = ({ label, link, pathname }: NavLinkProps) => (
+const NavLink = ({ label, link, pathname }: { label: string; link: string; pathname: string }) => (
   <SheetClose asChild>
     <Link
       href={link}
-      className={`${pathname === link ? "text-foregound" : "text-foreground/60"} p-1 text-lg font-light hover:text-foreground/80 transition-colors`}
+      className={`${
+        pathname === link ? "text-foregound" : "text-foreground/60"
+      } py-1.5 text-base font-light hover:text-foreground/80 transition-colors`}
     >
       {label}
     </Link>
   </SheetClose>
 );
 
-export const LinksMenu = ({ pathname }: { pathname: string }) => (
+export const HeaderMobileBtn = ({ pathname }: { pathname: string }) => (
   <Sheet>
-    <SheetTrigger className="block sm:hidden" asChild>
+    <SheetTrigger className="flex items-center sm:hidden" asChild>
       <Button variant="transparent" size="icon" className="cursor-pointer">
         <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
       </Button>
@@ -34,10 +30,10 @@ export const LinksMenu = ({ pathname }: { pathname: string }) => (
       <SheetClose asChild>
         <Link className="text-xl font-semibold text-left" href="/">
           <DialogTitle>42Stats</DialogTitle>
-          <DialogDescription className="text-sm font-light text-muted-foreground">Statistics for 42 students</DialogDescription>
+          <DialogDescription className="text-base font-light text-muted-foreground">Statistics for 42 students</DialogDescription>
         </Link>
       </SheetClose>
-      <div className="mt-1 flex-col flex justify-start items-start gap-0">
+      <div className="mt-2 flex-col flex justify-start items-start gap-0">
         <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
