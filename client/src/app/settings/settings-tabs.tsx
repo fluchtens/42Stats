@@ -4,8 +4,9 @@ import { NotAuthAlert } from "@/components/not-auth-alert";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AccountTab } from "./account-tab";
-import { DeviceTab } from "./device-tab";
+import { useEffect } from "react";
+import { AccountTab } from "./tabs/account-tab";
+import { DeviceTab } from "./tabs/device-tab";
 
 export const SettingsTabs = () => {
   const { user } = useAuth();
@@ -16,6 +17,12 @@ export const SettingsTabs = () => {
   const handleTabChange = (value: string) => {
     router.push(`?tab=${value}`);
   };
+
+  useEffect(() => {
+    if (!searchParams.get("tab")) {
+      router.push(`?tab=${currentTab}`);
+    }
+  }, []);
 
   return (
     <div>
