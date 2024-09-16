@@ -17,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.JsonResponse;
 import com.fluchtens.stats.models.Account;
-import com.fluchtens.stats.models.MonthlyRegistration;
+import com.fluchtens.stats.models.Registration;
 import com.fluchtens.stats.repositories.AccountRepository;
 
 @Service
@@ -58,21 +58,19 @@ public class AccountService {
         return this.accountRepository.countActive(startOfMonth, endOfMonth);
     }
 
-    public List<MonthlyRegistration> getMonthlyRegistrations() {
-        LocalDateTime twelveMonthsAgo = LocalDateTime.now().minusMonths(12).withDayOfMonth(1).toLocalDate().atStartOfDay();
-        List<Object[]> results = accountRepository.findMonthlyRegistrations(twelveMonthsAgo);
+    public List<Registration> getMonthlyRegistrations() {
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(12).withDayOfMonth(1).toLocalDate().atStartOfDay();
+        List<Object[]> results = accountRepository.findMonthlyRegistrations(startDate);
 
-        List<MonthlyRegistration> monthlyRegistrations = new ArrayList<>();
+        List<Registration> monthlyRegistrations = new ArrayList<>();
         for (Object[] result : results) {
             int year = (int) result[0];
             int month = (int) result[1];
             long count = (long) result[2];
-
             Month monthEnum = Month.of(month);
             String monthName = monthEnum.getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
             String monthYear = monthName + " " + year;
-
-            MonthlyRegistration registration = new MonthlyRegistration(monthYear, count);
+            Registration registration = new Registration(monthYear, count);
             monthlyRegistrations.add(registration);
         }
         return monthlyRegistrations;
