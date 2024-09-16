@@ -5,44 +5,42 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { getMonthlyRegistrations } from "@/services/account.service";
-import { MonthlyRegistration } from "@/types/monthly-registration";
+import { Registration } from "@/types/registration.interface";
 import { useEffect, useState } from "react";
 
-export const description = "A line chart with dots";
-
 const chartConfig = {
-  registration: {
+  count: {
     label: "Registrations",
     color: "hsl(var(--chart))",
   },
 } satisfies ChartConfig;
 
 export const MonthlyRegistrationsChart = () => {
-  const [monthlyRegistrations, setMonthlyRegistrations] = useState<MonthlyRegistration[]>([]);
+  const [chartData, setChartData] = useState<Registration[]>([]);
 
-  const fetchMonthlyRegistrations = async () => {
+  const fetchData = async () => {
     const data = await getMonthlyRegistrations();
     if (data) {
-      setMonthlyRegistrations(data);
+      setChartData(data);
     }
   };
 
   useEffect(() => {
-    fetchMonthlyRegistrations();
+    fetchData();
   }, []);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Monthly user registrations</CardTitle>
-        <CardDescription>Overview of user registrations over the last 12 months.</CardDescription>
+        <CardDescription>Overview of user registrations over the last 6 months.</CardDescription>
       </CardHeader>
-      {monthlyRegistrations && monthlyRegistrations.length >= 0 && (
+      {chartData && chartData.length >= 0 && (
         <CardContent>
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={monthlyRegistrations}
+              data={chartData}
               margin={{
                 left: 15,
                 right: 15,
@@ -52,7 +50,7 @@ export const MonthlyRegistrationsChart = () => {
               <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
               <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
               <Line
-                dataKey="registration"
+                dataKey="count"
                 type="natural"
                 stroke="hsl(var(--chart))"
                 strokeWidth={2}
