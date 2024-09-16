@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
 import { CampusSelector } from "./selectors/campus-selector";
 import { PoolDateSelector } from "./selectors/pool-date-selector";
-import { UserPagination } from "./UserPagination";
+import { UserPagination } from "./user-pagination";
 
 export const UserLeaderboard = () => {
   const { user } = useAuth();
