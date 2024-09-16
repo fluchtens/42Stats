@@ -21,12 +21,29 @@ public class Account {
     private String image;
 
     @Column(nullable = false)
+    private double level;
+
+    @Column(nullable = false)
+    private int campusId;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     public Account() {}
+
+    public Account(int id, String email, String login, String image, double level, int campusId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.email = email;
+        this.login = login;
+        this.image = image;
+        this.level = level;
+        this.campusId = campusId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     public int getId() {
         return this.id;
@@ -56,6 +73,22 @@ public class Account {
         return this.image;
     }
 
+    public double getLevel() {
+        return this.level;
+    }
+
+    public void setLevel(double level) {
+        this.level = level;
+    }
+
+    public int getCampusId() {
+        return this.campusId;
+    }
+
+    public void setCampusId(int campusId) {
+        this.campusId = campusId;
+    }
+
     public void setImage(String image) {
         this.image = image;
     }
@@ -81,7 +114,15 @@ public class Account {
             return false;
         if (this.email == null || this.email.isEmpty())
             return false;
-        else if (this.login == null || this.login.isEmpty())
+        if (this.login == null || this.login.isEmpty())
+            return false;
+        if (this.level < 0)
+            return false;
+        if (this.campusId <= 0)
+            return false;
+        if (this.createdAt == null)
+            return false;
+        if (this.updatedAt == null)
             return false;
         return true;
     }
