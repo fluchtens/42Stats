@@ -1,11 +1,11 @@
 "use client";
 
 import { getAccount } from "@/services/account.service";
-import { User } from "@/types/user.interface";
+import { Account } from "@/types/account.interface";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface AuthContextProps {
-  user: User | null | undefined;
+  user: Account | null | undefined;
   refreshUser: () => void;
 }
 
@@ -19,7 +19,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [user, setUser] = useState<Account | null | undefined>(undefined);
 
   const refreshUser = async () => {
     const fetchedUser = await getAccount();

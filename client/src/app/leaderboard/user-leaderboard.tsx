@@ -5,7 +5,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { updateUrlParams } from "@/lib/updateUrlParams";
-import { getCampuses, getCampusPools, getUserCampus } from "@/services/campus.service";
+import { getCampuses, getCampusPools } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
@@ -15,8 +15,8 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
-import { CampusSelector } from "./campus-selector";
-import { PoolDateSelector } from "./pool-date-selector";
+import { CampusSelector } from "./selectors/campus-selector";
+import { PoolDateSelector } from "./selectors/pool-date-selector";
 import { UserPagination } from "./UserPagination";
 
 export const UserLeaderboard = () => {
@@ -44,19 +44,10 @@ export const UserLeaderboard = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
 
-  const updateAuthUserCampus = async () => {
-    if (!user) return;
-
-    const userCampus = await getUserCampus(user.id);
-    if (userCampus) {
-      setCampusId(userCampus.id);
-    }
-  };
-
   const updateCampuses = async () => {
-    const fetchedCampuses = await getCampuses();
-    if (fetchedCampuses && fetchedCampuses.length) {
-      setCampuses(fetchedCampuses);
+    const data = await getCampuses();
+    if (data && data.length) {
+      setCampuses(data);
     }
   };
 
@@ -102,11 +93,12 @@ export const UserLeaderboard = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
+
     updateCampuses();
     if (!campusId) {
-      updateAuthUserCampus();
-    }
-    if (campusId) {
+      setCampusId(user.campusId);
+    } else {
       updateCampusPools();
       if (poolDate) {
         setSortBy(SortType.PoolDate);

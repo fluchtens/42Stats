@@ -1,7 +1,7 @@
 import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/campus`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/campuses`;
 
 async function getCampuses(): Promise<Campus[] | null> {
   try {
@@ -60,25 +60,6 @@ async function getCampus(id: number): Promise<Campus | null> {
   }
 }
 
-async function getUserCampus(id: number): Promise<Campus | null> {
-  try {
-    const response = await fetch(`${API_URL}/user/${id}`, {
-      method: "GET",
-      credentials: "include",
-    });
-
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
-
-    return data;
-  } catch (error: any) {
-    console.error(error);
-    return null;
-  }
-}
-
 async function getCampusPools(id: number): Promise<PoolDate[] | null> {
   try {
     const response = await fetch(`${API_URL}/${id}/pools`, {
@@ -98,4 +79,4 @@ async function getCampusPools(id: number): Promise<PoolDate[] | null> {
   }
 }
 
-export { getCampus, getCampusCount, getCampuses, getCampusPools, getUserCampus };
+export { getCampus, getCampusCount, getCampuses, getCampusPools };

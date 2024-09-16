@@ -1,12 +1,12 @@
 "use client";
 
+import { Account } from "@/types/account.interface";
 import { Registration } from "@/types/registration.interface";
 import { RequestResponse } from "@/types/request.interface";
-import { User } from "@/types/user.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/accounts`;
 
-const getAccount = async (): Promise<User | null> => {
+const getAccount = async (): Promise<Account | null> => {
   try {
     const response = await fetch(API_URL, {
       method: "GET",
