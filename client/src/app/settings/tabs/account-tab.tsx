@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { deleteAccount } from "@/services/account.service";
+import { deleteAccount } from "../services/account.service";
 
 export const AccountTab = () => {
   const { user, refreshUser } = useAuth();
@@ -52,12 +52,20 @@ export const AccountTab = () => {
                 <span className="text-base font-normal">{user.id}</span>
               </div>
               <div className="flex flex-col">
+                <span className="text-base font-semibold">Email</span>
+                <span className="text-base font-normal">{user.email}</span>
+              </div>
+              <div className="flex flex-col">
                 <span className="text-base font-semibold">Username</span>
                 <span className="text-base font-normal">{user.login}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-base font-semibold">Email</span>
-                <span className="text-base font-normal">{user.email}</span>
+                <span className="text-base font-semibold">Level</span>
+                <span className="text-base font-normal">{user.level}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base font-semibold">Campus ID</span>
+                <span className="text-base font-normal">{user.campusId}</span>
               </div>
             </div>
             <Avatar className="w-48 h-48 rounded-full">

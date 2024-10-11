@@ -3,9 +3,9 @@ import { Separator } from "@/components/ui/separator";
 import { TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { deleteSession, getSessions } from "@/services/session.service";
 import { Session } from "@/types/session.interface";
 import { useEffect, useState } from "react";
+import { deleteSession, getSessions } from "../services/device.service.ts";
 
 export const DeviceTab = () => {
   const [sessions, setSessions] = useState<Session[] | null>(null);

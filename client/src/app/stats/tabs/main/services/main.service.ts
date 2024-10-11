@@ -1,11 +1,10 @@
-import { Campus } from "@/types/campus.interface";
-import { PoolDate } from "@/types/date.interface";
+import { Registration } from "@/types/registration.interface";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/campuses`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/accounts`;
 
-async function getCampuses(): Promise<Campus[] | null> {
+async function getAccountsCount(): Promise<Promise<number | null>> {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/count`, {
       method: "GET",
       credentials: "include",
     });
@@ -22,9 +21,9 @@ async function getCampuses(): Promise<Campus[] | null> {
   }
 }
 
-async function getCampus(id: number): Promise<Campus | null> {
+async function getActiveAccountsCount(): Promise<Promise<number | null>> {
   try {
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/active/count`, {
       method: "GET",
       credentials: "include",
     });
@@ -41,9 +40,9 @@ async function getCampus(id: number): Promise<Campus | null> {
   }
 }
 
-async function getCampusPools(id: number): Promise<PoolDate[] | null> {
+async function getMonthlyRegistrations(): Promise<Promise<Registration[] | null>> {
   try {
-    const response = await fetch(`${API_URL}/${id}/pools`, {
+    const response = await fetch(`${API_URL}/registrations`, {
       method: "GET",
       credentials: "include",
     });
@@ -60,4 +59,4 @@ async function getCampusPools(id: number): Promise<PoolDate[] | null> {
   }
 }
 
-export { getCampus, getCampuses, getCampusPools };
+export { getAccountsCount, getActiveAccountsCount, getMonthlyRegistrations };
