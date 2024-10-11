@@ -1,16 +1,16 @@
-package com.fluchtens.stats.rncp;
+package com.fluchtens.stats.rncp.rncp6.web;
 
 import java.util.List;
 
 import com.fluchtens.stats.models.Project;
 
-public class MobileRncp {
+public class MobilePoolProjects {
     private List<Project> projects;
     private List<Project> mobile;
 
-    public MobileRncp() {}
+    public MobilePoolProjects() {}
 
-    public MobileRncp(List<Project> projects, List<Project> mobile) {
+    public MobilePoolProjects(List<Project> projects, List<Project> mobile) {
         this.projects = projects;
         this.mobile = mobile;
     }

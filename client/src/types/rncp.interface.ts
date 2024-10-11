@@ -1,23 +1,42 @@
 import { Project } from "./project.interface";
 
-interface WebRncp {
+interface WebProjects {
   projects: Project[];
   symfony: Project[];
   django: Project[];
   ror: Project[];
 }
 
-interface MobileRncp {
+interface MobileProjects {
   projects: Project[];
   mobile: Project[];
 }
 
-interface SuiteRncp {
+interface SuiteProjects {
   projects: Project[];
+}
+
+interface WebRncp {
+  suite: SuiteProjects;
+  web: WebProjects;
+  mobile: MobileProjects;
+}
+
+interface OopProjects {
+  projects: Project[];
+  symfony: Project[];
+  django: Project[];
+  ror: Project[];
+  mobile: Project[];
+  object: Project[];
+}
+
+interface SoftwareRncp {
+  suite: SuiteProjects;
+  oop: OopProjects;
 }
 
 export interface Rncp {
   web: WebRncp;
-  mobile: MobileRncp;
-  suite: SuiteRncp;
+  software: SoftwareRncp;
 }

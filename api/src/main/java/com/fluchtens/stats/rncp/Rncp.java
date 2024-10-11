@@ -1,16 +1,17 @@
 package com.fluchtens.stats.rncp;
 
+import com.fluchtens.stats.rncp.rncp6.software.SoftwareRncp;
+import com.fluchtens.stats.rncp.rncp6.web.WebRncp;
+
 public class Rncp {
     private WebRncp web;
-    private MobileRncp mobile;
-    private SuiteRncp suite;
+    private SoftwareRncp software;
 
     public Rncp() {}
 
-    public Rncp(WebRncp web, MobileRncp mobile, SuiteRncp suite) {
+    public Rncp(WebRncp web, SoftwareRncp software) {
         this.web = web;
-        this.mobile = mobile;
-        this.suite = suite;
+        this.software = software;
     }
 
     public WebRncp getWeb() {
@@ -21,19 +22,11 @@ public class Rncp {
         this.web = web;
     }
 
-    public MobileRncp getMobile() {
-        return mobile;
+    public SoftwareRncp getSoftware() {
+        return software;
     }
 
-    public void setMobile(MobileRncp mobile) {
-        this.mobile = mobile;
-    }
-
-    public SuiteRncp getSuite() {
-        return suite;
-    }
-
-    public void setSuite(SuiteRncp suite) {
-        this.suite = suite;
+    public void setSoftware(SoftwareRncp software) {
+        this.software = software;
     }
 }

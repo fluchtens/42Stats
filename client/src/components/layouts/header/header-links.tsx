@@ -26,6 +26,7 @@ export const HeaderLinks = () => {
         <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
+        <NavLink label="Rncp" link="/rncp" pathname={pathname} />
       </div>
     </>
   );

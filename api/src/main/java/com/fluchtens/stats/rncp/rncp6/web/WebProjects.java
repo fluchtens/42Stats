@@ -1,18 +1,18 @@
-package com.fluchtens.stats.rncp;
+package com.fluchtens.stats.rncp.rncp6.web;
 
 import java.util.List;
 
 import com.fluchtens.stats.models.Project;
 
-public class WebRncp {
+public class WebProjects {
     private List<Project> projects;
     private List<Project> symfony;
     private List<Project> django;
     private List<Project> ror; 
 
-    public WebRncp() {}
+    public WebProjects() {}
 
-    public WebRncp(List<Project> projects, List<Project> symfony, List<Project> django, List<Project> ror) {
+    public WebProjects(List<Project> projects, List<Project> symfony, List<Project> django, List<Project> ror) {
         this.projects = projects;
         this.symfony = symfony;
         this.django = django;

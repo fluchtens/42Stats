@@ -322,6 +322,7 @@ public class DataFetcher {
                     continue;
                 }
                 if (this.projectRepository.existsById(id) || this.projectRepository.existsBySlug(slug) || this.projectRepository.existsByName(name)) {
+                    System.out.println("Project already exists: " + name);
                     continue;
                 }
 
@@ -341,17 +342,17 @@ public class DataFetcher {
         this.print("Start scrapping data from api.intra.42.fr", false);
 
         this.accessToken = this.fetchAccessToken();
-        if (this.accessToken.isEmpty()) {
+        if (this.accessToken == null || this.accessToken.isEmpty()) {
             this.print("Failed to fetch access token.", true);
             return;
         }
 
-        this.userRepository.deleteAll();
-        this.campusRepository.deleteAll();
-        this.projectRepository.deleteAll();
+        // this.userRepository.deleteAll();
+        // this.campusRepository.deleteAll();
+        // this.projectRepository.deleteAll();
 
-        this.fetchAllProjects();
-        this.fetchAllCampuses();
+        // this.fetchAllProjects();
+        // this.fetchAllCampuses();
 
         this.print("End of data scrapping from api.intra.42.fr", false);
     }

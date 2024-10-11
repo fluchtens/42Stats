@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.fluchtens.stats.models.Project;
 
-public class SuiteRncp {
+public class SuiteProjects {
     private List<Project> projects;
 
-    public SuiteRncp() {}
+    public SuiteProjects() {}
 
-    public SuiteRncp(List<Project> projects) {
+    public SuiteProjects(List<Project> projects) {
         this.projects = projects;
     }
 
