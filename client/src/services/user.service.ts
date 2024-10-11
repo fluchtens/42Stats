@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/types/user.interface";
+import { User } from "@/types/models/user.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users`;
 

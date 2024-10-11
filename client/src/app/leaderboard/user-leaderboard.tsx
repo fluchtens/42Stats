@@ -1,23 +1,24 @@
 "use client";
 
 import { NotAuthAlert } from "@/components/not-auth-alert";
+import { PageHeader } from "@/components/page-header";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { updateUrlParams } from "@/lib/updateUrlParams";
 import { getCampuses, getCampusPools } from "@/services/campus.service";
 import { getCampusPoolUsers, getCampusPoolUsersCount, getCampusUsers } from "@/services/user.service";
-import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
+import { Campus } from "@/types/models/campus.interface";
+import { User } from "@/types/models/user.interface";
 import { SortType } from "@/types/sort.enum";
-import { User } from "@/types/user.interface";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
-import { CampusSelector } from "./selectors/campus-selector";
-import { PoolDateSelector } from "./selectors/pool-date-selector";
-import { UserPagination } from "./user-pagination";
+import { CampusSelector } from "./ui/selectors/campus-selector";
+import { PoolDateSelector } from "./ui/selectors/pool-date-selector";
+import { UserPagination } from "./ui/user-pagination";
 
 export const UserLeaderboard = () => {
   const { user } = useAuth();
@@ -151,16 +152,17 @@ export const UserLeaderboard = () => {
   }, [currentPage]);
 
   return (
-    <div className="flex-col flex gap-10">
+    <div className="flex flex-col">
       {user === null && <NotAuthAlert />}
       {user && (
         <>
-          <div className="w-full flex-col md:flex-row flex md:justify-between gap-2">
+          <PageHeader title="Student Leaderboard" description="Ranking of student by descending level." />
+          <div className="mt-6 w-full flex-col md:flex-row flex md:justify-between gap-2">
             <CampusSelector campuses={campuses} campusId={campusId} setCampusId={setCampusId} />
             <PoolDateSelector dates={availablePoolDates} poolDate={poolDate} setPoolDate={setPoolDate} />
           </div>
           {(users === null || (users && users.length < 1)) && (
-            <Alert variant="destructive">
+            <Alert variant="destructive" className="mt-10">
               <ExclamationTriangleIcon className="h-4 w-4" />
               <AlertTitle>No users found</AlertTitle>
               <AlertDescription>
@@ -171,7 +173,7 @@ export const UserLeaderboard = () => {
           )}
           {users && users.length > 0 && (
             <>
-              <table className="w-full">
+              <table className="mt-10 w-full">
                 <thead>
                   <tr className="text-base font-semibold">
                     <th className="text-left w-1/12">#</th>

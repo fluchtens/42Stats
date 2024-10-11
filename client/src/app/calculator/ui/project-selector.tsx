@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Project } from "@/types/project.interface";
+import { Project } from "@/types/models/project.interface";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 

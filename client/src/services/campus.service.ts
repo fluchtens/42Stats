@@ -1,5 +1,5 @@
-import { Campus } from "@/types/campus.interface";
 import { PoolDate } from "@/types/date.interface";
+import { Campus } from "@/types/models/campus.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/campuses`;
 

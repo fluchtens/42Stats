@@ -1,4 +1,4 @@
-import { Project } from "@/types/project.interface";
+import { Project } from "@/types/models/project.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/projects`;
 

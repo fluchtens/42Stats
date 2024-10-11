@@ -1,6 +1,6 @@
 "use client";
 
-import { Account } from "@/types/account.interface";
+import { Account } from "@/types/models/account.interface";
 import { Registration } from "@/types/registration.interface";
 import { RequestResponse } from "@/types/request.interface";
 
