@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.fluchtens.stats.models.Project;
 import com.fluchtens.stats.repositories.ProjectRepository;
+import com.fluchtens.stats.rncp.projects.DatabaseRncp;
 import com.fluchtens.stats.rncp.projects.NetworkRncp;
 import com.fluchtens.stats.rncp.projects.SoftwareRncp;
 import com.fluchtens.stats.rncp.projects.WebRncp;
+import com.fluchtens.stats.rncp.projects.database.AiProjects;
+import com.fluchtens.stats.rncp.projects.database.DbProjects;
 import com.fluchtens.stats.rncp.projects.network.SecurityProjects;
 import com.fluchtens.stats.rncp.projects.network.SystemProjects;
 import com.fluchtens.stats.rncp.projects.network.UnixProjects;
@@ -89,11 +92,30 @@ public class RncpService {
         return new NetworkRncp(suiteProjects, unixProjects, systemProjects, securityProjects);
     }
 
+    private DatabaseRncp getDatabaseRncp() {
+        List<Project> suite = this.getSortedProjectsBySlugs(Arrays.asList("42cursus-42sh", "42cursus-doom-nukem", "inception-of-things", "42cursus-humangl", "42cursus-kfs-2", "42cursus-override", "42cursus-pestilence", "42cursus-rt", "42cursus-total-perspective-vortex"));
+        SuiteProjects suiteProjects = new SuiteProjects(suite);
+
+        List<Project> db = this.getSortedProjectsBySlugs(Arrays.asList("42cursus-camagru", "42cursus-matcha", "42cursus-hypertube", "42cursus-red-tetris", "42cursus-darkly", "42cursus-h42n42", "tokenizer"));
+        List<Project> symfonyPool = this.getSortedProjectsBySlugs(Arrays.asList("symfony-0-oob", "symfony-1-base-symfony", "symfony-2-sql", "symfony-3-final"));
+        List<Project> djangoPool = this.getSortedProjectsBySlugs(Arrays.asList("django-0-oob", "django-1-base-django", "django-2-sql", "django-3-final"));
+        List<Project> rorPool = this.getSortedProjectsBySlugs(Arrays.asList("ror-0-oob", "ror-1-base-rails", "ror-2-sql", "ror-3-final"));
+        DbProjects dbProjects = new DbProjects(db, symfonyPool, djangoPool, rorPool);
+
+        List<Project> ai = this.getSortedProjectsBySlugs(Arrays.asList("42cursus-ft_linear_regression", "42cursus-dslr", "42cursus-multilayer-perceptron", "42cursus-gomoku", "42cursus-total-perspective-vortex", "42cursus-expert-system", "42cursus-krpsim", "matrix", "ready-set-boole", "leaffliction"));
+        List<Project> dataSciencePool = this.getSortedProjectsBySlugs(Arrays.asList("data-science-0", "data-science-1", "data-science-2", "data-science-3", "data-science-4"));
+        List<Project> pythonForDataSciencePool = this.getSortedProjectsBySlugs(Arrays.asList("python-0-starting", "python-1-array", "python-2-datatable", "python-3-oop", "python-4-dod"));
+        AiProjects aiProjects = new AiProjects(ai, dataSciencePool, pythonForDataSciencePool);
+
+        return new DatabaseRncp(suiteProjects, dbProjects, aiProjects);
+    }
+
     public Rncp getRncpProjects() {
         WebRncp webRncp = this.getWebRncp();
         SoftwareRncp softwareRncp = this.getSoftwareRncp();
         NetworkRncp networkRncp = this.getNetworkRncp();
+        DatabaseRncp databaseRncp = this.getDatabaseRncp();
         
-        return new Rncp(webRncp, softwareRncp, networkRncp);
+        return new Rncp(webRncp, softwareRncp, networkRncp, databaseRncp);
     }
 }
