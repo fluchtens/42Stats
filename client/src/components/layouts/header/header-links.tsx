@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HeaderMobileBtn } from "./buttons/header-mobile-btn";
+import { HeaderSheet } from "./ui/header-sheet";
 
 const NavLink = ({ label, link, pathname }: { label: string; link: string; pathname: string }) => (
   <Link
@@ -18,15 +18,15 @@ export const HeaderLinks = () => {
 
   return (
     <>
-      <HeaderMobileBtn pathname={pathname} />
-      <div className="hidden sm:flex sm:justify-normal sm:items-center sm:gap-4">
+      <HeaderSheet pathname={pathname} />
+      <div className="hidden sm:flex sm:justify-normal sm:items-center sm:gap-3">
         <Link href="/" className="py-2 text-lg md:text-xl font-medium">
           42Stats
         </Link>
         <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
-        <NavLink label="Rncp" link="/rncp" pathname={pathname} />
+        {/* <NavLink label="Rncp" link="/rncp" pathname={pathname} /> */}
       </div>
     </>
   );

@@ -1,8 +1,8 @@
-import { Project } from "@/types/models/project.interface";
+import { Rncp } from "@/types/rncp/rncp.type";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/projects`;
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/rncp`;
 
-async function getProjects(): Promise<Project[] | null> {
+async function getRncp(): Promise<Rncp | null> {
   try {
     const response = await fetch(API_URL, {
       method: "GET",
@@ -21,4 +21,4 @@ async function getProjects(): Promise<Project[] | null> {
   }
 }
 
-export { getProjects };
+export { getRncp };

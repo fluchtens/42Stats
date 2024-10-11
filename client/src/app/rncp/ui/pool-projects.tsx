@@ -1,4 +1,4 @@
-import { Project } from "@/types/project.interface";
+import { Project } from "@/types/models/project.interface";
 
 interface PoolProjectsProps {
   title: string;

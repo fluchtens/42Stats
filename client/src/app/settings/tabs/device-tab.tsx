@@ -4,7 +4,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { deleteSession, getSessions } from "@/services/session.service";
-import { Session } from "@/types/session.interface";
+import { Session } from "@/types/models/session.interface";
 import { useEffect, useState } from "react";
 
 export const DeviceTab = () => {

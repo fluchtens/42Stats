@@ -5,8 +5,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { FortyTwoStatsTab } from "./forty-two/forty-two-stats-tab";
-import { MainStatsTab } from "./main/main-stats.tab";
+import { FortyTwoStatsTab } from "./tabs/forty-two/forty-two-stats-tab";
+import { MainStatsTab } from "./tabs/main/main-stats.tab";
 
 export const StatisticsTabs = () => {
   const { user } = useAuth();

@@ -3,7 +3,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Campus } from "@/types/campus.interface";
+import { Campus } from "@/types/models/campus.interface";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 

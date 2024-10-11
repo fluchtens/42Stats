@@ -19,7 +19,7 @@ const NavLink = ({ label, link, pathname }: { label: string; link: string; pathn
   </SheetClose>
 );
 
-export const HeaderMobileBtn = ({ pathname }: { pathname: string }) => (
+export const HeaderSheet = ({ pathname }: { pathname: string }) => (
   <Sheet>
     <SheetTrigger className="flex items-center sm:hidden" asChild>
       <Button variant="transparent" size="icon" className="cursor-pointer">
@@ -37,7 +37,7 @@ export const HeaderMobileBtn = ({ pathname }: { pathname: string }) => (
         <NavLink label="Calculator" link="/calculator" pathname={pathname} />
         <NavLink label="Leaderboard" link="/leaderboard" pathname={pathname} />
         <NavLink label="Statistics" link="/stats" pathname={pathname} />
-        <NavLink label="Rncp" link="/rncp" pathname={pathname} />
+        {/* <NavLink label="Rncp" link="/rncp" pathname={pathname} /> */}
       </div>
     </SheetContent>
   </Sheet>

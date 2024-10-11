@@ -1,8 +1,26 @@
 "use client";
 
-import { getAccount } from "@/services/account.service";
-import { Account } from "@/types/account.interface";
+import { Account } from "@/types/models/account.interface";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+
+const getAccount = async (): Promise<Account | null> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/accounts`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+};
 
 interface AuthContextProps {
   user: Account | null | undefined;
@@ -14,11 +32,7 @@ const AuthContext = createContext<AuthContextProps>({
   refreshUser: () => {},
 });
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<Account | null | undefined>(undefined);
 
   const refreshUser = async () => {
