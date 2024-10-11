@@ -347,12 +347,12 @@ public class DataFetcher {
             return;
         }
 
-        // this.userRepository.deleteAll();
-        // this.campusRepository.deleteAll();
-        // this.projectRepository.deleteAll();
+        this.userRepository.deleteAll();
+        this.campusRepository.deleteAll();
+        this.projectRepository.deleteAll();
 
-        // this.fetchAllProjects();
-        // this.fetchAllCampuses();
+        this.fetchAllProjects();
+        this.fetchAllCampuses();
 
         this.print("End of data scrapping from api.intra.42.fr", false);
     }
