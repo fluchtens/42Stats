@@ -4,9 +4,9 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { getMonthlyRegistrations } from "@/services/account.service";
 import { Registration } from "@/types/registration.interface";
 import { useEffect, useState } from "react";
-import { getMonthlyRegistrations } from "../services/main.service";
 
 const chartConfig = {
   count: {
