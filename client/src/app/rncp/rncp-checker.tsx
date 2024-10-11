@@ -1,14 +1,21 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import { NotAuthAlert } from "@/components/not-auth-alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Tabs, TabsList } from "@/components/ui/tabs";
+import { useAuth } from "@/hooks/useAuth";
+import { getRncp } from "@/services/rncp.service";
 import { Rncp } from "@/types/rncp/rncp.type";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PoolProjects } from "./ui/pool-projects";
 import { RncpCard } from "./ui/rncp-card";
+import { RncpTabContent } from "./ui/rncp-tab-content";
 import { RncpTabTrigger } from "./ui/rncp-tab-trigger";
 
 export const RncpChecker = () => {
+  const { user } = useAuth();
   const [rncp, setRncp] = useState<Rncp | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,22 +31,8 @@ export const RncpChecker = () => {
     }
   }, []);
 
-  const fetchRncp = async (): Promise<Rncp | null> => {
-    const response = await fetch("http://localhost:8080/rncp", {
-      method: "GET",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
-    return data;
-  };
-
   const fetchData = async () => {
-    const data = await fetchRncp();
+    const data = await getRncp();
     if (data) {
       setRncp(data);
     }
@@ -50,18 +43,33 @@ export const RncpChecker = () => {
   }, []);
 
   return (
-    <div>
-      <Tabs defaultValue={currentTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-1.5 bg-transparent">
-          <RncpTabTrigger value="web-and-mobile-application-development" rncp="RNCP 6" title="Web and mobile application development" />
-          <RncpTabTrigger value="applicative-software-development" rncp="RNCP 6" title="Applicative software development" />
-          <RncpTabTrigger value="network-information-systems-architecture" rncp="RNCP 7" title="Network Information Systems Architecture" />
-          <RncpTabTrigger value="database-architecture-and-data" rncp="RNCP 7" title="Database architecture and data" />
-        </TabsList>
-        {rncp && (
-          <>
-            <TabsContent value="web-and-mobile-application-development" className="mt-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+    <>
+      {user === null && (
+        <div className="m-auto max-w-screen-xl">
+          <NotAuthAlert />
+        </div>
+      )}
+      {user && (
+        <Alert variant="destructive" className="mb-3">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>BETA</AlertTitle>
+          <AlertDescription>
+            <p>This feature is not yet complete.</p>
+            <p>RNCP checker will be available soon.</p>
+          </AlertDescription>
+        </Alert>
+      )}
+      {user && (
+        <Tabs defaultValue={currentTab} onValueChange={handleTabChange} className="w-full">
+          <TabsList className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-1.5 bg-transparent">
+            <RncpTabTrigger value="web-and-mobile-application-development" rncp="RNCP 6" title="Web and mobile application development" />
+            <RncpTabTrigger value="applicative-software-development" rncp="RNCP 6" title="Applicative software development" />
+            <RncpTabTrigger value="network-information-systems-architecture" rncp="RNCP 7" title="Network Information Systems Architecture" />
+            <RncpTabTrigger value="database-architecture-and-data" rncp="RNCP 7" title="Database architecture and data" />
+          </TabsList>
+          {rncp && (
+            <>
+              <RncpTabContent value="web-and-mobile-application-development">
                 <RncpCard title="Suite" projects={rncp.web.suite.projects} />
                 <RncpCard title="Web" projects={rncp.web.web.projects}>
                   <PoolProjects title="Symfony" projects={rncp.web.web.symfony} />
@@ -71,10 +79,8 @@ export const RncpChecker = () => {
                 <RncpCard title="Mobile" projects={rncp.web.mobile.projects}>
                   <PoolProjects title="Mobile" projects={rncp.web.mobile.mobile} />
                 </RncpCard>
-              </div>
-            </TabsContent>
-            <TabsContent value="applicative-software-development" className="mt-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+              </RncpTabContent>
+              <RncpTabContent value="applicative-software-development">
                 <RncpCard title="Suite" projects={rncp.software.suite.projects} />
                 <RncpCard title="Object Oriented Programming" projects={rncp.software.oop.projects}>
                   <PoolProjects title="Symfony" projects={rncp.software.oop.symfony} />
@@ -87,20 +93,16 @@ export const RncpChecker = () => {
                   <PoolProjects title="OCaml" projects={rncp.software.fp.ocaml} />
                 </RncpCard>
                 <RncpCard title="Imperative programming" projects={rncp.software.ip.projects} />
-              </div>
-            </TabsContent>
-            <TabsContent value="network-information-systems-architecture" className="mt-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+              </RncpTabContent>
+              <RncpTabContent value="network-information-systems-architecture">
                 <RncpCard title="Suite" projects={rncp.network.suite.projects} />
                 <RncpCard title="Unix/Kernel" projects={rncp.network.unix.projects} />
                 <RncpCard title="System administration" projects={rncp.network.system.projects} />
                 <RncpCard title="Security" projects={rncp.network.security.projects}>
                   <PoolProjects title="Cybersecurity" projects={rncp.network.security.security} />
                 </RncpCard>
-              </div>
-            </TabsContent>
-            <TabsContent value="database-architecture-and-data" className="mt-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+              </RncpTabContent>
+              <RncpTabContent value="database-architecture-and-data">
                 <RncpCard title="Suite" projects={rncp.database.suite.projects} />
                 <RncpCard title="Web - Database" projects={rncp.database.db.projects}>
                   <PoolProjects title="Symfony" projects={rncp.database.db.symfony} />
@@ -111,11 +113,11 @@ export const RncpChecker = () => {
                   <PoolProjects title="Data Science" projects={rncp.database.ai.dataScience} />
                   <PoolProjects title="Python for Data Science" projects={rncp.database.ai.python} />
                 </RncpCard>
-              </div>
-            </TabsContent>
-          </>
-        )}
-      </Tabs>
-    </div>
+              </RncpTabContent>
+            </>
+          )}
+        </Tabs>
+      )}
+    </>
   );
 };

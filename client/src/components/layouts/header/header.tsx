@@ -1,9 +1,9 @@
 "use server";
 
-import { GithubBtn } from "./buttons/github-btn";
-import { ThemeToggleBtn } from "./buttons/theme-toggle-btn";
-import { UserBtn } from "./buttons/user-btn";
 import { HeaderLinks } from "./header-links";
+import { GithubBtn } from "./ui/buttons/github-btn";
+import { ThemeToggleBtn } from "./ui/buttons/theme-toggle-btn";
+import { UserBtn } from "./ui/buttons/user-btn";
 
 export const Header = async () => {
   return (
