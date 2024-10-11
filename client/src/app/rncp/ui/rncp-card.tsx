@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "@/types/project.interface";
+import { Project } from "@/types/models/project.interface";
 
 interface RncpCardProps {
   title: string;

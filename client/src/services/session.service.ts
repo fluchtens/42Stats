@@ -1,7 +1,7 @@
 "use client";
 
+import { Session } from "@/types/models/session.interface";
 import { RequestResponse } from "@/types/request.interface";
-import { Session } from "@/types/session.interface";
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/sessions`;
 

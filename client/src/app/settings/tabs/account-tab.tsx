@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { deleteAccount } from "../services/account.service";
+import { deleteAccount } from "@/services/account.service";
 
 export const AccountTab = () => {
   const { user, refreshUser } = useAuth();

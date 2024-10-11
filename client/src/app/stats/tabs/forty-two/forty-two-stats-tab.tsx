@@ -1,8 +1,9 @@
 "use client";
 
-import { getCampusCount, getUsersAverageLevel, getUsersCount } from "@/app/stats/tabs/forty-two/services/forty-two.service";
 import { PageHeader } from "@/components/page-header";
 import { TabsContent } from "@/components/ui/tabs";
+import { getCampusCount } from "@/services/campus.service";
+import { getUsersAverageLevel, getUsersCount } from "@/services/user.service";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../../ui/stats-card";
 import { AverageLevelChart } from "./ui/average-level-chart";

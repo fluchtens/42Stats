@@ -2,9 +2,9 @@
 
 import { PageHeader } from "@/components/page-header";
 import { TabsContent } from "@/components/ui/tabs";
+import { getAccountsCount, getActiveAccountsCount } from "@/services/account.service";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../../ui/stats-card";
-import { getAccountsCount, getActiveAccountsCount } from "./services/main.service";
 import { MonthlyRegistrationsChart } from "./ui/monthly-registrations-chart";
 
 export const MainStatsTab = () => {

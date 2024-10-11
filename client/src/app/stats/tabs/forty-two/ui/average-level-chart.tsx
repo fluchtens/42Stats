@@ -1,10 +1,10 @@
 "use client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Campus } from "@/types/campus.interface";
+import { getCampuses } from "@/services/campus.service";
+import { Campus } from "@/types/models/campus.interface";
 import { useEffect, useState } from "react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
-import { getCampuses } from "../services/forty-two.service";
 
 const chartConfig = {
   averageLevel: {

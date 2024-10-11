@@ -1,7 +1,7 @@
 "use client";
 
-import { Rncp } from "@/app/rncp/types/rncp.type";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import { Rncp } from "@/types/rncp/rncp.type";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PoolProjects } from "./ui/pool-projects";

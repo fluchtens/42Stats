@@ -1,6 +1,6 @@
 "use client";
 
-import { Account } from "@/types/account.interface";
+import { Account } from "@/types/models/account.interface";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 const getAccount = async (): Promise<Account | null> => {
