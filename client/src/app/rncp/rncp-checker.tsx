@@ -1,7 +1,7 @@
 "use client";
 
+import { Rncp } from "@/app/rncp/types/rncp.type";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
-import { Rncp } from "@/types/rncp.interface";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PoolProjects } from "./ui/pool-projects";
@@ -25,7 +25,7 @@ export const RncpChecker = () => {
   }, []);
 
   const fetchRncp = async (): Promise<Rncp | null> => {
-    const response = await fetch("http://localhost:8080/projects/rncp", {
+    const response = await fetch("http://localhost:8080/rncp", {
       method: "GET",
       credentials: "include",
     });
@@ -83,6 +83,20 @@ export const RncpChecker = () => {
                   <PoolProjects title="RoR" projects={rncp.software.oop.ror} />
                   <PoolProjects title="Mobile" projects={rncp.software.oop.mobile} />
                   <PoolProjects title="Object" projects={rncp.software.oop.object} />
+                </RncpCard>
+                <RncpCard title="Functional programming" projects={rncp.software.fp.projects}>
+                  <PoolProjects title="OCaml" projects={rncp.software.fp.ocaml} />
+                </RncpCard>
+                <RncpCard title="Imperative programming" projects={rncp.software.ip.projects} />
+              </div>
+            </TabsContent>
+            <TabsContent value="network-information-systems-architecture" className="mt-6">
+              <div className="grid md:grid-cols-2 gap-3">
+                <RncpCard title="Suite" projects={rncp.software.suite.projects} />
+                <RncpCard title="Unix/Kernel" projects={rncp.network.unix.projects} />
+                <RncpCard title="System administration" projects={rncp.network.system.projects} />
+                <RncpCard title="Security" projects={rncp.network.security.projects}>
+                  <PoolProjects title="Cybersecurity" projects={rncp.network.security.security} />
                 </RncpCard>
               </div>
             </TabsContent>
