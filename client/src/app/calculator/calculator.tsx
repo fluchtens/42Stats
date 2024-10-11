@@ -1,6 +1,7 @@
 "use client";
 
 import { NotAuthAlert } from "@/components/not-auth-alert";
+import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,9 +12,10 @@ import { getProjects } from "@/services/project.service";
 import { Project } from "@/types/project.interface";
 import { useEffect, useState } from "react";
 import { FaCalculator } from "react-icons/fa6";
-import { ProjectSelector } from "./project-selector";
+import { ProjectSelector } from "./ui/project-selector";
 
 export const Calculator = () => {
+  const { user } = useAuth();
   const [level, setLevel] = useState<number>(0);
   const [projects, setProjects] = useState<Project[] | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -21,7 +23,6 @@ export const Calculator = () => {
   const [bonus, setBonus] = useState<boolean>(false);
   const [newLevel, setNewLevel] = useState<number>(0);
   const [progression, setProgression] = useState<number>(0);
-  const { user } = useAuth();
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -46,7 +47,7 @@ export const Calculator = () => {
   };
 
   const resetCalculator = () => {
-    setLevel(0);
+    setLevel(user ? user.level : 0);
     setSelectedProject(null);
     setGrade(100);
     setBonus(false);
@@ -96,6 +97,12 @@ export const Calculator = () => {
   };
 
   useEffect(() => {
+    if (user) {
+      setLevel(user.level);
+    }
+  }, [user]);
+
+  useEffect(() => {
     fetchProjects();
   }, []);
 
@@ -104,9 +111,8 @@ export const Calculator = () => {
       {user === null && <NotAuthAlert />}
       {user && (
         <>
-          <h1 className="text-2xl md:text-3xl font-bold">XP Calculator</h1>
-          <p className="text-sm md:text-lg font-light text-muted-foreground">Calculate your next XP level after turning in a project.</p>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <PageHeader title="XP Calculator" description="Calculate your next XP level after turning in a project." />
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
             <Card className="md:col-span-2 bg-popover">
               <form onSubmit={handleFormSubmit}>
                 <CardContent className="pt-6">
