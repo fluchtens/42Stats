@@ -9,7 +9,7 @@ interface RncpCardProps {
 }
 
 export const RncpCard = ({ title, projects, children }: RncpCardProps) => (
-  <div className="p-4 bg-card rounded-xl border">
+  <div className="p-4 w-full bg-card rounded-xl border">
     <span className="text-xl font-semibold">{title}</span>
     <ul className="mt-2 flex flex-col gap-2">
       {projects.map((project: Project) => (

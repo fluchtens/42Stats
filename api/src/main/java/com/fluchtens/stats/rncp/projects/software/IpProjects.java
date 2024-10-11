@@ -1,15 +1,15 @@
-package com.fluchtens.stats.rncp;
+package com.fluchtens.stats.rncp.projects.software;
 
 import java.util.List;
 
 import com.fluchtens.stats.models.Project;
 
-public class SuiteProjects {
+public class IpProjects {
     private List<Project> projects;
 
-    public SuiteProjects() {}
+    public IpProjects() {}
 
-    public SuiteProjects(List<Project> projects) {
+    public IpProjects(List<Project> projects) {
         this.projects = projects;
     }
 

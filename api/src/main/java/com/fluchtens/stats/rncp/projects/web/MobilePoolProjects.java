@@ -1,4 +1,4 @@
-package com.fluchtens.stats.rncp.rncp6.web;
+package com.fluchtens.stats.rncp.projects.web;
 
 import java.util.List;
 

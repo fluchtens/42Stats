@@ -1,6 +1,8 @@
-package com.fluchtens.stats.rncp.rncp6.web;
+package com.fluchtens.stats.rncp.projects;
 
-import com.fluchtens.stats.rncp.SuiteProjects;
+import com.fluchtens.stats.rncp.projects.suite.SuiteProjects;
+import com.fluchtens.stats.rncp.projects.web.MobilePoolProjects;
+import com.fluchtens.stats.rncp.projects.web.WebProjects;
 
 public class WebRncp {
     private SuiteProjects suite;
