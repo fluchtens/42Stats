@@ -61,7 +61,8 @@ export const RncpChecker = () => {
         {rncp && (
           <>
             <TabsContent value="web-and-mobile-application-development" className="mt-6">
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+                <RncpCard title="Suite" projects={rncp.web.suite.projects} />
                 <RncpCard title="Web" projects={rncp.web.web.projects}>
                   <PoolProjects title="Symfony" projects={rncp.web.web.symfony} />
                   <PoolProjects title="Django" projects={rncp.web.web.django} />
@@ -70,11 +71,11 @@ export const RncpChecker = () => {
                 <RncpCard title="Mobile" projects={rncp.web.mobile.projects}>
                   <PoolProjects title="Mobile" projects={rncp.web.mobile.mobile} />
                 </RncpCard>
-                <RncpCard title="Suite" projects={rncp.web.suite.projects} />
               </div>
             </TabsContent>
             <TabsContent value="applicative-software-development" className="mt-6">
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+                <RncpCard title="Suite" projects={rncp.software.suite.projects} />
                 <RncpCard title="Object Oriented Programming" projects={rncp.software.oop.projects}>
                   <PoolProjects title="Symfony" projects={rncp.software.oop.symfony} />
                   <PoolProjects title="Django" projects={rncp.software.oop.django} />
@@ -86,21 +87,21 @@ export const RncpChecker = () => {
                   <PoolProjects title="OCaml" projects={rncp.software.fp.ocaml} />
                 </RncpCard>
                 <RncpCard title="Imperative programming" projects={rncp.software.ip.projects} />
-                <RncpCard title="Suite" projects={rncp.software.suite.projects} />
               </div>
             </TabsContent>
             <TabsContent value="network-information-systems-architecture" className="mt-6">
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+                <RncpCard title="Suite" projects={rncp.network.suite.projects} />
                 <RncpCard title="Unix/Kernel" projects={rncp.network.unix.projects} />
                 <RncpCard title="System administration" projects={rncp.network.system.projects} />
                 <RncpCard title="Security" projects={rncp.network.security.projects}>
                   <PoolProjects title="Cybersecurity" projects={rncp.network.security.security} />
                 </RncpCard>
-                <RncpCard title="Suite" projects={rncp.network.suite.projects} />
               </div>
             </TabsContent>
             <TabsContent value="database-architecture-and-data" className="mt-6">
-              <div className="grid md:grid-cols-2 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">
+                <RncpCard title="Suite" projects={rncp.database.suite.projects} />
                 <RncpCard title="Web - Database" projects={rncp.database.db.projects}>
                   <PoolProjects title="Symfony" projects={rncp.database.db.symfony} />
                   <PoolProjects title="Django" projects={rncp.database.db.django} />
@@ -110,7 +111,6 @@ export const RncpChecker = () => {
                   <PoolProjects title="Data Science" projects={rncp.database.ai.dataScience} />
                   <PoolProjects title="Python for Data Science" projects={rncp.database.ai.python} />
                 </RncpCard>
-                <RncpCard title="Suite" projects={rncp.database.suite.projects} />
               </div>
             </TabsContent>
           </>
