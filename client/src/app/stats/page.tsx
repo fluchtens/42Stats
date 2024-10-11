@@ -5,7 +5,7 @@ import { StatisticsTabs } from "./statistics-tabs";
 export default async function Stats() {
   return (
     <main className="p-6 flex-1">
-      <div className="max-w-screen-lg m-auto">
+      <div className="max-w-screen-xl m-auto">
         <StatisticsTabs />
       </div>
     </main>
