@@ -1,5 +1,6 @@
 "use client";
 
+import { getProjects } from "@/app/calculator/services/project.service";
 import { NotAuthAlert } from "@/components/not-auth-alert";
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
-import { getProjects } from "@/services/project.service";
 import { Project } from "@/types/project.interface";
 import { useEffect, useState } from "react";
 import { FaCalculator } from "react-icons/fa6";
