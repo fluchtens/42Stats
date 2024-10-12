@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fluchtens.stats.JsonResponse;
-import com.fluchtens.stats.models.Registration;
+import com.fluchtens.stats.account.registration.Registration;
+import com.fluchtens.stats.core.JsonResponse;
 
 @Service
 public class AccountService {

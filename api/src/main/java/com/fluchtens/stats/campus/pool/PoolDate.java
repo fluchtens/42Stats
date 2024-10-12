@@ -1,4 +1,4 @@
-package com.fluchtens.stats.models;
+package com.fluchtens.stats.campus.pool;
 
 import java.util.Objects;
 

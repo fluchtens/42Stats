@@ -1,4 +1,4 @@
-package com.fluchtens.stats.models;
+package com.fluchtens.stats.project;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

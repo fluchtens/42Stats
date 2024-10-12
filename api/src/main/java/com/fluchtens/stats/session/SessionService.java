@@ -1,4 +1,4 @@
-package com.fluchtens.stats.services;
+package com.fluchtens.stats.session;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fluchtens.stats.JsonResponse;
+import com.fluchtens.stats.core.JsonResponse;
 
 @Service
 public class SessionService {

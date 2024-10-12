@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fluchtens.stats.JsonResponse;
-import com.fluchtens.stats.models.Registration;
+import com.fluchtens.stats.account.registration.Registration;
+import com.fluchtens.stats.core.JsonResponse;
 
 @RestController
 public class AccountController {

@@ -1,11 +1,9 @@
-package com.fluchtens.stats.repositories;
+package com.fluchtens.stats.project;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import com.fluchtens.stats.models.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {

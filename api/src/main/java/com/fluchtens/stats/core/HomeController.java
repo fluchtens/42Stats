@@ -1,9 +1,7 @@
-package com.fluchtens.stats.controllers;
+package com.fluchtens.stats.core;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fluchtens.stats.JsonResponse;
 
 @RestController
 public class HomeController {

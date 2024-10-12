@@ -1,4 +1,4 @@
-package com.fluchtens.stats.controllers;
+package com.fluchtens.stats.campus;
 
 import java.util.List;
 
@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fluchtens.stats.models.Campus;
-import com.fluchtens.stats.models.PoolDate;
-import com.fluchtens.stats.services.CampusService;
+import com.fluchtens.stats.campus.pool.PoolDate;
 
 @RestController 
 public class CampusController {

@@ -1,4 +1,4 @@
-package com.fluchtens.stats;
+package com.fluchtens.stats.core;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.fluchtens.stats.models;
+package com.fluchtens.stats.account.registration;
 
 public class Registration {
     private String month;

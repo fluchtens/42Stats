@@ -1,4 +1,6 @@
-package com.fluchtens.stats.models;
+package com.fluchtens.stats.user;
+
+import com.fluchtens.stats.campus.Campus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

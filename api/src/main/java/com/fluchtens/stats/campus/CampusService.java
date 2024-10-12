@@ -1,4 +1,4 @@
-package com.fluchtens.stats.services;
+package com.fluchtens.stats.campus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fluchtens.stats.models.Campus;
-import com.fluchtens.stats.models.PoolDate;
-import com.fluchtens.stats.models.User;
-import com.fluchtens.stats.repositories.CampusRepository;
-import com.fluchtens.stats.repositories.UserRepository;
+import com.fluchtens.stats.campus.pool.PoolDate;
+import com.fluchtens.stats.user.User;
+import com.fluchtens.stats.user.UserRepository;
 
 @Service
 public class CampusService {

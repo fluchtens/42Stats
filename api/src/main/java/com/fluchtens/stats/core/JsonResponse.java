@@ -1,4 +1,4 @@
-package com.fluchtens.stats;
+package com.fluchtens.stats.core;
 
 public class JsonResponse {
     private String message;

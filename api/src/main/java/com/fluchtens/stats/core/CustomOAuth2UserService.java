@@ -1,4 +1,4 @@
-package com.fluchtens.stats.services;
+package com.fluchtens.stats.core;
 
 import java.time.LocalDateTime;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.fluchtens.stats.controllers;
+package com.fluchtens.stats.session;
 
 import java.util.List;
 import java.util.Map;
@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fluchtens.stats.JsonResponse;
-import com.fluchtens.stats.services.SessionService;
+import com.fluchtens.stats.core.JsonResponse;
 
 import jakarta.servlet.http.HttpSession;
 

@@ -1,4 +1,4 @@
-package com.fluchtens.stats.tasks;
+package com.fluchtens.stats.core.tasks;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -19,12 +19,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.fluchtens.stats.models.Campus;
-import com.fluchtens.stats.models.Project;
-import com.fluchtens.stats.models.User;
-import com.fluchtens.stats.repositories.CampusRepository;
-import com.fluchtens.stats.repositories.ProjectRepository;
-import com.fluchtens.stats.repositories.UserRepository;
+import com.fluchtens.stats.campus.Campus;
+import com.fluchtens.stats.campus.CampusRepository;
+import com.fluchtens.stats.project.Project;
+import com.fluchtens.stats.project.ProjectRepository;
+import com.fluchtens.stats.user.User;
+import com.fluchtens.stats.user.UserRepository;
 
 @Component
 public class DataFetcher {
@@ -347,12 +347,12 @@ public class DataFetcher {
             return;
         }
 
-        this.userRepository.deleteAll();
-        this.campusRepository.deleteAll();
-        this.projectRepository.deleteAll();
+        // this.userRepository.deleteAll();
+        // this.campusRepository.deleteAll();
+        // this.projectRepository.deleteAll();
 
-        this.fetchAllProjects();
-        this.fetchAllCampuses();
+        // this.fetchAllProjects();
+        // this.fetchAllCampuses();
 
         this.print("End of data scrapping from api.intra.42.fr", false);
     }
