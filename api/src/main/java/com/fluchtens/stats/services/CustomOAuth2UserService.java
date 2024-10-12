@@ -12,8 +12,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.fluchtens.stats.models.Account;
-import com.fluchtens.stats.repositories.AccountRepository;
+import com.fluchtens.stats.account.Account;
+import com.fluchtens.stats.account.AccountRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

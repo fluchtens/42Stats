@@ -1,4 +1,4 @@
-package com.fluchtens.stats.models;
+package com.fluchtens.stats.account;
 
 import java.time.LocalDateTime;
 

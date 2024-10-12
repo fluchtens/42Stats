@@ -1,13 +1,12 @@
-package com.fluchtens.stats.repositories;
+package com.fluchtens.stats.account;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.fluchtens.stats.models.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
@@ -20,4 +19,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             "GROUP BY YEAR(a.createdAt), MONTH(a.createdAt) " +
             "ORDER BY YEAR(a.createdAt), MONTH(a.createdAt)")
     List<Object[]> findMonthlyRegistrations(LocalDateTime startDate);
+
+    @Query("SELECT COUNT(a) FROM Account a WHERE a.createdAt < :startDate")
+    long countUsersBeforeDate(@Param("startDate") LocalDateTime startDate);
 }

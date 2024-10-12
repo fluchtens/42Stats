@@ -5,6 +5,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { getAccountsCount, getActiveAccountsCount } from "@/services/account.service";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../../ui/stats-card";
+import { CumulativeUsersChart } from "./ui/cumulative-users-chart";
 import { MonthlyRegistrationsChart } from "./ui/monthly-registrations-chart";
 
 export const MainStatsTab = () => {
@@ -34,7 +35,8 @@ export const MainStatsTab = () => {
         <StatsCard title="Users" desc="Number of registered users." value={userCout} />
         <StatsCard title="Monthly active users" desc="Number of active users this month." value={activeUserCount} />
       </div>
-      <div className="mt-2 md:mt-4 grid gap-2 md:gap-4">
+      <div className="mt-2 md:mt-4 grid md:grid-cols-2 gap-2 md:gap-4">
+        <CumulativeUsersChart />
         <MonthlyRegistrationsChart />
       </div>
     </TabsContent>

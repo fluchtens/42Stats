@@ -1,4 +1,4 @@
-package com.fluchtens.stats.controllers;
+package com.fluchtens.stats.account;
 
 import java.util.List;
 
@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fluchtens.stats.JsonResponse;
-import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.models.Registration;
-import com.fluchtens.stats.services.AccountService;
 
 @RestController
 public class AccountController {
@@ -40,8 +38,13 @@ public class AccountController {
         return this.accountService.getActiveAccountsCount();
     }
 
-    @GetMapping("/accounts/registrations")
+    @GetMapping("/accounts/monthly-registrations")
     public List<Registration> getMonthlyRegistrations() {
         return this.accountService.getMonthlyRegistrations();
+    }
+
+    @GetMapping("accounts/cumulative-users")
+    public List<Registration> getCumulativeUsers() {
+        return this.accountService.getCumulativeUsers();
     }
 }

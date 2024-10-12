@@ -1,4 +1,4 @@
-package com.fluchtens.stats.services;
+package com.fluchtens.stats.account;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fluchtens.stats.JsonResponse;
-import com.fluchtens.stats.models.Account;
 import com.fluchtens.stats.models.Registration;
-import com.fluchtens.stats.repositories.AccountRepository;
 
 @Service
 public class AccountService {
@@ -59,10 +57,10 @@ public class AccountService {
     }
 
     public List<Registration> getMonthlyRegistrations() {
-        LocalDateTime startDate = LocalDateTime.now().minusMonths(12).withDayOfMonth(1).toLocalDate().atStartOfDay();
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(6).withDayOfMonth(1).toLocalDate().atStartOfDay();
         List<Object[]> results = accountRepository.findMonthlyRegistrations(startDate);
-
         List<Registration> monthlyRegistrations = new ArrayList<>();
+
         for (Object[] result : results) {
             int year = (int) result[0];
             int month = (int) result[1];
@@ -74,5 +72,25 @@ public class AccountService {
             monthlyRegistrations.add(registration);
         }
         return monthlyRegistrations;
+    }
+
+    public List<Registration> getCumulativeUsers() {
+        LocalDateTime startDate = LocalDateTime.now().minusMonths(6).withDayOfMonth(1).toLocalDate().atStartOfDay();
+        List<Object[]> results = accountRepository.findMonthlyRegistrations(startDate);
+        List<Registration> cumulativeRegistrations = new ArrayList<>();
+        long cumulativeCount = accountRepository.countUsersBeforeDate(startDate);
+
+        for (Object[] result : results) {
+            int year = (int) result[0];
+            int month = (int) result[1];
+            long count = (long) result[2];
+            Month monthEnum = Month.of(month);
+            String monthName = monthEnum.getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+            String monthYear = monthName + " " + year;
+            cumulativeCount += count;
+            Registration registration = new Registration(monthYear, cumulativeCount);
+            cumulativeRegistrations.add(registration);
+        }
+        return cumulativeRegistrations;
     }
 }
