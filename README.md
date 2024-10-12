@@ -9,7 +9,6 @@ Web application in Java Spring Boot and Next.js for 42 users to discover detaile
 ### Configuration:
 - Create an .env file in docker/dev or docker/prod and add the following content to it.
 - Configure variables for url, api keys, database information, etc.
-- Set the MODE variable to dev or prod in the Makefile.
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8080
 CLIENT_URL=http://localhost:3000
@@ -29,7 +28,7 @@ FORTY_TWO_SECRET=
 ```
 
 ### Usage:
-- Run ```make``` to start the application with docker.
+- Run ```make MODE=prod``` to start the application with docker.
 
 ### Screenshots:
 ![1](https://fluchtens.com/projects/42Stats/42Stats_1.webp)
