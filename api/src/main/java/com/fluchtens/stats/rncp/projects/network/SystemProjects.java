@@ -2,7 +2,7 @@ package com.fluchtens.stats.rncp.projects.network;
 
 import java.util.List;
 
-import com.fluchtens.stats.models.Project;
+import com.fluchtens.stats.project.Project;
 
 public class SystemProjects {
     private List<Project> projects;

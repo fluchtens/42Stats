@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fluchtens.stats.models.Project;
-import com.fluchtens.stats.repositories.ProjectRepository;
+import com.fluchtens.stats.project.Project;
+import com.fluchtens.stats.project.ProjectRepository;
 import com.fluchtens.stats.rncp.projects.DatabaseRncp;
 import com.fluchtens.stats.rncp.projects.NetworkRncp;
 import com.fluchtens.stats.rncp.projects.SoftwareRncp;

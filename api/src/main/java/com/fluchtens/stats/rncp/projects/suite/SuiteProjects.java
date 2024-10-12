@@ -2,7 +2,7 @@ package com.fluchtens.stats.rncp.projects.suite;
 
 import java.util.List;
 
-import com.fluchtens.stats.models.Project;
+import com.fluchtens.stats.project.Project;
 
 public class SuiteProjects {
     private List<Project> projects;

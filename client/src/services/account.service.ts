@@ -84,7 +84,7 @@ async function getActiveAccountsCount(): Promise<Promise<number | null>> {
 
 async function getMonthlyRegistrations(): Promise<Promise<Registration[] | null>> {
   try {
-    const response = await fetch(`${API_URL}/registrations`, {
+    const response = await fetch(`${API_URL}/monthly-registrations`, {
       method: "GET",
       credentials: "include",
     });
@@ -101,4 +101,23 @@ async function getMonthlyRegistrations(): Promise<Promise<Registration[] | null>
   }
 }
 
-export { deleteAccount, getAccount, getAccountsCount, getActiveAccountsCount, getMonthlyRegistrations };
+async function getCumulativeUsers(): Promise<Promise<Registration[] | null>> {
+  try {
+    const response = await fetch(`${API_URL}/cumulative-users`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error(error);
+    return null;
+  }
+}
+
+export { deleteAccount, getAccount, getAccountsCount, getActiveAccountsCount, getCumulativeUsers, getMonthlyRegistrations };
