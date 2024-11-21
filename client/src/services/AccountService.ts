@@ -1,5 +1,3 @@
-"use client";
-
 import { Account } from "@/types/models/Account";
 import { Registration } from "@/types/utils/Registration";
 import { ApiRes, fetchAPI } from "./CoreService";
@@ -26,14 +24,14 @@ export async function logout(): Promise<boolean> {
   }
 }
 
-export async function deleteAccount(): Promise<ApiRes | null> {
+export async function deleteAccount(): Promise<ApiRes> {
   try {
     const data = await fetchAPI<ApiRes>("/accounts", {
       method: "DELETE",
     });
     return { success: true, message: data.message };
   } catch (error: any) {
-    return null;
+    return { success: false, message: error.message };
   }
 }
 

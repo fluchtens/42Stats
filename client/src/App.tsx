@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Layout } from "./components/layouts/layout/Layout";
+import { Leaderboard } from "./components/leaderboard/Leaderboard";
 import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
 import { Home } from "./components/pages/home/Home";
@@ -16,6 +17,7 @@ function App() {
       children: [
         { path: "/", element: <Home /> },
         { path: "/calculator", element: <Calculator /> },
+        { path: "/leaderboard", element: <Leaderboard /> },
       ],
     },
   ]);
