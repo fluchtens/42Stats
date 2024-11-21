@@ -1,24 +1,15 @@
 "use client";
 
 import { Account } from "@/types/Account";
+import { fetchAPI } from "./CoreService";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/accounts`;
-
-export const getAccount = async (): Promise<Account | null> => {
+export async function getAccount(): Promise<Account | null> {
   try {
-    const response = await fetch(API_URL, {
+    const data = await fetchAPI<Account>("/accounts", {
       method: "GET",
-      credentials: "include",
     });
-
-    const data = await response.json();
-    if (!response.ok) {
-      return null;
-    }
-
     return data;
   } catch (error: any) {
-    console.error(error);
     return null;
   }
-};
+}
