@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Calculator } from "lucide-react";
 import { Layout } from "./components/layouts/layout/Layout";
+import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
 import { Home } from "./components/pages/home/Home";
 import { AuthProvider } from "./components/providers/AuthProvider";
