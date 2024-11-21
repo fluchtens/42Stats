@@ -2,6 +2,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Tabs, TabsList } from "@/components/ui/tabs";
 import { getRncp } from "@/services/RncpService";
 import { Rncp } from "@/types/rncp/Rncp";
+import { getQueryParam } from "@/utils/getQueryParam";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,14 +16,14 @@ export const RncpChecker = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [rncp, setRncp] = useState<Rncp | null>(null);
-  const currentTab = new URLSearchParams(location.search).get("tab") || "web-and-mobile-application-development";
+  const currentTab = getQueryParam(location.search, "tab") || "web-and-mobile-application-development";
 
   const handleTabChange = (value: string) => {
     updateUrlParams(navigate, location, { tab: value });
   };
 
   useEffect(() => {
-    if (!new URLSearchParams(location.search).get("tab")) {
+    if (!getQueryParam(location.search, "tab")) {
       updateUrlParams(navigate, location, { tab: currentTab });
     }
   }, []);

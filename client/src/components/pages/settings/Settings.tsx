@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getQueryParam } from "@/utils/getQueryParam";
 import { updateUrlParams } from "@/utils/updateUrlParams";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,14 +9,14 @@ import { DeviceTab } from "./tabs/DeviceTab";
 export const Settings = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentTab = new URLSearchParams(location.search).get("tab") || "account";
+  const currentTab = getQueryParam(location.search, "tab") || "account";
 
   const handleTabChange = (value: string) => {
     updateUrlParams(navigate, location, { tab: value });
   };
 
   useEffect(() => {
-    if (!new URLSearchParams(location.search).get("tab")) {
+    if (!getQueryParam(location.search, "tab")) {
       updateUrlParams(navigate, location, { tab: currentTab });
     }
   }, []);

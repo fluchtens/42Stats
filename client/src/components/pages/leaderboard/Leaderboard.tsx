@@ -7,6 +7,7 @@ import { Campus } from "@/types/models/Campus";
 import { User } from "@/types/models/User";
 import { PoolDate } from "@/types/utils/Date";
 import { SortType } from "@/types/utils/Sort";
+import { getQueryParam } from "@/utils/getQueryParam";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
@@ -24,11 +25,11 @@ export const Leaderboard = () => {
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [users, setUsers] = useState<User[] | null | undefined>(undefined);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);
-  const [campusId, setCampusId] = useState<number | null>(Number(new URLSearchParams(location.search).get("campus")) || null);
+  const [campusId, setCampusId] = useState<number | null>(Number(getQueryParam(location.search, "campus")) || null);
   const [availablePoolDates, setAvailablePoolDates] = useState<PoolDate[] | null>(null);
   let poolDateParams: PoolDate | null = null;
-  const poolMonthParam = new URLSearchParams(location.search).get("poolMonth");
-  const poolYearParam = new URLSearchParams(location.search).get("poolYear");
+  const poolMonthParam = getQueryParam(location.search, "poolMonth");
+  const poolYearParam = getQueryParam(location.search, "poolYear");
   if (poolMonthParam && poolYearParam) {
     poolDateParams = {
       month: poolMonthParam,
@@ -37,7 +38,7 @@ export const Leaderboard = () => {
   }
   const [poolDate, setPoolDate] = useState<PoolDate | null>(poolDateParams);
   const [sortBy, setSortBy] = useState<SortType>(SortType.Campus);
-  const [currentPage, setCurrentPage] = useState<number>(Number(new URLSearchParams(location.search).get("page")) || 1);
+  const [currentPage, setCurrentPage] = useState<number>(Number(getQueryParam(location.search, "page")) || 1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const pageSize = 42;
 
