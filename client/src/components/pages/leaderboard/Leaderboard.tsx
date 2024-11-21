@@ -11,7 +11,7 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
 import { useLocation, useNavigate } from "react-router-dom";
-import { PageHeader } from "../core/PageHeader";
+import { PageHeader } from "../../core/PageHeader";
 import { CampusSelector } from "./ui/CampusSelector";
 import { PoolDateSelector } from "./ui/PoolDateSelector";
 import { UserPagination } from "./ui/UserPagination";
@@ -21,7 +21,6 @@ export const Leaderboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [users, setUsers] = useState<User[] | null | undefined>(undefined);
   const [campuses, setCampuses] = useState<Campus[] | null>(null);

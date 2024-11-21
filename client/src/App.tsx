@@ -1,10 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { Layout } from "./components/layouts/layout/Layout";
-import { Leaderboard } from "./components/leaderboard/Leaderboard";
 import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
 import { Home } from "./components/pages/home/Home";
+import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
+import { RncpChecker } from "./components/pages/rncp/Rncp";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
@@ -18,6 +19,7 @@ function App() {
         { path: "/", element: <Home /> },
         { path: "/calculator", element: <Calculator /> },
         { path: "/leaderboard", element: <Leaderboard /> },
+        { path: "/rncp", element: <RncpChecker /> },
       ],
     },
   ]);
