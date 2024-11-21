@@ -18,6 +18,8 @@ export const Settings = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
+
     if (!getQueryParam(location.search, "tab")) {
       updateUrlParams(navigate, location, { tab: currentTab });
     }
