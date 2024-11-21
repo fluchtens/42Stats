@@ -4,6 +4,7 @@ import { Layout } from "./components/layouts/layout/Layout";
 import { Error } from "./components/pages/error/Error";
 import { Home } from "./components/pages/home/Home";
 import { AuthProvider } from "./components/providers/AuthProvider";
+import { ThemeProvider } from "./components/providers/ThemeProvider";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,9 +26,11 @@ function App() {
   ]);
 
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <ThemeProvider defaultTheme="system" storageKey="theme">
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

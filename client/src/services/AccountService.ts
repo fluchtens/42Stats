@@ -13,3 +13,14 @@ export async function getAccount(): Promise<Account | null> {
     return null;
   }
 }
+
+export async function logout(): Promise<boolean> {
+  try {
+    await fetchAPI<Account>("/logout", {
+      method: "GET",
+    });
+    return true;
+  } catch (error: any) {
+    return false;
+  }
+}
