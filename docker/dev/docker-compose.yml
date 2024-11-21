@@ -64,11 +64,11 @@ services:
       context: ../../client
       dockerfile: dev.Dockerfile
     environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      VITE_API_URL: ${VITE_API_URL}
     depends_on:
       - api
     ports:
-      - 3000:3000
+      - 5173:5173
     volumes:
       - ../../client:/app
       - /app/node_modules
