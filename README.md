@@ -15,7 +15,7 @@ Web application in Java Spring Boot and Next.js for 42 users to discover detaile
 
 ```env
 VITE_API_URL=http://localhost:8080
-CLIENT_URL=http://localhost:3000
+CLIENT_URL=http://localhost:5173
 
 MYSQL_DATABASE=42stats
 MYSQL_ROOT_PASSWORD=42
