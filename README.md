@@ -1,16 +1,20 @@
 # 42Stats
 
 ### What's this about?
+
 Web application in Java Spring Boot and Next.js for 42 users to discover detailed information and statistics retrieved from 42 API.
 
 ### Installation :
+
 - Clone the repository.
 
 ### Configuration:
+
 - Create an .env file in docker/dev or docker/prod and add the following content to it.
 - Configure variables for url, api keys, database information, etc.
+
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
+VITE_API_URL=http://localhost:8080
 CLIENT_URL=http://localhost:3000
 
 MYSQL_DATABASE=42stats
@@ -28,7 +32,9 @@ FORTY_TWO_SECRET=
 ```
 
 ### Usage:
-- Run ```make MODE=prod``` to start the application with docker.
+
+- Run `make MODE=prod` to start the application with docker.
 
 ### Screenshots:
+
 ![1](https://fluchtens.com/projects/42Stats/42Stats_1.webp)
