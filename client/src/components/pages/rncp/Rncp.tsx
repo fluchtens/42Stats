@@ -5,7 +5,7 @@ import { Rncp } from "@/types/rncp/Rncp";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { updateUrlParams } from "../leaderboard/updateUrlParams";
+import { updateUrlParams } from "../../../utils/updateUrlParams";
 import { PoolProjects } from "./ui/PoolProjects";
 import { RncpCard } from "./ui/RncpCard";
 import { RncpTabContent } from "./ui/RncpTabContent";

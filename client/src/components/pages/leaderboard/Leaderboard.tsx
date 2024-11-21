@@ -11,11 +11,11 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { GiBlackHoleBolas } from "react-icons/gi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { updateUrlParams } from "../../../utils/updateUrlParams";
 import { PageHeader } from "../../core/PageHeader";
 import { CampusSelector } from "./ui/CampusSelector";
 import { PoolDateSelector } from "./ui/PoolDateSelector";
 import { UserPagination } from "./ui/UserPagination";
-import { updateUrlParams } from "./updateUrlParams";
 
 export const Leaderboard = () => {
   const { user } = useAuth();
