@@ -1,5 +1,5 @@
 import { getAccount } from "@/services/AccountService";
-import { Account } from "@/types/Account";
+import { Account } from "@/types/models/Account";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 export interface AuthContextProps {

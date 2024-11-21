@@ -1,6 +1,6 @@
 "use client";
 
-import { Account } from "@/types/Account";
+import { Account } from "@/types/models/Account";
 import { fetchAPI } from "./CoreService";
 
 export async function getAccount(): Promise<Account | null> {
