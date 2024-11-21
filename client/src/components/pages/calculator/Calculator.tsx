@@ -104,69 +104,73 @@ export function Calculator() {
   }, []);
 
   return (
-    <div className="max-w-screen-xl m-auto">
-      <PageHeader title="XP Calculator" description="Calculate your next XP level after turning in a project." />
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Card className="md:col-span-2 bg-popover">
-          <form onSubmit={handleFormSubmit}>
-            <CardContent className="pt-6">
-              <div className="grid items-center gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="level-calculator">Level</Label>
-                  <Input
-                    id="level-calculator"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    max="50"
-                    placeholder="Your current level"
-                    value={isNaN(level) ? "" : level}
-                    onChange={handleLevelChange}
-                  />
+    <>
+      {user && (
+        <div className="max-w-screen-xl m-auto">
+          <PageHeader title="XP Calculator" description="Calculate your next XP level after turning in a project." />
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <Card className="md:col-span-2 bg-popover">
+              <form onSubmit={handleFormSubmit}>
+                <CardContent className="pt-6">
+                  <div className="grid items-center gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="level-calculator">Level</Label>
+                      <Input
+                        id="level-calculator"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="50"
+                        placeholder="Your current level"
+                        value={isNaN(level) ? "" : level}
+                        onChange={handleLevelChange}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="projects">Project</Label>
+                      <ProjectSelector projects={projects} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="grade-calculator">Grade</Label>
+                      <Input
+                        id="grade-calculator"
+                        type="number"
+                        min="1"
+                        max="125"
+                        placeholder="Your project grade"
+                        value={isNaN(grade) ? "" : grade}
+                        onChange={handleGradeChange}
+                      />
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Checkbox id="coalition-calculator" checked={bonus} onCheckedChange={handleCoalitionBonusChange} />
+                      <Label htmlFor="coalition-calculator" className="text-sm font-medium">
+                        Coalition bonus (+4.2%)
+                      </Label>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-end gap-1.5">
+                  <Button type="button" variant="ghost" onClick={resetCalculator}>
+                    Reset
+                  </Button>
+                  <Button type="submit">Calculate</Button>
+                </CardFooter>
+              </form>
+            </Card>
+            <Card className="md:col-span-1 flex-col flex justify-center items-center bg-popover">
+              <CardContent className="pt-6 flex-col flex items-center gap-5">
+                <FaCalculator className="w-20 h-20" />
+                <div className="flex-col flex items-center">
+                  <span className="text-base font-medium text-muted-foreground">Level</span>
+                  <span className="text-2xl font-bold">{newLevel.toFixed(2)}</span>
+                  <span className="text-base font-medium text-green-600">+{progression.toFixed(2)}</span>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="projects">Project</Label>
-                  <ProjectSelector projects={projects} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor="grade-calculator">Grade</Label>
-                  <Input
-                    id="grade-calculator"
-                    type="number"
-                    min="1"
-                    max="125"
-                    placeholder="Your project grade"
-                    value={isNaN(grade) ? "" : grade}
-                    onChange={handleGradeChange}
-                  />
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Checkbox id="coalition-calculator" checked={bonus} onCheckedChange={handleCoalitionBonusChange} />
-                  <Label htmlFor="coalition-calculator" className="text-sm font-medium">
-                    Coalition bonus (+4.2%)
-                  </Label>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end gap-1.5">
-              <Button type="button" variant="ghost" onClick={resetCalculator}>
-                Reset
-              </Button>
-              <Button type="submit">Calculate</Button>
-            </CardFooter>
-          </form>
-        </Card>
-        <Card className="md:col-span-1 flex-col flex justify-center items-center bg-popover">
-          <CardContent className="pt-6 flex-col flex items-center gap-5">
-            <FaCalculator className="w-20 h-20" />
-            <div className="flex-col flex items-center">
-              <span className="text-base font-medium text-muted-foreground">Level</span>
-              <span className="text-2xl font-bold">{newLevel.toFixed(2)}</span>
-              <span className="text-base font-medium text-green-600">+{progression.toFixed(2)}</span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
