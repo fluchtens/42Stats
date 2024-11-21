@@ -6,6 +6,7 @@ import { Error } from "./components/pages/error/Error";
 import { Home } from "./components/pages/home/Home";
 import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
 import { RncpChecker } from "./components/pages/rncp/Rncp";
+import { Settings } from "./components/pages/settings/Settings";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
@@ -17,6 +18,7 @@ function App() {
       errorElement: <Error />,
       children: [
         { path: "/", element: <Home /> },
+        { path: "/settings", element: <Settings /> },
         { path: "/calculator", element: <Calculator /> },
         { path: "/leaderboard", element: <Leaderboard /> },
         { path: "/rncp", element: <RncpChecker /> },
