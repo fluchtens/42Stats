@@ -9,7 +9,7 @@ import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
 const chartConfig = {
   studentCount: {
     label: "Students",
-    color: "hsl(var(--chart))",
+    color: "hsl(var(--chart-line))",
   },
 } satisfies ChartConfig;
 

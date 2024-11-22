@@ -8,7 +8,7 @@ import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
 const chartConfig = {
   averageLevel: {
     label: "Level",
-    color: "hsl(var(--chart))",
+    color: "hsl(var(--chart-line))",
   },
 } satisfies ChartConfig;
 

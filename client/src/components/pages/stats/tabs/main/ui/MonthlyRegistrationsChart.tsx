@@ -8,7 +8,6 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 const chartConfig = {
   count: {
     label: "Registrations",
-    color: "hsl(var(--chart))",
   },
 } satisfies ChartConfig;
 
@@ -50,10 +49,10 @@ export const MonthlyRegistrationsChart = () => {
               <Line
                 dataKey="count"
                 type="natural"
-                stroke="hsl(var(--chart))"
+                stroke="hsl(var(--chart-line))"
                 strokeWidth={2}
                 dot={{
-                  fill: "hsl(var(--chart))",
+                  fill: "hsl(var(--chart-line))",
                 }}
                 activeDot={{
                   r: 6,
