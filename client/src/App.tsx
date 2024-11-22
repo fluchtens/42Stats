@@ -28,7 +28,7 @@ function App() {
   ]);
 
   return (
-    <ThemeProvider defaultTheme="system" storageKey="theme">
+    <ThemeProvider defaultTheme="dark" storageKey="theme">
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
