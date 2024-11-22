@@ -63,7 +63,7 @@ export const PoolDateSelector = ({ dates, poolDate, setPoolDate }: PoolDateSelec
             <CommandList>
               {Object.entries(groupedDates).map(([year, dates]) => (
                 <CommandGroup key={year} className="py-0">
-                  <p className="px-2 py-1.5 text-sm font-semibold text-secondary-foreground">{year}</p>
+                  <p className="px-2 py-1.5 text-sm font-semibold">{year}</p>
                   {dates.map((date, index) => (
                     <CommandItem
                       key={index}
