@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fluchtens.stats.account.dtos.CampusAccountCountDTO;
 import com.fluchtens.stats.account.registration.Registration;
 import com.fluchtens.stats.core.JsonResponse;
 
@@ -46,5 +48,13 @@ public class AccountController {
     @GetMapping("accounts/cumulative-users")
     public List<Registration> getCumulativeUsers() {
         return this.accountService.getCumulativeUsers();
+    }
+
+    @GetMapping("/accounts/campus-counts")
+    public List<CampusAccountCountDTO> getCampusAccountCounts(
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "5") int pageSize
+    ) {
+        return this.accountService.getCampusAccountCounts(page, pageSize);
     }
 }

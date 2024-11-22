@@ -1,5 +1,3 @@
-"use server";
-
 export const Footer = () => (
   <footer className="px-4 py-3 border-t">
     <div className="max-w-screen-lg m-auto flex-col flex justify-center items-center gap-1 text-center">

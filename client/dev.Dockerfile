@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:22-alpine3.19
 
 RUN apk update && \
     npm install -g pnpm
@@ -9,6 +9,6 @@ COPY package.json .
 RUN pnpm install
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5173
 
 CMD ["pnpm", "run", "dev"]

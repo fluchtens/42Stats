@@ -10,11 +10,15 @@ import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fluchtens.stats.account.dtos.CampusAccountCountDTO;
 import com.fluchtens.stats.account.registration.Registration;
 import com.fluchtens.stats.core.JsonResponse;
 
@@ -93,4 +97,18 @@ public class AccountService {
         }
         return cumulativeRegistrations;
     }
+
+    public List<CampusAccountCountDTO> getCampusAccountCounts(int page, int pageSize) {
+    Pageable pageable = PageRequest.of(page - 1, pageSize);
+    Page<Object[]> results = accountRepository.countAccountsByCampus(pageable);
+    List<CampusAccountCountDTO> campusAccountCounts = new ArrayList<>();
+    
+    for (Object[] result : results) {
+        String campusName = (String) result[0];
+        long count = (long) result[1];
+        campusAccountCounts.add(new CampusAccountCountDTO(campusName, count));
+    }
+    return campusAccountCounts;
+}
+
 }
