@@ -22,4 +22,11 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("SELECT COUNT(a) FROM Account a WHERE a.createdAt < :startDate")
     long countUsersBeforeDate(@Param("startDate") LocalDateTime startDate);
+
+    @Query("SELECT c.name, COUNT(a) " +
+            "FROM Account a " +
+            "JOIN Campus c ON a.campusId = c.id " +
+            "GROUP BY c.name " +
+            "ORDER BY COUNT(a) DESC")
+    List<Object[]> countAccountsByCampus();
 }

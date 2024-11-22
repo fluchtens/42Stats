@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fluchtens.stats.account.dtos.CampusAccountCountDTO;
 import com.fluchtens.stats.account.registration.Registration;
 import com.fluchtens.stats.core.JsonResponse;
 
@@ -92,5 +93,18 @@ public class AccountService {
             cumulativeRegistrations.add(registration);
         }
         return cumulativeRegistrations;
+    }
+
+    public List<CampusAccountCountDTO> getCampusAccountCounts() {
+        List<Object[]> results = accountRepository.countAccountsByCampus();
+        List<CampusAccountCountDTO> campusAccountCounts = new ArrayList<>();
+
+        for (Object[] result : results) {
+            String campusName = (String) result[0];
+            long count = (long) result[1];
+            campusAccountCounts.add(new CampusAccountCountDTO(campusName, count));
+        }
+
+        return campusAccountCounts;
     }
 }
