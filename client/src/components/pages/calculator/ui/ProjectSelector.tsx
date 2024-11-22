@@ -31,7 +31,7 @@ export const ProjectSelector = ({ projects, selectedProject, setSelectedProject 
         </Button>
       </PopoverTrigger>
       <Command>
-        <PopoverContent className="p-0 popover-content-width-full">
+        <PopoverContent className="p-0" style={{ width: "var(--radix-popover-trigger-width)" }}>
           <CommandInput placeholder="Search a project..." className="h-9" />
           <CommandEmpty>No project found.</CommandEmpty>
           <CommandList>
