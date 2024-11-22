@@ -10,22 +10,33 @@ import { Stats } from "./components/pages/stats/Stats";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
+const routes = [
+  {
+    path: "/",
+    element: <Layout />,
+    errorElement: <Error />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/settings", element: <Settings /> },
+      { path: "/calculator", element: <Calculator /> },
+      { path: "/leaderboard", element: <Leaderboard /> },
+      { path: "/stats", element: <Stats /> },
+      { path: "/rncp", element: <RncpChecker /> },
+    ],
+  },
+];
+
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Layout />,
-      errorElement: <Error />,
-      children: [
-        { path: "/", element: <Home /> },
-        { path: "/settings", element: <Settings /> },
-        { path: "/calculator", element: <Calculator /> },
-        { path: "/leaderboard", element: <Leaderboard /> },
-        { path: "/stats", element: <Stats /> },
-        { path: "/rncp", element: <RncpChecker /> },
-      ],
+  const router = createBrowserRouter(routes, {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
     },
-  ]);
+  });
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
