@@ -36,8 +36,8 @@ export const Stats = () => {
               <TabsTrigger value="42">42</TabsTrigger>
               <TabsTrigger value="42stats">42Stats</TabsTrigger>
             </TabsList>
-            <MainStatsTab />
             <FortyTwoStatsTab />
+            <MainStatsTab />
           </Tabs>
         </div>
       )}
