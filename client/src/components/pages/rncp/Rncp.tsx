@@ -46,7 +46,7 @@ export const RncpChecker = () => {
   return (
     <>
       {user && (
-        <div className="max-w-screen-2xl m-auto">
+        <div className="max-w-screen-xl m-auto">
           <Alert variant="destructive" className="mb-3">
             <ExclamationTriangleIcon className="h-4 w-4" />
             <AlertTitle>BETA</AlertTitle>
@@ -63,7 +63,7 @@ export const RncpChecker = () => {
               <RncpTabTrigger value="database-architecture-and-data" rncp="RNCP 7" title="Database architecture and data" />
             </TabsList>
             {rncp && (
-              <Tabs>
+              <>
                 <RncpTabContent value="web-and-mobile-application-development">
                   <RncpCard title="Suite" projects={rncp.web.suite.projects} />
                   <RncpCard title="Web" projects={rncp.web.web.projects}>
@@ -109,7 +109,7 @@ export const RncpChecker = () => {
                     <PoolProjects title="Python for Data Science" projects={rncp.database.ai.python} />
                   </RncpCard>
                 </RncpTabContent>
-              </Tabs>
+              </>
             )}
           </Tabs>
         </div>

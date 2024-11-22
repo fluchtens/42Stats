@@ -7,6 +7,6 @@ interface RncpTabContentProps {
 
 export const RncpTabContent = ({ value, children }: RncpTabContentProps) => (
   <TabsContent value={value} className="mt-3">
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:flex gap-3">{children}</div>
+    <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-3">{children}</div>
   </TabsContent>
 );

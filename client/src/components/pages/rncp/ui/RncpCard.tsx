@@ -11,7 +11,7 @@ export const RncpCard = ({ title, projects, children }: RncpCardProps) => (
     <span className="text-xl font-semibold">{title}</span>
     <ul className="mt-2 flex flex-col gap-2">
       {projects.map((project: Project) => (
-        <li className="text-sm font-extralight" key={project.id}>
+        <li className="text-sm font-light" key={project.id}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-sm bg-red-500" />
