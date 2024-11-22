@@ -39,8 +39,9 @@ export const MonthlyRegistrationsChart = () => {
               accessibilityLayer
               data={chartData}
               margin={{
-                left: 15,
-                right: 15,
+                left: 16,
+                right: 16,
+                top: 10,
               }}
             >
               <CartesianGrid vertical={false} />
