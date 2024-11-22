@@ -1,4 +1,5 @@
 import { Account } from "@/types/models/Account";
+import { CampusAccountCountDTO } from "@/types/utils/CampusAccountCountDTO";
 import { Registration } from "@/types/utils/Registration";
 import { ApiRes, fetchAPI } from "./CoreService";
 
@@ -71,6 +72,17 @@ export async function getMonthlyRegistrations(): Promise<Registration[] | null> 
 export async function getCumulativeUsers(): Promise<Registration[] | null> {
   try {
     const data = await fetchAPI<Registration[]>("/accounts/cumulative-users", {
+      method: "GET",
+    });
+    return data;
+  } catch (error: any) {
+    return null;
+  }
+}
+
+export async function getCampusAccountCounts(): Promise<CampusAccountCountDTO[] | null> {
+  try {
+    const data = await fetchAPI<CampusAccountCountDTO[]>("/accounts/campus-counts", {
       method: "GET",
     });
     return data;

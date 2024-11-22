@@ -3,6 +3,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { getAccountsCount, getActiveAccountsCount } from "@/services/AccountService";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../../ui/StatsCard";
+import { CampusAccountCountsChart } from "./ui/CampusAccountCountsChart";
 import { CumulativeUsersChart } from "./ui/CumulativeUsersChart";
 import { MonthlyRegistrationsChart } from "./ui/MonthlyRegistrationsChart";
 
@@ -36,6 +37,7 @@ export const MainStatsTab = () => {
       <div className="mt-2 md:mt-4 grid md:grid-cols-2 gap-2 md:gap-4">
         <CumulativeUsersChart />
         <MonthlyRegistrationsChart />
+        <CampusAccountCountsChart />
       </div>
     </TabsContent>
   );
