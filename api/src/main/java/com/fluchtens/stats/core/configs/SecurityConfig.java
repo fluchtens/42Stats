@@ -50,6 +50,11 @@ public class SecurityConfig {
 			.logout((logout) -> logout
 				.logoutSuccessHandler((request, response, authentication) -> {
                     response.setStatus(HttpServletResponse.SC_OK);
+					JSONObject jsonResponse = new JSONObject();
+                    jsonResponse.put("message", "Successfully logged out.");
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					response.getWriter().write(jsonResponse.toString());
                 })
 			)
 			.sessionManagement((session) -> session

@@ -13,14 +13,14 @@ export async function getAccount(): Promise<Account | null> {
   }
 }
 
-export async function logout(): Promise<boolean> {
+export async function logout(): Promise<ApiRes> {
   try {
-    await fetchAPI<Account>("/logout", {
+    const data = await fetchAPI<ApiRes>("/logout", {
       method: "GET",
     });
-    return true;
+    return { success: true, message: data.message };
   } catch (error: any) {
-    return false;
+    return { success: false, message: error.message };
   }
 }
 
