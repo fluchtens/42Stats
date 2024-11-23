@@ -122,7 +122,7 @@ export function Calculator() {
                         min="0"
                         max="50"
                         placeholder="Your current level"
-                        value={isNaN(level) ? "" : level}
+                        value={isNaN(level) ? "" : level.toFixed(2)}
                         onChange={handleLevelChange}
                       />
                     </div>
