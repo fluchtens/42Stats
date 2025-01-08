@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `campus_id` INT NOT NULL,
   `blackholed` BIT(1) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_campus_id` FOREIGN KEY (`campus_id`) REFERENCES `campus`(`id`) 
+  CONSTRAINT `fk_campus_id` FOREIGN KEY (`campus_id`) REFERENCES `campus`(`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE
 )
