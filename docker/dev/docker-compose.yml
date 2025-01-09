@@ -67,6 +67,8 @@ services:
       VITE_API_URL: ${VITE_API_URL}
       CLIENT_URL: ${CLIENT_URL}
       MYSQL_DB_URL: ${MYSQL_DB_URL}
+      FORTY_TWO_UID: ${FORTY_TWO_UID}
+      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
     depends_on:
       - database
     ports:
