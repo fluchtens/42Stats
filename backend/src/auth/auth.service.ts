@@ -1,17 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { DatabaseService } from 'src/core/database/database.service';
-import { User } from 'src/user/types/user.type';
-import { UserService } from 'src/user/user.service';
+import { AccountService } from 'src/account/account.service';
+import { Account } from 'src/account/types/account.type';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly databaseService: DatabaseService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly accountService: AccountService) {}
 
-  async validateUser(profile: any): Promise<User> {
+  async validateUser(profile: any): Promise<Account> {
     const { id, login, email, image, cursus_users, campus_users } =
       profile._json;
 
@@ -23,7 +19,7 @@ export class AuthService {
       (campus) => campus.is_primary === true,
     );
 
-    const user: User = {
+    const account: Account = {
       id,
       login,
       email,
@@ -32,16 +28,16 @@ export class AuthService {
       campus_id: primaryCampus?.campus_id ?? null,
     };
 
-    const existingUser = await this.userService.getUserById(id);
-    if (!existingUser) {
-      await this.userService.createUser(user);
-      return user;
+    const existingAccount = await this.accountService.getAccountById(id);
+    if (!existingAccount) {
+      await this.accountService.createAccount(account);
+      return account;
     }
-    return existingUser;
+    return existingAccount;
   }
 
   async fortyTwoAuth(req: Request, res: Response) {
-    const user = req.user as User;
+    const user = req.user as Account;
     if (user && user.id) {
       req.session.user = {
         id: user.id,
@@ -53,9 +49,9 @@ export class AuthService {
   async logout(req: Request, res: Response) {
     req.session.destroy((err) => {
       if (err) {
-        res.status(400).send('Unable to log out');
+        throw new BadRequestException('Unable to log out');
       } else {
-        res.status(200).send('Logout successful');
+        return { message: 'Logged out' };
       }
     });
   }

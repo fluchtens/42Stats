@@ -28,6 +28,13 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: [process.env.CLIENT_URL],
+    allowedHeaders: ['Authorization', 'Content-Type', 'Accept-Language'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH'],
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

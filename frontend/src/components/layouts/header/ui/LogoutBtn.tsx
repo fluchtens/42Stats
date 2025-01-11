@@ -1,7 +1,7 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { logout } from "@/services/AccountService";
+import { logout } from "@/services/AuthService";
 
 export const LogoutBtn = () => {
   const { updateUser } = useAuth();
