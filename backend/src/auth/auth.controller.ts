@@ -14,12 +14,6 @@ export class AuthController {
     return this.authService.fortyTwoAuth(req, res);
   }
 
-  @Get('caca')
-  @UseGuards(FortyTwoAuthGuard)
-  async caca(@Res() res: Response) {
-    res.send('caca');
-  }
-
   @Post('logout')
   @UseGuards(FortyTwoAuthGuard)
   async logout(@Req() req: Request, @Res() res: Response) {
