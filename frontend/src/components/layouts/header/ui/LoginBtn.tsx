@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const LoginBtn = () => {
   const handleLogin = () => {
-    window.location.href = `${API_URL}/oauth2/authorization/42`;
+    window.location.href = `${API_URL}/auth/42`;
   };
 
   return (
