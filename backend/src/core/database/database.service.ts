@@ -17,8 +17,8 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     try {
-      // console.log('process.env.MYSQL_DB_URL', process.env.MYSQL_DB_URL);
-      this.connection = await createConnection(process.env.MYSQL_DB_URL);
+      // console.log('process.env.DATABASE_URL', process.env.DATABASE_URL);
+      this.connection = await createConnection(process.env.DATABASE_URL);
       this.logger.log('Connected to MySQL');
       await this.runMigrations();
     } catch (error) {
