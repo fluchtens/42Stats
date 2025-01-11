@@ -1,4 +1,4 @@
-MODE ?= prod
+MODE ?= dev
 COMPOSE_FILE = docker/${MODE}/docker-compose.yml
 DOCKER_COMPOSE = docker-compose -f ${COMPOSE_FILE}
 PROJECT=42stats

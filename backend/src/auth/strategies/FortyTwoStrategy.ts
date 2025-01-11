@@ -9,15 +9,12 @@ export class FortyTwoStrategy extends PassportStrategy(Strategy, '42') {
     super({
       clientID: process.env.FORTY_TWO_UID,
       clientSecret: process.env.FORTY_TWO_SECRET,
-      callbackURL: 'http://localhost:3000' + '/auth/42/callback',
+      callbackURL: 'http://localhost:3000' + '/auth/42',
       scope: 'public',
     });
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any) {
-    // console.log('accessToken', accessToken);
-    // console.log('refreshToken', refreshToken);
-    // console.log('profile', profile);
     const user = await this.authService.validateUser(profile);
     return user;
   }

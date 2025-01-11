@@ -13,6 +13,11 @@ services:
       - 42stats_database:/var/lib/mysql
     networks:
       - 42stats_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     restart: always
 
   phpmyadmin:
@@ -31,31 +36,16 @@ services:
       - 42stats_network
     restart: always
 
-  # api:
-  #   container_name: 42stats-api
-  #   image: 42stats-api
-  #   platform: linux/amd64
-  #   build:
-  #     context: ../../api
-  #     dockerfile: dev.Dockerfile
-  #   environment:
-  #     VITE_API_URL: ${VITE_API_URL}
-  #     CLIENT_URL: ${CLIENT_URL}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     FORTY_TWO_UID: ${FORTY_TWO_UID}
-  #     FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
-  #   depends_on:
-  #     - database
-  #   ports:
-  #     - 8080:8080
-  #   volumes:
-  #     - ../../api:/app
-  #     - ~/.m2:/root/.m2
-  #   networks:
-  #     - 42stats_network
-  #   restart: always
+  redis:
+    container_name: 42stats-redis
+    image: redis:7.4.1
+    ports:
+      - 6379:6379
+    volumes:
+      - 42stats_redis:/data
+    networks:
+      - 42stats_network
+    restart: always
 
   backend:
     container_name: 42stats-backend
@@ -71,6 +61,7 @@ services:
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
     depends_on:
       - database
+      - redis
     ports:
       - 3000:3000
     volumes:
@@ -106,3 +97,5 @@ networks:
 volumes:
   42stats_database:
     name: 42stats_database
+  42stats_redis:
+    name: 42stats_redis
