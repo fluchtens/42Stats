@@ -20,7 +20,7 @@ export function AverageLevelChart() {
     if (!fetchedCampuses || fetchedCampuses.length === 0) {
       return;
     }
-    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.averageLevel - a.averageLevel);
+    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.average_level - a.average_level);
     const newCampuses = sortedCampuses.map((campus, index) => ({ ...campus, displayName: `${index + 1}. ${campus.name}` }));
     setCampuses(newCampuses);
   };

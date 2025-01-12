@@ -21,7 +21,7 @@ export function StudentCountChart() {
     if (!fetchedCampuses || fetchedCampuses.length === 0) {
       return;
     }
-    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.studentCount - a.studentCount);
+    const sortedCampuses = fetchedCampuses.sort((a: Campus, b: Campus) => b.student_count - a.student_count);
     const newCampuses = sortedCampuses.map((campus, index) => ({ ...campus, displayName: `${index + 1}. ${campus.name}` }));
     setCampuses(newCampuses);
   };

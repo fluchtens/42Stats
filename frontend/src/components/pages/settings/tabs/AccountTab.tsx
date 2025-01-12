@@ -65,7 +65,7 @@ export const AccountTab = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-semibold">Campus ID</span>
-                <span className="text-base font-normal">{user.campusId}</span>
+                <span className="text-base font-normal">{user.campus_id}</span>
               </div>
             </div>
             <Avatar className="w-48 h-48 rounded-full">

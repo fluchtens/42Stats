@@ -69,7 +69,7 @@ export const Leaderboard = () => {
 
     const campus = campuses?.find((campus) => campus.id === campusId);
     if (campus) {
-      const totalPages = Math.ceil(campus.studentCount / pageSize);
+      const totalPages = Math.ceil(campus.student_count / pageSize);
       setTotalPages(totalPages);
     }
 
@@ -95,7 +95,7 @@ export const Leaderboard = () => {
 
     updateCampuses();
     if (!campusId) {
-      setCampusId(user.campusId);
+      setCampusId(user.campus_id);
     } else {
       updateCampusPools();
       if (poolDate) {
