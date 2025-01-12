@@ -4,7 +4,7 @@ import { fetchAPI } from "./CoreService";
 
 export async function getCampuses(): Promise<Campus[] | null> {
   try {
-    const data = await fetchAPI<Campus[]>("/campuses", {
+    const data = await fetchAPI<Campus[]>("/campus/all", {
       method: "GET",
     });
     return data;
@@ -15,7 +15,7 @@ export async function getCampuses(): Promise<Campus[] | null> {
 
 export async function getCampusCount(): Promise<number | null> {
   try {
-    const data = await fetchAPI<number>("/campuses/count", {
+    const data = await fetchAPI<number>("/campus/count", {
       method: "GET",
     });
     return data;
@@ -26,7 +26,7 @@ export async function getCampusCount(): Promise<number | null> {
 
 export async function getCampus(id: number): Promise<Campus | null> {
   try {
-    const data = await fetchAPI<Campus>(`/campuses/${id}`, {
+    const data = await fetchAPI<Campus>(`/campus/${id}`, {
       method: "GET",
     });
     return data;
