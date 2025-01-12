@@ -6,9 +6,9 @@ export const AccountSchema = z.object({
   login: z.string(),
   image: z.string(),
   level: z.number(),
-  campusId: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  campus_id: z.number(),
+  created_at: z.string(),
+  updated_at: z.string(),
 });
 
 export type Account = z.infer<typeof AccountSchema>;
