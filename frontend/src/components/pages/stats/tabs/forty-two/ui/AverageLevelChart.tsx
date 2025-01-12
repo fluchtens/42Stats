@@ -48,12 +48,12 @@ export function AverageLevelChart() {
                 barCategoryGap={2}
               >
                 <CartesianGrid horizontal={false} />
-                <XAxis type="number" dataKey="averageLevel" hide />
+                <XAxis type="number" dataKey="average_level" hide />
                 <YAxis type="category" dataKey="name" tickLine={false} tickMargin={0} axisLine={false} hide />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                <Bar dataKey="averageLevel" fill="var(--color-averageLevel)" radius={4}>
+                <Bar dataKey="average_level" fill="var(--color-averageLevel)" radius={4}>
                   <LabelList dataKey="displayName" position="insideLeft" offset={-120} fontSize={12} width={200} className="fill-muted-foreground" />
-                  <LabelList dataKey="averageLevel" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
+                  <LabelList dataKey="average_level" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
                 </Bar>
               </BarChart>
             </ChartContainer>

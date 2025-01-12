@@ -49,12 +49,12 @@ export function StudentCountChart() {
                 barCategoryGap={2}
               >
                 <CartesianGrid horizontal={false} />
-                <XAxis type="number" dataKey="studentCount" hide />
+                <XAxis type="number" dataKey="student_count" hide />
                 <YAxis type="category" dataKey="name" tickLine={false} tickMargin={0} axisLine={false} hide />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                <Bar dataKey="studentCount" fill="var(--color-studentCount)" radius={4}>
+                <Bar dataKey="student_count" fill="var(--color-studentCount)" radius={4}>
                   <LabelList dataKey="displayName" position="insideLeft" offset={-120} fontSize={12} width={200} className="fill-muted-foreground" />
-                  <LabelList dataKey="studentCount" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
+                  <LabelList dataKey="student_count" position="right" offset={8} className="fill-muted-foreground" fontSize={11} />
                 </Bar>
               </BarChart>
             </ChartContainer>
