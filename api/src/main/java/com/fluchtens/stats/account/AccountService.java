@@ -99,16 +99,15 @@ public class AccountService {
     }
 
     public List<CampusAccountCountDTO> getCampusAccountCounts(int page, int pageSize) {
-    Pageable pageable = PageRequest.of(page - 1, pageSize);
-    Page<Object[]> results = accountRepository.countAccountsByCampus(pageable);
-    List<CampusAccountCountDTO> campusAccountCounts = new ArrayList<>();
-    
-    for (Object[] result : results) {
-        String campusName = (String) result[0];
-        long count = (long) result[1];
-        campusAccountCounts.add(new CampusAccountCountDTO(campusName, count));
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Object[]> results = accountRepository.countAccountsByCampus(pageable);
+        List<CampusAccountCountDTO> campusAccountCounts = new ArrayList<>();
+        
+        for (Object[] result : results) {
+            String campusName = (String) result[0];
+            long count = (long) result[1];
+            campusAccountCounts.add(new CampusAccountCountDTO(campusName, count));
+        }
+        return campusAccountCounts;
     }
-    return campusAccountCounts;
-}
-
 }

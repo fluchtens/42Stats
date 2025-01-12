@@ -8,9 +8,14 @@ export class AccountRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async getAccountById(id: number): Promise<Account> {
+  public async getAccountById(id: number): Promise<Account> {
     const query = `
-        SELECT * FROM account WHERE id = ?
+        SELECT
+          *
+        FROM
+          account
+        WHERE
+          id = ?
       `;
 
     const params = [id];
@@ -20,14 +25,15 @@ export class AccountRepository {
       return rows[0];
     } catch (error) {
       this.logger.error(`Failed to get account with id ${id}`, error.message);
-      throw new Error('Failed to get account');
     }
   }
 
-  async createAccount(account: Account): Promise<void> {
+  public async createAccount(account: Account): Promise<void> {
     const query = `
-      INSERT INTO account (id, login, email, image, level, campus_id)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO
+        account (id, login, email, image, level, campus_id)
+      VALUES
+        (?, ?, ?, ?, ?, ?)
     `;
 
     const params = [
@@ -47,13 +53,15 @@ export class AccountRepository {
         `Failed to insert account ${account.login}`,
         error.message,
       );
-      throw new Error('Failed to insert account');
     }
   }
 
-  async deleteAccount(id: number): Promise<void> {
+  public async deleteAccount(id: number): Promise<void> {
     const query = `
-      DELETE FROM account WHERE id = ?
+      DELETE FROM
+        account
+      WHERE
+        id = ?
     `;
     const params = [id];
 
@@ -65,7 +73,124 @@ export class AccountRepository {
         `Failed to delete account with id ${id}`,
         error.message,
       );
-      throw new Error('Failed to delete account');
+    }
+  }
+
+  public async getAccountCount(): Promise<number> {
+    const query = `
+      SELECT
+        COUNT(*) as count
+      FROM
+        account
+    `;
+
+    try {
+      const rows = await this.databaseService.query(query);
+      return rows[0].count;
+    } catch (error) {
+      this.logger.error(`Failed to get account count`, error.message);
+    }
+  }
+
+  public async getActiveAccountCount(
+    startOfMonth: Date,
+    endOfMonth: Date,
+  ): Promise<number> {
+    const query = `
+      SELECT
+        COUNT(*) as count
+      FROM
+        account
+      WHERE
+        updated_at BETWEEN ? AND ?
+    `;
+    const params = [startOfMonth, endOfMonth];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].count;
+    } catch (error) {
+      this.logger.error(`Failed to get active account count`, error.message);
+    }
+  }
+
+  public async findMonthlyRegistrations(
+    startDate: Date,
+  ): Promise<{ year: number; month: number; count: number }[]> {
+    const query = `
+      SELECT 
+        YEAR(created_at) AS year, 
+        MONTH(created_at) AS month, 
+        COUNT(*) AS count
+      FROM
+        account
+      WHERE
+        created_at >= ?
+      GROUP BY
+        YEAR(created_at),
+        MONTH(created_at)
+      ORDER BY
+        YEAR(created_at),
+        MONTH(created_at)
+    `;
+    const params = [startDate];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows.map((row) => ({
+        year: row.year,
+        month: row.month,
+        count: row.count,
+      }));
+    } catch (error) {
+      this.logger.error(`Failed to fetch monthly registrations`, error.message);
+    }
+  }
+
+  public async countAccountBeforeDate(date: Date): Promise<number> {
+    const query = `
+      SELECT COUNT(*) AS count
+      FROM account
+      WHERE created_at < ?
+    `;
+    const params = [date];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].count;
+    } catch (error) {
+      this.logger.error('Failed to count users before date');
+    }
+  }
+
+  public async getCampusAccountCounts(
+    page: number,
+    pageSize: number,
+  ): Promise<{ campus: string; count: number }[]> {
+    const offset = (page - 1) * pageSize;
+
+    const query = `
+      SELECT
+        campus.name as campus,
+        COUNT(account.id) as count
+      FROM
+        account
+      JOIN
+        campus ON account.campus_id = campus.id
+      GROUP BY
+        campus.name
+      ORDER BY
+        count DESC
+      LIMIT
+        ${pageSize}
+      OFFSET
+        ${offset}
+    `;
+
+    try {
+      return await this.databaseService.query(query);
+    } catch (error) {
+      this.logger.error('Failed to get campus account counts');
     }
   }
 }
