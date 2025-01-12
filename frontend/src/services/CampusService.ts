@@ -37,7 +37,7 @@ export async function getCampus(id: number): Promise<Campus | null> {
 
 export async function getCampusPools(id: number): Promise<PoolDate[] | null> {
   try {
-    const data = await fetchAPI<PoolDate[]>(`/campuses/${id}/pools`, {
+    const data = await fetchAPI<PoolDate[]>(`/campus/${id}/pools`, {
       method: "GET",
     });
     return data;

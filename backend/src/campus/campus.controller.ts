@@ -21,4 +21,9 @@ export class CampusController {
   public async getCampusById(@Param('id') id: number) {
     return this.campusService.getCampusById(id);
   }
+
+  @Get(':id/pools')
+  public async getCampusPools(@Param('id') id: number) {
+    return this.campusService.getCampusPools(id);
+  }
 }

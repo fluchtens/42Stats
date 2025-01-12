@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { PoolDate } from 'src/campus/types/pool-date.type';
 import { DatabaseService } from 'src/core/database/database.service';
 import { User } from './types/user.type';
 
@@ -124,6 +125,27 @@ export class UserRepository {
       return rows[0].count;
     } catch (error) {
       this.logger.error(`Failed to get campus users: ${error.message}`);
+    }
+  }
+
+  public async getUserCampusPoolDate(campusId: number): Promise<PoolDate[]> {
+    const query = `
+          SELECT
+            pool_month as month,
+            pool_year as year
+          FROM
+            user
+          WHERE
+            campus_id = ?
+        `;
+    const params = [campusId];
+
+    try {
+      return await this.databaseService.query(query, params);
+    } catch (error) {
+      this.logger.error(
+        `Failed to get pool date for campus with id ${campusId}: ${error.message}`,
+      );
     }
   }
 }
