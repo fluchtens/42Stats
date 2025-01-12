@@ -149,9 +149,12 @@ export class AccountRepository {
 
   public async countAccountBeforeDate(date: Date): Promise<number> {
     const query = `
-      SELECT COUNT(*) AS count
-      FROM account
-      WHERE created_at < ?
+      SELECT
+        COUNT(*) AS count
+      FROM
+        account
+      WHERE
+        created_at < ?
     `;
     const params = [date];
 
@@ -167,8 +170,6 @@ export class AccountRepository {
     page: number,
     pageSize: number,
   ): Promise<{ campus: string; count: number }[]> {
-    const offset = (page - 1) * pageSize;
-
     const query = `
       SELECT
         campus.name as campus,
@@ -182,13 +183,15 @@ export class AccountRepository {
       ORDER BY
         count DESC
       LIMIT
-        ${pageSize}
+        ?
       OFFSET
-        ${offset}
+        ?
     `;
+    const offset = (page - 1) * pageSize;
+    const params = [`${pageSize}`, `${offset}`];
 
     try {
-      return await this.databaseService.query(query);
+      return await this.databaseService.query(query, params);
     } catch (error) {
       this.logger.error('Failed to get campus account counts');
     }
