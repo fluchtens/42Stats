@@ -11,9 +11,9 @@ export class CampusRepository {
   public async getCampuses(): Promise<Campus[]> {
     const query = `
       SELECT
-      *
+        *
       FROM
-      campus
+        campus
       `;
 
     try {
@@ -26,9 +26,9 @@ export class CampusRepository {
   public async getCampusCount(): Promise<number> {
     const query = `
       SELECT
-      COUNT(*) as count
+        COUNT(*) as count
       FROM
-      campus
+        campus
       `;
 
     try {
