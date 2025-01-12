@@ -9,6 +9,8 @@ COPY package.json .
 RUN pnpm install
 COPY . .
 
+ENV TZ=Europe/Paris
+
 EXPOSE 3000
 
 CMD ["pnpm", "run", "start:dev"]
