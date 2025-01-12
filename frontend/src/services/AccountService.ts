@@ -5,7 +5,7 @@ import { ApiRes, fetchAPI } from "./CoreService";
 
 export async function getAccount(): Promise<Account | null> {
   try {
-    const data = await fetchAPI<Account>("/account/session", {
+    const data = await fetchAPI<Account>("/account", {
       method: "GET",
     });
     return data;
@@ -36,7 +36,7 @@ export async function getAccountsCount(): Promise<number | null> {
   }
 }
 
-export async function getActiveAccountsCount(): Promise<number | null> {
+export async function getMonthlyActiveAccountCount(): Promise<number | null> {
   try {
     const data = await fetchAPI<number>("/account/monthly/active/count", {
       method: "GET",
@@ -58,7 +58,7 @@ export async function getMonthlyRegistrations(): Promise<Registration[] | null> 
   }
 }
 
-export async function getCumulativeUsers(): Promise<Registration[] | null> {
+export async function getMonthlyCumulativeRegistrations(): Promise<Registration[] | null> {
   try {
     const data = await fetchAPI<Registration[]>("/account/monthly/registrations/cumulative", {
       method: "GET",

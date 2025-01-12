@@ -14,7 +14,7 @@ import { AccountService } from './account.service';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Get('session')
+  @Get()
   async getAccountSession(@Session() session: Record<string, any>) {
     return await this.accountService.getAccountSession(session);
   }

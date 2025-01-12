@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/core/PageHeader";
 import { TabsContent } from "@/components/ui/tabs";
-import { getAccountsCount, getActiveAccountsCount } from "@/services/AccountService";
+import { getAccountsCount, getMonthlyActiveAccountCount } from "@/services/AccountService";
 import { useEffect, useState } from "react";
 import { StatsCard } from "../../ui/StatsCard";
 import { CampusAccountCountsChart } from "./ui/CampusAccountCountsChart";
@@ -17,7 +17,7 @@ export const MainStatsTab = () => {
       setUserCount(fetchedAccountsCount);
     }
 
-    const fetchedActiveAccountsCount = await getActiveAccountsCount();
+    const fetchedActiveAccountsCount = await getMonthlyActiveAccountCount();
     if (fetchedActiveAccountsCount) {
       setActiveUserCount(fetchedActiveAccountsCount);
     }

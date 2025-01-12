@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { getCumulativeUsers } from "@/services/AccountService";
+import { getMonthlyCumulativeRegistrations } from "@/services/AccountService";
 import { Registration } from "@/types/utils/Registration";
 import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
@@ -15,7 +15,7 @@ export const CumulativeUsersChart = () => {
   const [chartData, setChartData] = useState<Registration[]>([]);
 
   const fetchData = async () => {
-    const data = await getCumulativeUsers();
+    const data = await getMonthlyCumulativeRegistrations();
     if (data) {
       setChartData(data);
     }
