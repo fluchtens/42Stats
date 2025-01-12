@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { AccountService } from 'src/account/account.service';
+import { AccountRepository } from 'src/account/account.repository';
 import { Account } from 'src/account/types/account.type';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly accountService: AccountService) {}
+  constructor(private readonly accountRepository: AccountRepository) {}
 
   async validateUser(profile: any): Promise<Account> {
     const { id, login, email, image, cursus_users, campus_users } =
@@ -28,9 +28,9 @@ export class AuthService {
       campus_id: primaryCampus?.campus_id ?? null,
     };
 
-    const existingAccount = await this.accountService.getAccountById(id);
+    const existingAccount = await this.accountRepository.getAccountById(id);
     if (!existingAccount) {
-      await this.accountService.createAccount(account);
+      await this.accountRepository.createAccount(account);
       return account;
     }
     return existingAccount;
@@ -47,12 +47,15 @@ export class AuthService {
   }
 
   async logout(req: Request, res: Response) {
-    req.session.destroy((err) => {
-      if (err) {
-        throw new BadRequestException('Unable to log out');
-      } else {
-        return { message: 'Logged out' };
-      }
+    await new Promise<void>((resolve, reject) => {
+      req.session.destroy((err) => {
+        if (err) {
+          reject(new BadRequestException('Unable to log out'));
+        } else {
+          resolve();
+        }
+      });
     });
+    return { message: 'Logged out successfully' };
   }
 }

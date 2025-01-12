@@ -1,4 +1,4 @@
-import { Controller, Get, Session, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Session, UseGuards } from '@nestjs/common';
 import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
 import { AccountService } from './account.service';
 
@@ -10,5 +10,11 @@ export class AccountController {
   @UseGuards(FortyTwoAuthGuard)
   async getAccountSession(@Session() session: Record<string, any>) {
     return await this.accountService.getAccountSession(session);
+  }
+
+  @Delete()
+  @UseGuards(FortyTwoAuthGuard)
+  async deleteAccount(@Session() session: Record<string, any>) {
+    return await this.accountService.deleteAccount(session);
   }
 }

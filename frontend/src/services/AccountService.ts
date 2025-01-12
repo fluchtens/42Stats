@@ -16,7 +16,7 @@ export async function getAccount(): Promise<Account | null> {
 
 export async function deleteAccount(): Promise<ApiRes> {
   try {
-    const data = await fetchAPI<ApiRes>("/accounts", {
+    const data = await fetchAPI<ApiRes>("/account", {
       method: "DELETE",
     });
     return { success: true, message: data.message };
@@ -27,7 +27,7 @@ export async function deleteAccount(): Promise<ApiRes> {
 
 export async function getAccountsCount(): Promise<number | null> {
   try {
-    const data = await fetchAPI<number>("/accounts/count", {
+    const data = await fetchAPI<number>("/account/count", {
       method: "GET",
     });
     return data;
@@ -38,7 +38,7 @@ export async function getAccountsCount(): Promise<number | null> {
 
 export async function getActiveAccountsCount(): Promise<number | null> {
   try {
-    const data = await fetchAPI<number>("/accounts/active/count", {
+    const data = await fetchAPI<number>("/account/active/count", {
       method: "GET",
     });
     return data;
@@ -49,7 +49,7 @@ export async function getActiveAccountsCount(): Promise<number | null> {
 
 export async function getMonthlyRegistrations(): Promise<Registration[] | null> {
   try {
-    const data = await fetchAPI<Registration[]>("/accounts/monthly-registrations", {
+    const data = await fetchAPI<Registration[]>("/account/monthly-registrations", {
       method: "GET",
     });
     return data;
@@ -60,7 +60,7 @@ export async function getMonthlyRegistrations(): Promise<Registration[] | null> 
 
 export async function getCumulativeUsers(): Promise<Registration[] | null> {
   try {
-    const data = await fetchAPI<Registration[]>("/accounts/cumulative-users", {
+    const data = await fetchAPI<Registration[]>("/account/cumulative-users", {
       method: "GET",
     });
     return data;
@@ -71,7 +71,7 @@ export async function getCumulativeUsers(): Promise<Registration[] | null> {
 
 export async function getCampusAccountCounts(): Promise<CampusAccountCountDTO[] | null> {
   try {
-    const data = await fetchAPI<CampusAccountCountDTO[]>("/accounts/campus-counts", {
+    const data = await fetchAPI<CampusAccountCountDTO[]>("/account/campus-counts", {
       method: "GET",
     });
     return data;
