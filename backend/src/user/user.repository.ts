@@ -148,4 +148,15 @@ export class UserRepository {
       );
     }
   }
+
+  public async deleteAllUsers(): Promise<void> {
+    const query = `
+          DELETE FROM user;
+        `;
+    try {
+      await this.databaseService.query(query);
+    } catch (error) {
+      this.logger.error(`Failed to clean user table: ${error.message}`);
+    }
+  }
 }

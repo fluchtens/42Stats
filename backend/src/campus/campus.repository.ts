@@ -57,4 +57,40 @@ export class CampusRepository {
       this.logger.error(`Failed to get campus with id ${id}: ${error.message}`);
     }
   }
+
+  public async deleteAllCampuses(): Promise<void> {
+    const query = `
+          DELETE FROM campus;
+        `;
+    try {
+      await this.databaseService.query(query);
+    } catch (error) {
+      this.logger.error(`Failed to clean campus table: ${error.message}`);
+    }
+  }
+
+  public async saveCampus(campus: Campus): Promise<void> {
+    const query = `
+      INSERT INTO campus (id, name, country, user_count, student_count, average_level)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+
+    const params = [
+      campus.id,
+      campus.name,
+      campus.country,
+      campus.user_count,
+      campus.student_count,
+      campus.average_level,
+    ];
+
+    try {
+      await this.databaseService.query(query, params);
+      this.logger.log(`Campus with id ${campus.id} saved successfully`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to save campus with id ${campus.id}: ${error.message}`,
+      );
+    }
+  }
 }
