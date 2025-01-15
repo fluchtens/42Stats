@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { CampusRepository } from 'src/campus/campus.repository';
 import { Campus } from 'src/campus/types/campus.type';
+import { User } from 'src/user/types/user.type';
 import { UserRepository } from 'src/user/user.repository';
 
 @Injectable()
@@ -92,21 +93,89 @@ export class FetcherService implements OnModuleInit {
           student_count: 0,
           average_level: 0.0,
         };
-
         await this.campusRepository.saveCampus(campus);
+        await this.fetchAllCampusUsers(campus.id);
+        const userCount = await this.userRepository.countByCampus(campus.id);
+        campus.student_count = userCount;
+        const averageLevel = await this.userRepository.getAverageLevelByCampus(
+          campus.id,
+        );
+        if (averageLevel !== null && averageLevel !== 0) {
+          campus.average_level = Math.round(averageLevel * 100.0) / 100.0;
+        } else {
+          campus.average_level = 0.0;
+        }
+        await this.campusRepository.updateCampus(campus);
+      }
+      page++;
+    }
+  }
 
-        // // Fetch des utilisateurs du campus
-        // await this.fetchAllCampusUsers(campus);
+  private async fetchCampusUsersPage(
+    campusId: number,
+    page: number,
+  ): Promise<any[]> {
+    try {
+      const apiUrl = `${this.apiUrl}/cursus_users?filter[cursus_id]=${21}&filter[campus_id]=${campusId}&page[number]=${page}&page[size]=${100}`;
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
 
-        // // Calcul du nombre d'utilisateurs et du niveau moyen
-        // const userCount = await this.countUsersByCampus(campus.id);
-        // campus.studentCount = userCount;
+      if (!response.ok) {
+        this.logger.error(
+          `${response.status} ${response.statusText}, retry in 15 seconds...`,
+        );
+        if (response.status === 401) {
+          this.accessToken = await this.fetchAccessToken();
+        }
+        await new Promise((resolve) => setTimeout(resolve, 15000));
+        return this.fetchCampusUsersPage(campusId, page);
+      }
 
-        // const averageLevel = await this.findAverageLevelByCampus(campus.id);
-        // campus.averageLevel = averageLevel !== null && averageLevel !== 0 ? Math.round(averageLevel * 100.0) / 100.0 : 0.0;
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      this.logger.error('fetchCampusUsersPage() ' + error.message);
+      return [];
+    }
+  }
 
-        // // Sauvegarder les informations du campus mises à jour
-        // await this.saveCampus(campus);
+  public async fetchAllCampusUsers(campusId: number): Promise<void> {
+    let page = 1;
+    while (true) {
+      const usersJson = await this.fetchCampusUsersPage(campusId, page);
+      if (usersJson.length <= 0) {
+        break;
+      }
+      for (const userJson of usersJson) {
+        const userObj = userJson.user;
+        if (userObj['staff?']) {
+          continue;
+        }
+        const user: User = {
+          id: userObj.id,
+          email: userObj.email,
+          login: userObj.login,
+          first_name: userObj.first_name,
+          last_name: userObj.last_name,
+          image: userObj.image?.link || null,
+          pool_month: userObj.pool_month || null,
+          pool_year: userObj.pool_year || null,
+          level: userJson.level,
+          campus_id: campusId,
+          blackholed: false,
+        };
+        if (userJson.end_at && !userObj['alumni?']) {
+          const blackholedAt = new Date(userJson.end_at);
+          if (blackholedAt < new Date()) {
+            user.blackholed = true;
+          }
+        }
+        await this.userRepository.saveUser(user);
       }
       page++;
     }

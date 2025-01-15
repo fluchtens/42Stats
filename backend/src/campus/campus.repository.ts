@@ -93,4 +93,34 @@ export class CampusRepository {
       );
     }
   }
+
+  public async updateCampus(campus: Campus): Promise<void> {
+    const query = `
+      UPDATE campus
+      SET name = ?, country = ?, user_count = ?, student_count = ?, average_level = ?
+      WHERE id = ?
+    `;
+
+    const params = [
+      campus.name,
+      campus.country,
+      campus.user_count,
+      campus.student_count,
+      campus.average_level,
+      campus.id,
+    ];
+
+    try {
+      const result = await this.databaseService.query(query, params);
+      if (result.affectedRows > 0) {
+        this.logger.log(`Campus with id ${campus.id} updated successfully`);
+      } else {
+        this.logger.warn(`No campus found with id ${campus.id} to update`);
+      }
+    } catch (error) {
+      this.logger.error(
+        `Failed to update campus with id ${campus.id}: ${error.message}`,
+      );
+    }
+  }
 }

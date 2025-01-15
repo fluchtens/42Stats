@@ -159,4 +159,70 @@ export class UserRepository {
       this.logger.error(`Failed to clean user table: ${error.message}`);
     }
   }
+
+  public async saveUser(user: User): Promise<void> {
+    const query = `
+        INSERT INTO user (id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id, blackholed)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
+    const params = [
+      user.id,
+      user.email,
+      user.login,
+      user.first_name,
+      user.last_name,
+      user.image,
+      user.pool_month,
+      user.pool_year,
+      user.level,
+      user.campus_id,
+      user.blackholed,
+    ];
+
+    try {
+      await this.databaseService.query(query, params);
+      this.logger.log(`User with id ${user.id} saved successfully`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to save user with id ${user.id}: ${error.message}`,
+      );
+    }
+  }
+
+  public async countByCampus(campusId: number): Promise<number> {
+    const query = `
+      SELECT
+        COUNT(*) as count
+      FROM
+        user
+      WHERE campus_id = ?
+      `;
+    const params = [campusId];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].count;
+    } catch (error) {
+      this.logger.error(`Failed to get user count: ${error.message}`);
+    }
+  }
+
+  public async getAverageLevelByCampus(campusId: number): Promise<number> {
+    const query = `
+      SELECT
+        AVG(level) as level
+      FROM
+        user
+      WHERE campus_id = ?
+      `;
+    const params = [campusId];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].level;
+    } catch (error) {
+      this.logger.error(`Failed to get user average level: ${error.message}`);
+    }
+  }
 }
