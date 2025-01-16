@@ -28,9 +28,9 @@ export class AuthService {
       campus_id: primaryCampus?.campus_id ?? null,
     };
 
-    const existingAccount = await this.accountRepository.getAccountById(id);
+    const existingAccount = await this.accountRepository.findById(id);
     if (!existingAccount) {
-      await this.accountRepository.createAccount(account);
+      await this.accountRepository.save(account);
       return account;
     }
     return existingAccount;

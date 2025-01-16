@@ -8,7 +8,7 @@ export class AccountRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  public async getAccountById(id: number): Promise<Account> {
+  public async findById(id: number): Promise<Account> {
     const query = `
         SELECT
           *
@@ -28,7 +28,7 @@ export class AccountRepository {
     }
   }
 
-  public async createAccount(account: Account): Promise<void> {
+  public async save(account: Account): Promise<void> {
     const query = `
       INSERT INTO
         account (id, login, email, image, level, campus_id)
@@ -56,7 +56,7 @@ export class AccountRepository {
     }
   }
 
-  public async deleteAccount(id: number): Promise<void> {
+  public async delete(id: number): Promise<void> {
     const query = `
       DELETE FROM
         account
@@ -76,7 +76,7 @@ export class AccountRepository {
     }
   }
 
-  public async getAccountCount(): Promise<number> {
+  public async count(): Promise<number> {
     const query = `
       SELECT
         COUNT(*) as count
@@ -92,7 +92,7 @@ export class AccountRepository {
     }
   }
 
-  public async getActiveAccountCount(
+  public async countActive(
     startOfMonth: Date,
     endOfMonth: Date,
   ): Promise<number> {
@@ -147,7 +147,7 @@ export class AccountRepository {
     }
   }
 
-  public async countAccountBeforeDate(date: Date): Promise<number> {
+  public async countBeforeCreatedDate(date: Date): Promise<number> {
     const query = `
       SELECT
         COUNT(*) AS count
@@ -166,7 +166,7 @@ export class AccountRepository {
     }
   }
 
-  public async getCampusAccountCounts(
+  public async countAllCampuses(
     page: number,
     pageSize: number,
   ): Promise<{ campus: string; count: number }[]> {

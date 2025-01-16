@@ -7,11 +7,6 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('all')
-  public async getUsers() {
-    return this.userService.getUsers();
-  }
-
   @Get('count')
   public async getUserCount() {
     return this.userService.getUserCount();

@@ -17,16 +17,12 @@ export class UserService {
     return true;
   }
 
-  public async getUsers() {
-    return this.userRepository.getUsers();
-  }
-
   public async getUserCount() {
-    return this.userRepository.getUserCount();
+    return this.userRepository.count();
   }
 
   public async getUserAverageLevel() {
-    return (await this.userRepository.getUserAverageLevel()).toFixed(2);
+    return (await this.userRepository.findAverageLevel()).toFixed(2);
   }
 
   public async getCampusUsers(
@@ -36,7 +32,7 @@ export class UserService {
     page: number,
     pageSize: number,
   ) {
-    return this.userRepository.getCampusUsers(
+    return this.userRepository.findByCampus(
       campusId,
       poolMonth,
       poolYear,
@@ -50,7 +46,7 @@ export class UserService {
     poolMonth: string,
     poolYear: string,
   ) {
-    return this.userRepository.getCampusUsersCount(
+    return this.userRepository.countByCampusAndPool(
       campusId,
       poolMonth,
       poolYear,

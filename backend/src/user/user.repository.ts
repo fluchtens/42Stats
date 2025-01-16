@@ -9,22 +9,7 @@ export class UserRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  public async getUsers(): Promise<User[]> {
-    const query = `
-      SELECT
-        *
-      FROM
-        user
-    `;
-
-    try {
-      return await this.databaseService.query(query);
-    } catch (error) {
-      this.logger.error(`Failed to get users: ${error.message}`);
-    }
-  }
-
-  public async getUserCount(): Promise<number> {
+  public async count(): Promise<number> {
     const query = `
       SELECT
         COUNT(*) as count
@@ -40,7 +25,7 @@ export class UserRepository {
     }
   }
 
-  public async getUserAverageLevel(): Promise<number> {
+  public async findAverageLevel(): Promise<number> {
     const query = `
       SELECT
         AVG(level) as level
@@ -56,7 +41,7 @@ export class UserRepository {
     }
   }
 
-  public async getCampusUsers(
+  public async findByCampus(
     campusId: number,
     poolMonth: string,
     poolYear: string,
@@ -98,7 +83,7 @@ export class UserRepository {
     }
   }
 
-  public async getCampusUsersCount(
+  public async countByCampusAndPool(
     campusId: number,
     poolMonth: string,
     poolYear: string,
@@ -128,7 +113,7 @@ export class UserRepository {
     }
   }
 
-  public async getUserCampusPoolDate(campusId: number): Promise<PoolDate[]> {
+  public async findPoolDateByCampus(campusId: number): Promise<PoolDate[]> {
     const query = `
           SELECT
             pool_month as month,
@@ -149,7 +134,7 @@ export class UserRepository {
     }
   }
 
-  public async deleteAllUsers(): Promise<void> {
+  public async deleteAll(): Promise<void> {
     const query = `
           DELETE FROM user;
         `;
@@ -160,7 +145,7 @@ export class UserRepository {
     }
   }
 
-  public async saveUser(user: User): Promise<void> {
+  public async save(user: User): Promise<void> {
     const query = `
         INSERT INTO user (id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id, blackholed)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -208,7 +193,7 @@ export class UserRepository {
     }
   }
 
-  public async getAverageLevelByCampus(campusId: number): Promise<number> {
+  public async findAverageLevelByCampus(campusId: number): Promise<number> {
     const query = `
       SELECT
         AVG(level) as level

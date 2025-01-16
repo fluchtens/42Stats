@@ -93,11 +93,11 @@ export class FetcherService implements OnModuleInit {
           student_count: 0,
           average_level: 0.0,
         };
-        await this.campusRepository.saveCampus(campus);
+        await this.campusRepository.save(campus);
         await this.fetchAllCampusUsers(campus.id);
         const userCount = await this.userRepository.countByCampus(campus.id);
         campus.student_count = userCount;
-        const averageLevel = await this.userRepository.getAverageLevelByCampus(
+        const averageLevel = await this.userRepository.findAverageLevelByCampus(
           campus.id,
         );
         if (averageLevel !== null && averageLevel !== 0) {
@@ -105,7 +105,7 @@ export class FetcherService implements OnModuleInit {
         } else {
           campus.average_level = 0.0;
         }
-        await this.campusRepository.updateCampus(campus);
+        await this.campusRepository.update(campus);
       }
       page++;
     }
@@ -175,7 +175,7 @@ export class FetcherService implements OnModuleInit {
             user.blackholed = true;
           }
         }
-        await this.userRepository.saveUser(user);
+        await this.userRepository.save(user);
       }
       page++;
     }
@@ -190,8 +190,8 @@ export class FetcherService implements OnModuleInit {
       return this.logger.error('Failed to fetch access token.');
     }
 
-    await this.userRepository.deleteAllUsers();
-    await this.campusRepository.deleteAllCampuses();
+    await this.userRepository.deleteAll();
+    await this.campusRepository.deleteAll();
     // await this.projectRepository.deleteAll();
 
     await this.fetchAllCampuses();

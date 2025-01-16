@@ -8,7 +8,7 @@ export class CampusRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
-  public async getCampuses(): Promise<Campus[]> {
+  public async getAll(): Promise<Campus[]> {
     const query = `
       SELECT
         *
@@ -23,7 +23,7 @@ export class CampusRepository {
     }
   }
 
-  public async getCampusCount(): Promise<number> {
+  public async count(): Promise<number> {
     const query = `
       SELECT
         COUNT(*) as count
@@ -39,7 +39,7 @@ export class CampusRepository {
     }
   }
 
-  public async getCampusById(id: number): Promise<Campus> {
+  public async getById(id: number): Promise<Campus> {
     const query = `
         SELECT
           *
@@ -58,7 +58,7 @@ export class CampusRepository {
     }
   }
 
-  public async deleteAllCampuses(): Promise<void> {
+  public async deleteAll(): Promise<void> {
     const query = `
           DELETE FROM campus;
         `;
@@ -69,7 +69,7 @@ export class CampusRepository {
     }
   }
 
-  public async saveCampus(campus: Campus): Promise<void> {
+  public async save(campus: Campus): Promise<void> {
     const query = `
       INSERT INTO campus (id, name, country, user_count, student_count, average_level)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -94,7 +94,7 @@ export class CampusRepository {
     }
   }
 
-  public async updateCampus(campus: Campus): Promise<void> {
+  public async update(campus: Campus): Promise<void> {
     const query = `
       UPDATE campus
       SET name = ?, country = ?, user_count = ?, student_count = ?, average_level = ?

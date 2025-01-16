@@ -25,15 +25,15 @@ export class CampusService {
   ];
 
   public async getCampuses() {
-    return await this.campusRepository.getCampuses();
+    return await this.campusRepository.getAll();
   }
 
   public async getCampusCount() {
-    return await this.campusRepository.getCampusCount();
+    return await this.campusRepository.count();
   }
 
   public async getCampusById(id: number) {
-    const campus = await this.campusRepository.getCampusById(id);
+    const campus = await this.campusRepository.getById(id);
     if (!campus) {
       throw new NotFoundException(`Campus not found`);
     }
@@ -41,7 +41,7 @@ export class CampusService {
   }
 
   async getCampusPools(id: number) {
-    const usersPoolDates = await this.userRepository.getUserCampusPoolDate(id);
+    const usersPoolDates = await this.userRepository.findPoolDateByCampus(id);
     const poolDates = usersPoolDates
       .filter(
         (value, index, self) =>

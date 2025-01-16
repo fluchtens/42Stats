@@ -8,11 +8,11 @@ export class AccountService {
   private readonly logger = new Logger(AccountService.name);
 
   public async getAccountSession(session: Record<string, any>) {
-    return await this.accountRepository.getAccountById(session.user.id);
+    return await this.accountRepository.findById(session.user.id);
   }
 
   public async deleteAccount(session: Record<string, any>) {
-    await this.accountRepository.deleteAccount(session.user.id);
+    await this.accountRepository.delete(session.user.id);
 
     await new Promise<void>((resolve, reject) => {
       session.destroy((err) => {
@@ -28,7 +28,7 @@ export class AccountService {
   }
 
   public async getAccountCount() {
-    return await this.accountRepository.getAccountCount();
+    return await this.accountRepository.count();
   }
 
   public async getMonthlyActiveAccountCount() {
@@ -37,10 +37,7 @@ export class AccountService {
     const month = now.getMonth();
     const startOfMonth = new Date(year, month, 1);
     const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59);
-    return await this.accountRepository.getActiveAccountCount(
-      startOfMonth,
-      endOfMonth,
-    );
+    return await this.accountRepository.countActive(startOfMonth, endOfMonth);
   }
 
   private getMonthlyStartDate(): Date {
@@ -69,7 +66,7 @@ export class AccountService {
     const monthlyRegistrations =
       await this.accountRepository.findMonthlyRegistrations(startDate);
     let cumulativeCount =
-      await this.accountRepository.countAccountBeforeDate(startDate);
+      await this.accountRepository.countBeforeCreatedDate(startDate);
 
     return monthlyRegistrations.map(({ year, month, count }) => {
       cumulativeCount += count;
@@ -81,6 +78,6 @@ export class AccountService {
   }
 
   public async getCampusAccountCounts(page: number, pageSize: number) {
-    return await this.accountRepository.getCampusAccountCounts(page, pageSize);
+    return await this.accountRepository.countAllCampuses(page, pageSize);
   }
 }
