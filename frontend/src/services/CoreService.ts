@@ -8,7 +8,6 @@ export interface ApiRes {
 export async function fetchAPI<T>(endpoint: string, options: RequestInit): Promise<T> {
   try {
     const response = await fetch(API_URL + endpoint, {
-      method: "GET",
       headers: {
         "Content-Type": "application/json",
         ...options.headers,
