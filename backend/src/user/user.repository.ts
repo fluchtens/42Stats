@@ -167,7 +167,6 @@ export class UserRepository {
 
     try {
       await this.databaseService.query(query, params);
-      this.logger.log(`User with id ${user.id} saved successfully`);
     } catch (error) {
       this.logger.error(
         `Failed to save user with id ${user.id}: ${error.message}`,

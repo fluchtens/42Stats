@@ -86,7 +86,6 @@ export class CampusRepository {
 
     try {
       await this.databaseService.query(query, params);
-      this.logger.log(`Campus with id ${campus.id} saved successfully`);
     } catch (error) {
       this.logger.error(
         `Failed to save campus with id ${campus.id}: ${error.message}`,
@@ -112,9 +111,7 @@ export class CampusRepository {
 
     try {
       const result = await this.databaseService.query(query, params);
-      if (result.affectedRows > 0) {
-        this.logger.log(`Campus with id ${campus.id} updated successfully`);
-      } else {
+      if (result.affectedRows <= 0) {
         this.logger.warn(`No campus found with id ${campus.id} to update`);
       }
     } catch (error) {
