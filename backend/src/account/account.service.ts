@@ -1,9 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { AccountRepository } from './account.repository';
 
 @Injectable()
 export class AccountService {
   constructor(private readonly accountRepository: AccountRepository) {}
+
+  private readonly logger = new Logger(AccountService.name);
 
   public async getAccountSession(session: Record<string, any>) {
     return await this.accountRepository.findById(session.user.id);
@@ -11,6 +13,7 @@ export class AccountService {
 
   public async deleteAccount(session: Record<string, any>) {
     await this.accountRepository.delete(session.user.id);
+
     await new Promise<void>((resolve, reject) => {
       session.destroy((err) => {
         if (err) {
@@ -20,6 +23,7 @@ export class AccountService {
         }
       });
     });
+
     return { message: 'Account deleted and logged out successfully' };
   }
 

@@ -15,13 +15,14 @@ export class AccountRepository {
         FROM
           account
         WHERE
-          id = $1
+          id = ?
       `;
+
     const params = [id];
 
     try {
-      const result = await this.databaseService.query(query, params);
-      return result.rows[0];
+      const rows = await this.databaseService.query(query, params);
+      return rows[0];
     } catch (error) {
       this.logger.error(`Failed to get account with id ${id}`, error.message);
     }
@@ -32,8 +33,9 @@ export class AccountRepository {
       INSERT INTO
         account (id, login, email, image, level, campus_id)
       VALUES
-        ($1, $2, $3, $4, $5, $6)
+        (?, ?, ?, ?, ?, ?)
     `;
+
     const params = [
       account.id,
       account.login,
@@ -59,7 +61,7 @@ export class AccountRepository {
       DELETE FROM
         account
       WHERE
-        id = $1
+        id = ?
     `;
     const params = [id];
 
@@ -83,8 +85,8 @@ export class AccountRepository {
     `;
 
     try {
-      const result = await this.databaseService.query(query);
-      return result.rows[0].count;
+      const rows = await this.databaseService.query(query);
+      return rows[0].count;
     } catch (error) {
       this.logger.error(`Failed to get account count`, error.message);
     }
@@ -100,13 +102,13 @@ export class AccountRepository {
       FROM
         account
       WHERE
-        updated_at BETWEEN $1 AND $2
+        updated_at BETWEEN ? AND ?
     `;
     const params = [startOfMonth, endOfMonth];
 
     try {
-      const result = await this.databaseService.query(query, params);
-      return result.rows[0].count;
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].count;
     } catch (error) {
       this.logger.error(`Failed to get active account count`, error.message);
     }
@@ -117,25 +119,25 @@ export class AccountRepository {
   ): Promise<{ year: number; month: number; count: number }[]> {
     const query = `
       SELECT 
-        EXTRACT(YEAR FROM created_at) AS year, 
-        EXTRACT(MONTH FROM created_at) AS month, 
+        YEAR(created_at) AS year, 
+        MONTH(created_at) AS month, 
         COUNT(*) AS count
       FROM
         account
       WHERE
-        created_at >= $1
+        created_at >= ?
       GROUP BY
-        year,
-        month
+        YEAR(created_at),
+        MONTH(created_at)
       ORDER BY
-        year,
-        month
+        YEAR(created_at),
+        MONTH(created_at)
     `;
     const params = [startDate];
 
     try {
-      const result = await this.databaseService.query(query, params);
-      return result.rows.map((row) => ({
+      const rows = await this.databaseService.query(query, params);
+      return rows.map((row) => ({
         year: row.year,
         month: row.month,
         count: row.count,
@@ -152,15 +154,15 @@ export class AccountRepository {
       FROM
         account
       WHERE
-        created_at < $1
+        created_at < ?
     `;
     const params = [date];
 
     try {
-      const result = await this.databaseService.query(query, params);
-      return result.rows[0].count;
+      const rows = await this.databaseService.query(query, params);
+      return rows[0].count;
     } catch (error) {
-      this.logger.error('Failed to count users before date', error.message);
+      this.logger.error('Failed to count users before date');
     }
   }
 
@@ -181,19 +183,17 @@ export class AccountRepository {
       ORDER BY
         count DESC
       LIMIT
-        $1
+        ?
       OFFSET
-        $2
+        ?
     `;
     const offset = (page - 1) * pageSize;
-    const params = [pageSize, offset];
+    const params = [`${pageSize}`, `${offset}`];
 
     try {
-      const result = await this.databaseService.query(query, params);
-      return result.rows;
+      return await this.databaseService.query(query, params);
     } catch (error) {
-      this.logger.error('Failed to get campus account counts', error.message);
-      throw error;
+      this.logger.error('Failed to get campus account counts');
     }
   }
 }

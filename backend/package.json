@@ -34,7 +34,6 @@
     "passport-42": "^1.2.6",
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.8.0",
-    "pg": "^8.13.1",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
