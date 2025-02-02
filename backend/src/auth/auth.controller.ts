@@ -16,7 +16,7 @@ export class AuthController {
 
   @Post('logout')
   @UseGuards(FortyTwoAuthGuard)
-  async logout(@Req() req: Request, @Res() res: Response) {
-    return this.authService.logout(req, res);
+  async logout(@Req() req: Request) {
+    return this.authService.logout(req);
   }
 }

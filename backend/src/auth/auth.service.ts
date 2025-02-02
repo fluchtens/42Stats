@@ -46,7 +46,7 @@ export class AuthService {
     return res.redirect(process.env.CLIENT_URL);
   }
 
-  async logout(req: Request, res: Response) {
+  async logout(req: Request) {
     await new Promise<void>((resolve, reject) => {
       req.session.destroy((err) => {
         if (err) {
