@@ -10,14 +10,13 @@ export class AccountRepository {
 
   public async findById(id: number): Promise<Account> {
     const query = `
-        SELECT
-          *
-        FROM
-          account
-        WHERE
-          id = ?
-      `;
-
+      SELECT
+        *
+      FROM
+        account
+      WHERE
+        id = ?
+    `;
     const params = [id];
 
     try {
@@ -35,7 +34,6 @@ export class AccountRepository {
       VALUES
         (?, ?, ?, ?, ?, ?)
     `;
-
     const params = [
       account.id,
       account.login,
