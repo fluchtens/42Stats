@@ -14,7 +14,7 @@ export class CampusRepository {
         *
       FROM
         campus
-      `;
+    `;
 
     try {
       return await this.databaseService.query(query);
@@ -29,7 +29,7 @@ export class CampusRepository {
         COUNT(*) as count
       FROM
         campus
-      `;
+    `;
 
     try {
       const rows = await this.databaseService.query(query);
@@ -41,13 +41,13 @@ export class CampusRepository {
 
   public async getById(id: number): Promise<Campus> {
     const query = `
-        SELECT
-          *
-        FROM
-          campus
-        WHERE
-          id = ?
-      `;
+      SELECT
+        *
+      FROM
+        campus
+      WHERE
+        id = ?
+    `;
     const params = [id];
 
     try {
@@ -60,8 +60,9 @@ export class CampusRepository {
 
   public async deleteAll(): Promise<void> {
     const query = `
-          DELETE FROM campus;
-        `;
+      DELETE FROM campus;
+    `;
+
     try {
       await this.databaseService.query(query);
     } catch (error) {
