@@ -12,8 +12,6 @@ export class AccountService {
   }
 
   public async deleteAccount(session: Record<string, any>) {
-    await this.accountRepository.delete(session.user.id);
-
     await new Promise<void>((resolve, reject) => {
       session.destroy((err) => {
         if (err) {
@@ -23,7 +21,7 @@ export class AccountService {
         }
       });
     });
-
+    await this.accountRepository.delete(session.user.id);
     return { message: 'Account deleted and logged out successfully' };
   }
 

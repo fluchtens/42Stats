@@ -201,6 +201,6 @@ export class FetcherService implements OnModuleInit {
   }
 
   onModuleInit() {
-    // this.fetchData();
+    this.fetchData();
   }
 }

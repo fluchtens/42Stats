@@ -9,42 +9,42 @@ import {
 import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
 import { AccountService } from './account.service';
 
-@Controller('account')
+@Controller()
 @UseGuards(FortyTwoAuthGuard)
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Get()
+  @Get('account')
   async getAccountSession(@Session() session: Record<string, any>) {
     return await this.accountService.getAccountSession(session);
   }
 
-  @Delete()
+  @Delete('account')
   async deleteAccount(@Session() session: Record<string, any>) {
     return await this.accountService.deleteAccount(session);
   }
 
-  @Get('count')
+  @Get('account/count')
   async getAccountCount() {
     return await this.accountService.getAccountCount();
   }
 
-  @Get('monthly/active/count')
+  @Get('account/monthly/active/count')
   async getMonthlyActiveAccountCount() {
     return this.accountService.getMonthlyActiveAccountCount();
   }
 
-  @Get('monthly/registrations')
+  @Get('account/monthly/registrations')
   async getMonthlyRegistrations() {
     return this.accountService.getMonthlyRegistrations();
   }
 
-  @Get('monthly/registrations/cumulative')
+  @Get('account/monthly/registrations/cumulative')
   async getMonthlyCumulativeRegistrations() {
     return this.accountService.getMonthlyCumulativeRegistrations();
   }
 
-  @Get('campus/counts')
+  @Get('account/campus/counts')
   async getCampusAccountCounts(
     @Query('page') page: number = 1,
     @Query('pageSize') pageSize: number = 5,
