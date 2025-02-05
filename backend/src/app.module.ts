@@ -8,6 +8,7 @@ import { CampusModule } from './campus/campus.module';
 import { DatabaseModule } from './core/database/database.module';
 import { FetcherModule } from './core/fetcher/fetcher.module';
 import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
+import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -20,6 +21,7 @@ import { UserModule } from './user/user.module';
     AccountModule,
     CampusModule,
     UserModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

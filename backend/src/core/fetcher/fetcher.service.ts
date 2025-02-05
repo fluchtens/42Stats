@@ -2,6 +2,8 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { CampusRepository } from 'src/campus/campus.repository';
 import { Campus } from 'src/campus/types/campus.type';
+import { ProjectRepository } from 'src/project/project.repository';
+import { Project } from 'src/project/types/project.type';
 import { User } from 'src/user/types/user.type';
 import { UserRepository } from 'src/user/user.repository';
 
@@ -16,6 +18,7 @@ export class FetcherService implements OnModuleInit {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly campusRepository: CampusRepository,
+    private readonly projectRepository: ProjectRepository,
   ) {}
 
   private async fetchAccessToken(): Promise<Promise<string>> {
@@ -181,6 +184,55 @@ export class FetcherService implements OnModuleInit {
     }
   }
 
+  private async fetchProjectsPage(page: number): Promise<any[]> {
+    try {
+      const apiUrl = `${this.apiUrl}/projects?page[number]=${page}&page[size]=${100}&cursus_id=${21}&sort=${'id'}`;
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        this.logger.error(
+          `${response.status} ${response.statusText}, retry in 15 seconds...`,
+        );
+        if (response.status === 401) {
+          this.accessToken = await this.fetchAccessToken();
+        }
+        await new Promise((resolve) => setTimeout(resolve, 15000));
+        return this.fetchProjectsPage(page);
+      }
+
+      return await response.json();
+    } catch (error) {
+      this.logger.error('fetchProjectsPage() ' + error.message);
+      return [];
+    }
+  }
+
+  private async fetchAllProjects() {
+    let page = 1;
+    while (true) {
+      const projectsJson = await this.fetchProjectsPage(page);
+      if (projectsJson.length <= 0) {
+        break;
+      }
+      for (const projectJson of projectsJson) {
+        const project: Project = {
+          id: projectJson.id,
+          name: projectJson.name,
+          slug: projectJson.slug,
+          difficulty: projectJson.difficulty,
+        };
+        await this.projectRepository.save(project);
+      }
+      page++;
+    }
+  }
+
   @Cron('0 5 * * *')
   private async fetchData() {
     this.logger.log('Start scrapping data from api.intra.42.fr');
@@ -192,10 +244,10 @@ export class FetcherService implements OnModuleInit {
 
     await this.userRepository.deleteAll();
     await this.campusRepository.deleteAll();
-    // await this.projectRepository.deleteAll();
+    await this.projectRepository.deleteAll();
 
+    await this.fetchAllProjects();
     await this.fetchAllCampuses();
-    // await this.fetchAllProjects();
 
     this.logger.log('End of data scrapping from api.intra.42.fr');
   }
