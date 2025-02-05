@@ -77,7 +77,13 @@ export class UserRepository {
     params.push(`${pageSize}`, `${offset}`);
 
     try {
-      return await this.databaseService.query(query, params);
+      const results = await this.databaseService.query(query, params);
+      return results.map((user) => ({
+        ...user,
+        blackholed: Buffer.isBuffer(user.blackholed)
+          ? user.blackholed[0] === 1
+          : user.blackholed,
+      }));
     } catch (error) {
       this.logger.error(`Failed to get campus users: ${error.message}`);
     }
