@@ -15,7 +15,7 @@ export class UserRepository {
         COUNT(*) as count
       FROM
         user
-      `;
+    `;
 
     try {
       const rows = await this.databaseService.query(query);
@@ -31,7 +31,7 @@ export class UserRepository {
         AVG(level) as level
       FROM
         user
-      `;
+    `;
 
     try {
       const rows = await this.databaseService.query(query);
@@ -115,14 +115,14 @@ export class UserRepository {
 
   public async findPoolDateByCampus(campusId: number): Promise<PoolDate[]> {
     const query = `
-          SELECT
-            pool_month as month,
-            pool_year as year
-          FROM
-            user
-          WHERE
-            campus_id = ?
-        `;
+      SELECT
+        pool_month as month,
+        pool_year as year
+      FROM
+        user
+      WHERE
+        campus_id = ?
+    `;
     const params = [campusId];
 
     try {
@@ -136,8 +136,8 @@ export class UserRepository {
 
   public async deleteAll(): Promise<void> {
     const query = `
-          DELETE FROM user;
-        `;
+      DELETE FROM user;
+    `;
     try {
       await this.databaseService.query(query);
     } catch (error) {
@@ -147,9 +147,9 @@ export class UserRepository {
 
   public async save(user: User): Promise<void> {
     const query = `
-        INSERT INTO user (id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id, blackholed)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+      INSERT INTO user (id, email, login, first_name, last_name, image, pool_month, pool_year, level, campus_id, blackholed)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
     const params = [
       user.id,
@@ -181,7 +181,7 @@ export class UserRepository {
       FROM
         user
       WHERE campus_id = ?
-      `;
+    `;
     const params = [campusId];
 
     try {
@@ -199,7 +199,7 @@ export class UserRepository {
       FROM
         user
       WHERE campus_id = ?
-      `;
+    `;
     const params = [campusId];
 
     try {
