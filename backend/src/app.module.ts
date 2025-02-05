@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { CampusModule } from './campus/campus.module';
 import { DatabaseModule } from './core/database/database.module';
 import { FetcherModule } from './core/fetcher/fetcher.module';
+import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
     ScheduleModule.forRoot(),
     DatabaseModule,
     FetcherModule,
+    SessionCleanupModule,
     AuthModule,
     AccountModule,
     CampusModule,
