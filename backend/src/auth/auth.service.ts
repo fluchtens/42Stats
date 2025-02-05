@@ -31,9 +31,10 @@ export class AuthService {
     const existingAccount = await this.accountRepository.findById(id);
     if (!existingAccount) {
       await this.accountRepository.save(account);
-      return account;
+    } else {
+      await this.accountRepository.update(account);
     }
-    return existingAccount;
+    return account;
   }
 
   async fortyTwoAuth(req: Request, res: Response) {

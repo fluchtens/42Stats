@@ -54,6 +54,41 @@ export class AccountRepository {
     }
   }
 
+  public async update(account: Account): Promise<void> {
+    const query = `
+      UPDATE
+        account
+      SET
+        id = ?,
+        login = ?,
+        email = ?,
+        image = ?,
+        level = ?,
+        campus_id = ?,
+        updated_at = NOW()
+      WHERE
+        id = ?
+    `;
+    const params = [
+      account.id,
+      account.login,
+      account.email,
+      account.image,
+      account.level,
+      account.campus_id,
+      account.id,
+    ];
+
+    try {
+      const result = await this.databaseService.query(query, params);
+      if (result.affectedRows <= 0) {
+        this.logger.warn(`Account with id ${account.id} not found`);
+      }
+    } catch (error) {
+      this.logger.error(`Failed to update account with id ${account.id}`);
+    }
+  }
+
   public async delete(id: number): Promise<void> {
     const query = `
       DELETE FROM
