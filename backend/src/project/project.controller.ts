@@ -1,4 +1,4 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
 import { ProjectService } from './project.service';
 
@@ -6,4 +6,14 @@ import { ProjectService } from './project.service';
 @UseGuards(FortyTwoAuthGuard)
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
+
+  @Get('project/all')
+  public async getProjects() {
+    return this.projectService.getProjects();
+  }
+
+  @Get('project/:id')
+  public async getProjectById(@Param('id') id: number) {
+    return this.projectService.getProjectById(id);
+  }
 }

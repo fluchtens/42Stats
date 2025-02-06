@@ -8,6 +8,21 @@ export class ProjectRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
+  public async findAll(): Promise<Project[]> {
+    const query = `
+      SELECT
+        *
+      FROM
+        project
+    `;
+
+    try {
+      return await this.databaseService.query(query);
+    } catch (error) {
+      this.logger.error(`Failed to get projects: ${error.message}`);
+    }
+  }
+
   public async findById(id: number): Promise<Project> {
     const query = `
       SELECT

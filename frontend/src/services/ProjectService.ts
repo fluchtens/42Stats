@@ -3,7 +3,7 @@ import { fetchAPI } from "./CoreService";
 
 export async function getProjects(): Promise<Project[] | null> {
   try {
-    const data = await fetchAPI<Project[]>("/projects", {
+    const data = await fetchAPI<Project[]>("/project/all", {
       method: "GET",
     });
     return data;
