@@ -9,6 +9,7 @@ import { DatabaseModule } from './core/database/database.module';
 import { FetcherModule } from './core/tasks/fetcher/fetcher.module';
 import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
 import { ProjectModule } from './project/project.module';
+import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { UserModule } from './user/user.module';
     CampusModule,
     UserModule,
     ProjectModule,
+    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
