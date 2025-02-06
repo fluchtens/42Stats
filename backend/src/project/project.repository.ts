@@ -8,6 +8,69 @@ export class ProjectRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
+  public async findById(id: number): Promise<Project> {
+    const query = `
+      SELECT
+        *
+      FROM
+        project
+      WHERE
+        id = ?
+    `;
+    const params = [id];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0];
+    } catch (error) {
+      this.logger.error(
+        `Failed to get project with id ${id}: ${error.message}`,
+      );
+    }
+  }
+
+  public async findByName(name: string): Promise<Project> {
+    const query = `
+      SELECT
+        *
+      FROM
+        project
+      WHERE
+        name = ?
+    `;
+    const params = [name];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0];
+    } catch (error) {
+      this.logger.error(
+        `Failed to get project with name ${name}: ${error.message}`,
+      );
+    }
+  }
+
+  public async findBySlug(slug: string): Promise<Project> {
+    const query = `
+      SELECT
+        *
+      FROM
+        project
+      WHERE
+        slug = ?
+    `;
+    const params = [slug];
+
+    try {
+      const rows = await this.databaseService.query(query, params);
+      return rows[0];
+    } catch (error) {
+      this.logger.error(
+        `Failed to get project with slug ${slug}: ${error.message}`,
+      );
+    }
+  }
+
   public async save(project: Project): Promise<void> {
     const query = `
       INSERT INTO

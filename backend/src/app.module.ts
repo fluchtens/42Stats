@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CampusModule } from './campus/campus.module';
 import { DatabaseModule } from './core/database/database.module';
-import { FetcherModule } from './core/fetcher/fetcher.module';
+import { FetcherModule } from './core/tasks/fetcher/fetcher.module';
 import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
 import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';

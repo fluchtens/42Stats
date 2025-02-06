@@ -227,6 +227,21 @@ export class FetcherService implements OnModuleInit {
           slug: projectJson.slug,
           difficulty: projectJson.difficulty,
         };
+        if (
+          project.id <= 0 ||
+          project.name === null ||
+          project.slug === null ||
+          project.difficulty <= 0
+        ) {
+          continue;
+        }
+        if (
+          (await this.projectRepository.findById(project.id)) ||
+          (await this.projectRepository.findByName(project.name)) ||
+          (await this.projectRepository.findBySlug(project.slug))
+        ) {
+          continue;
+        }
         await this.projectRepository.save(project);
       }
       page++;
