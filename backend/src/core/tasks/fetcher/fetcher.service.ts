@@ -6,6 +6,7 @@ import { ProjectRepository } from 'src/project/project.repository';
 import { Project } from 'src/project/types/project.type';
 import { User } from 'src/user/types/user.type';
 import { UserRepository } from 'src/user/user.repository';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class FetcherService implements OnModuleInit {
@@ -17,6 +18,7 @@ export class FetcherService implements OnModuleInit {
 
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
     private readonly campusRepository: CampusRepository,
     private readonly projectRepository: ProjectRepository,
   ) {}
@@ -178,7 +180,9 @@ export class FetcherService implements OnModuleInit {
             user.blackholed = true;
           }
         }
-        await this.userRepository.save(user);
+        if (this.userService.isValid(user)) {
+          await this.userRepository.save(user);
+        }
       }
       page++;
     }
