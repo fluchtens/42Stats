@@ -1,4 +1,11 @@
-import { Controller, Get, Session, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
 import { SessionService } from './session.service';
 
@@ -9,6 +16,11 @@ export class SessionController {
 
   @Get('session/all')
   public async getSessions(@Session() session: Record<string, any>) {
-    return this.sessionService.getUserSessions(session.user.id);
+    return this.sessionService.getUserSessions(session.user.id, session.id);
+  }
+
+  @Delete('session/:id')
+  public async getCampusUsers(@Param('id') id: string) {
+    return this.sessionService.deleteSession(id);
   }
 }

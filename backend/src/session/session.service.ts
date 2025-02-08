@@ -9,11 +9,10 @@ export class SessionService {
     this.redisClient = createClient({
       socket: { host: 'redis', port: 6379 },
     });
-
     this.redisClient.connect();
   }
 
-  async getUserSessions(userId: number) {
+  async getUserSessions(userId: number, sessionId: string) {
     const keys = await this.redisClient.keys('sess:*');
     const sessions = [];
     for (const key of keys) {
@@ -21,10 +20,19 @@ export class SessionService {
       if (sessionData) {
         const parsedSession = JSON.parse(sessionData);
         if (parsedSession.user.id === userId) {
-          sessions.push({ sessionId: key, data: parsedSession });
+          sessions.push({
+            sessionId: key.replace('sess:', ''),
+            data: parsedSession,
+            current: key === `sess:${sessionId}`,
+          });
         }
       }
     }
     return sessions;
+  }
+
+  async deleteSession(sessionId: string) {
+    this.redisClient.del(sessionId);
+    return { message: 'Session successfully deleted' };
   }
 }

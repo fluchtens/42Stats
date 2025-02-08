@@ -3,7 +3,7 @@ import { ApiRes, fetchAPI } from "./CoreService";
 
 export async function getSessions(): Promise<Session[] | null> {
   try {
-    const data = await fetchAPI<Session[]>("/sessions", {
+    const data = await fetchAPI<Session[]>("/session/all", {
       method: "GET",
     });
     return data;
@@ -14,7 +14,7 @@ export async function getSessions(): Promise<Session[] | null> {
 
 export async function deleteSession(id: string): Promise<ApiRes> {
   try {
-    const data = await fetchAPI<ApiRes>(`/sessions/${id}`, {
+    const data = await fetchAPI<ApiRes>(`/session/${id}`, {
       method: "DELETE",
     });
     return { success: true, message: data.message };

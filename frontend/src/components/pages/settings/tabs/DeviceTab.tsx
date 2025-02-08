@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { deleteSession, getSessions } from "@/services/SessionService";
 import { Session } from "@/types/models/Session";
+import { convertDate } from "@/utils/convertDate";
 import { useEffect, useState } from "react";
 
 export const DeviceTab = () => {
@@ -48,31 +49,29 @@ export const DeviceTab = () => {
           <thead className="border-b">
             <tr>
               <th className="py-3 text-left">Device</th>
-              <th className="hidden sm:table-cell py-3 text-center">Creation date</th>
               <th className="hidden sm:table-cell py-3 text-center">Expiry date</th>
-              {/* <th className="py-3 text-center">IP address</th> */}
+              <th className="py-3 text-center">IP address</th>
               <th className="py-3 text-right">Action</th>
             </tr>
           </thead>
           <tbody>
             {sessions &&
               sessions.map((session, index) => (
-                <tr key={session.session_id} className={cn(index !== sessions.length - 1 && "border-b w-full")}>
+                <tr key={session.sessionId} className={cn(index !== sessions.length - 1 && "border-b w-full")}>
                   <td className="py-5 flex flex-col text-sm text-left">
-                    <span>{session.attributes.browser}</span>
-                    <span>{session.attributes.os}</span>
-                    <span>{session.attributes.device}</span>
+                    <span>{session.data.deviceInfo.browser}</span>
+                    <span>{session.data.deviceInfo.os}</span>
+                    <span>{session.data.deviceInfo.device}</span>
                   </td>
-                  <td className="hidden sm:table-cell text-sm text-center">{session.creation_date}</td>
-                  <td className="hidden sm:table-cell text-sm text-center">{session.expiry_date}</td>
-                  {/* <td className="py-5 text-sm text-center">{session.attributes.ip}</td> */}
+                  <td className="hidden sm:table-cell text-sm text-center">{convertDate(session.data.cookie.expires)}</td>
+                  <td className="py-5 text-sm text-center">{session.data.deviceInfo.ip}</td>
                   <td className="py-5 text-sm text-right">
                     {session.current ? (
                       <span className="text-sm font-medium text-muted-foreground">
                         <i>This device</i>
                       </span>
                     ) : (
-                      <Button onClick={() => deleteDevice(session.primary_id)} variant="destructive" size="sm">
+                      <Button onClick={() => deleteDevice(session.sessionId)} variant="destructive" size="sm">
                         Log out
                       </Button>
                     )}
