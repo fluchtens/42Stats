@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AccountRepository } from 'src/account/account.repository';
 import { Account } from 'src/account/types/account.type';
+import { UAParser } from 'ua-parser-js';
 
 @Injectable()
 export class AuthService {
@@ -40,8 +41,18 @@ export class AuthService {
   async fortyTwoAuth(req: Request, res: Response) {
     const user = req.user as Account;
     if (user && user.id) {
+      const ua = new UAParser(req.headers['user-agent'] || '').getResult();
       req.session.user = {
         id: user.id,
+      };
+      req.session.deviceInfo = {
+        ip:
+          req.headers['x-forwarded-for'] ||
+          req.socket.remoteAddress ||
+          'Unknown',
+        browser: ua.browser.name || 'Unknown',
+        os: ua.os.name || 'Unknown',
+        device: ua.device.model || ua.device.type || 'Unknown',
       };
     }
     return res.redirect(process.env.CLIENT_URL);

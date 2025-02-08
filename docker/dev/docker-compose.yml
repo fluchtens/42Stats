@@ -39,10 +39,25 @@ services:
   redis:
     container_name: 42stats-redis
     image: redis:7.4.1
+    platform: linux/amd64
     ports:
       - 6379:6379
     volumes:
       - 42stats_redis:/data
+    networks:
+      - 42stats_network
+    restart: always
+
+  rediscommander:
+    container_name: 42stats-rediscommander
+    image: rediscommander/redis-commander
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=42stats-redis
+      - REDIS_PORT=6379
+    ports:
+      - 8081:8081
     networks:
       - 42stats_network
     restart: always

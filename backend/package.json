@@ -36,7 +36,8 @@
     "passport-oauth2": "^1.8.0",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "ua-parser-js": "^2.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -50,6 +51,7 @@
     "@types/passport-local": "^1.0.38",
     "@types/redis": "^4.0.11",
     "@types/supertest": "^6.0.0",
+    "@types/ua-parser-js": "^0.7.39",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^8.0.0",

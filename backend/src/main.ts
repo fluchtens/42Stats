@@ -11,6 +11,7 @@ async function bootstrap() {
     socket: { host: 'redis', port: 6379 },
   });
   await redisClient.connect();
+
   app.use(
     session({
       store: new RedisStore({ client: redisClient }),
