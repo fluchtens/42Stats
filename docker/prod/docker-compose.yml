@@ -31,6 +31,18 @@ services:
       - 42stats_network
     restart: always
 
+  redis:
+    container_name: 42stats-redis
+    image: redis:7.4.1
+    platform: linux/amd64
+    ports:
+      - 6379:6379
+    volumes:
+      - 42stats_redis:/data
+    networks:
+      - 42stats_network
+    restart: always
+
   backend:
     container_name: 42stats-backend
     image: 42stats-backend
