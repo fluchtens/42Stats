@@ -69,6 +69,7 @@ services:
       context: ../../backend
       dockerfile: dev.Dockerfile
     environment:
+      MODE: ${MODE}
       VITE_API_URL: ${VITE_API_URL}
       CLIENT_URL: ${CLIENT_URL}
       DATABASE_URL: ${DATABASE_URL}

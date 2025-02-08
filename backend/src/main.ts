@@ -21,9 +21,9 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: false,
-        httpOnly: false,
-        sameSite: 'lax',
+        secure: process.env.MODE === 'production',
+        httpOnly: true,
+        sameSite: 'strict',
         maxAge: 2 * 60 * 60 * 1000,
       },
     }),
