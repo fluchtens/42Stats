@@ -14,10 +14,10 @@ services:
     networks:
       - 42stats_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
-      interval: 5s
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$MYSQL_USER -p$MYSQL_PASSWORD"]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
     restart: always
 
   phpmyadmin:
@@ -72,6 +72,7 @@ services:
       VITE_API_URL: ${VITE_API_URL}
       CLIENT_URL: ${CLIENT_URL}
       DATABASE_URL: ${DATABASE_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
       FORTY_TWO_UID: ${FORTY_TWO_UID}
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
     depends_on:
