@@ -22,7 +22,8 @@ export class UserService {
   }
 
   public async getUserAverageLevel() {
-    return (await this.userRepository.findAverageLevel()).toFixed(2);
+    const average = await this.userRepository.findAverageLevel();
+    return average !== null ? average.toFixed(2) : null;
   }
 
   public async getCampusUsers(
