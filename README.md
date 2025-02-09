@@ -2,7 +2,7 @@
 
 ### What's this about?
 
-Web application in Java Spring Boot and React for 42 users to discover detailed information and statistics retrieved from 42 API.
+Web application in NestJS and React for 42 users to discover detailed information and statistics retrieved from 42 API.
 
 ### Installation:
 
