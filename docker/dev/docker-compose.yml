@@ -1,9 +1,7 @@
-version: "3"
-
 services:
   database:
     container_name: 42stats-db
-    image: mysql:latest
+    image: mysql:9
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,6 +11,11 @@ services:
       - 42stats_database:/var/lib/mysql
     networks:
       - 42stats_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$MYSQL_USER -p$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: always
 
   phpmyadmin:
@@ -31,46 +34,77 @@ services:
       - 42stats_network
     restart: always
 
-  api:
-    container_name: 42stats-api
-    image: 42stats-api
+  redis:
+    container_name: 42stats-redis
+    image: redis:7.4.1
     platform: linux/amd64
-    build:
-      context: ../../api
-      dockerfile: dev.Dockerfile
-    environment:
-      VITE_API_URL: ${VITE_API_URL}
-      CLIENT_URL: ${CLIENT_URL}
-      DATABASE_URL: ${DATABASE_URL}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      FORTY_TWO_UID: ${FORTY_TWO_UID}
-      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
-    depends_on:
-      - database
-    ports:
-      - 8080:8080
     volumes:
-      - ../../api:/app
-      - ~/.m2:/root/.m2
+      - 42stats_redis:/data
+    networks:
+      - 42stats_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+    restart: always
+
+  rediscommander:
+    container_name: 42stats-rediscommander
+    image: rediscommander/redis-commander
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=42stats-redis
+      - REDIS_PORT=6379
+    ports:
+      - 8081:8081
     networks:
       - 42stats_network
     restart: always
 
-  client:
-    container_name: 42stats-client
-    image: 42stats-client
+  backend:
+    container_name: 42stats-backend
+    image: 42stats-backend
     build:
-      context: ../../client
+      context: ../../backend
+      dockerfile: dev.Dockerfile
+    environment:
+      MODE: ${MODE}
+      VITE_API_URL: ${VITE_API_URL}
+      CLIENT_URL: ${CLIENT_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
+      FORTY_TWO_UID: ${FORTY_TWO_UID}
+      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    volumes:
+      - ../../backend:/app
+      - /app/node_modules
+    networks:
+      - 42stats_network
+    restart: always
+
+  frontend:
+    container_name: 42stats-frontend
+    image: 42stats-frontend
+    build:
+      context: ../../frontend
       dockerfile: dev.Dockerfile
     environment:
       VITE_API_URL: ${VITE_API_URL}
     depends_on:
-      - api
+      - backend
     ports:
       - 5173:5173
     volumes:
-      - ../../client:/app
+      - ../../frontend:/app
       - /app/node_modules
     networks:
       - 42stats_network
@@ -83,3 +117,5 @@ networks:
 volumes:
   42stats_database:
     name: 42stats_database
+  42stats_redis:
+    name: 42stats_redis

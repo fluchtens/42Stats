@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `project` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(255) NOT NULL UNIQUE,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `difficulty` INT NOT NULL,
+  PRIMARY KEY (`id`)
+)

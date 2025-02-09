@@ -1,9 +1,7 @@
-version: "3"
-
 services:
   database:
     container_name: 42stats-db
-    image: mysql:latest
+    image: mysql:9
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,45 +11,81 @@ services:
       - 42stats_database:/var/lib/mysql
     networks:
       - 42stats_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$MYSQL_USER -p$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: always
 
-  api:
-    container_name: 42stats-api
-    image: 42stats-api
+  phpmyadmin:
+    container_name: 42stats-phpmyadmin
+    image: phpmyadmin/phpmyadmin
     platform: linux/amd64
-    build:
-      context: ../../api
-      dockerfile: prod.Dockerfile
-    environment:
-      VITE_API_URL: ${VITE_API_URL}
-      CLIENT_URL: ${CLIENT_URL}
-      DATABASE_URL: ${DATABASE_URL}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      FORTY_TWO_UID: ${FORTY_TWO_UID}
-      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
     depends_on:
       - database
+    environment:
+      PMA_ARBITRARY: ${PMA_ARBITRARY}
+      PMA_HOST: ${PMA_HOST}
+      UPLOAD_LIMIT: 10000000000
     ports:
-      - 8080:8080
+      - 5050:80
     networks:
       - 42stats_network
     restart: always
 
-  client:
-    container_name: 42stats-client
-    image: 42stats-client
+  redis:
+    container_name: 42stats-redis
+    image: redis:7.4.1
+    platform: linux/amd64
+    volumes:
+      - 42stats_redis:/data
+    networks:
+      - 42stats_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
+    restart: always
+
+  backend:
+    container_name: 42stats-backend
+    image: 42stats-backend
     build:
-      context: ../../client
+      context: ../../backend
+      dockerfile: dev.Dockerfile
+    environment:
+      MODE: ${MODE}
+      VITE_API_URL: ${VITE_API_URL}
+      CLIENT_URL: ${CLIENT_URL}
+      DATABASE_URL: ${DATABASE_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
+      FORTY_TWO_UID: ${FORTY_TWO_UID}
+      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    networks:
+      - 42stats_network
+    restart: always
+
+  frontend:
+    container_name: 42stats-frontend
+    image: 42stats-frontend
+    build:
+      context: ../../frontend
       dockerfile: prod.Dockerfile
-      args:
-        - VITE_API_URL=${VITE_API_URL}
     environment:
       VITE_API_URL: ${VITE_API_URL}
     depends_on:
-      - api
+      - backend
     ports:
-      - 80:80
+      - 5173:5173
     networks:
       - 42stats_network
     restart: always
@@ -63,3 +97,5 @@ networks:
 volumes:
   42stats_database:
     name: 42stats_database
+  42stats_redis:
+    name: 42stats_redis
