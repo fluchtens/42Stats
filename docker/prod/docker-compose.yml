@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   database:
     container_name: 42stats-db
@@ -58,7 +56,7 @@ services:
     image: 42stats-backend
     build:
       context: ../../backend
-      dockerfile: dev.Dockerfile
+      dockerfile: prod.Dockerfile
     environment:
       MODE: ${MODE}
       VITE_API_URL: ${VITE_API_URL}
@@ -82,8 +80,6 @@ services:
     build:
       context: ../../frontend
       dockerfile: prod.Dockerfile
-      args:
-        - VITE_API_URL=${VITE_API_URL}
     environment:
       VITE_API_URL: ${VITE_API_URL}
     depends_on:
