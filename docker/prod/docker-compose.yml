@@ -54,7 +54,7 @@ services:
     image: 42stats-backend
     build:
       context: ../../backend
-      dockerfile: prod.Dockerfile
+      dockerfile: dev.Dockerfile
     environment:
       MODE: ${MODE}
       VITE_API_URL: ${VITE_API_URL}
@@ -68,6 +68,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    ports:
+      - 3000:3000
     networks:
       - 42stats_network
     restart: always
