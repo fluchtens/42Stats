@@ -1,7 +1,7 @@
 services:
   database:
     container_name: 42stats-db
-    image: mysql:latest
+    image: mysql:9
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
