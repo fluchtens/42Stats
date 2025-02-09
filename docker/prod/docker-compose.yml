@@ -3,7 +3,7 @@ version: "3"
 services:
   database:
     container_name: 42stats-db
-    image: mysql:9.2.0
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,6 +13,11 @@ services:
       - 42stats_database:/var/lib/mysql
     networks:
       - 42stats_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$MYSQL_USER -p$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: always
 
   phpmyadmin:
@@ -41,6 +46,11 @@ services:
       - 42stats_redis:/data
     networks:
       - 42stats_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+      timeout: 3s
     restart: always
 
   backend:
@@ -48,7 +58,7 @@ services:
     image: 42stats-backend
     build:
       context: ../../backend
-      dockerfile: prod.Dockerfile
+      dockerfile: dev.Dockerfile
     environment:
       MODE: ${MODE}
       VITE_API_URL: ${VITE_API_URL}
@@ -58,10 +68,10 @@ services:
       FORTY_TWO_UID: ${FORTY_TWO_UID}
       FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
     depends_on:
-      - database
-      - redis
-    ports:
-      - 3000:3000
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - 42stats_network
     restart: always
