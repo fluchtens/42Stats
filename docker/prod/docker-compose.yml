@@ -80,6 +80,8 @@ services:
     build:
       context: ../../frontend
       dockerfile: prod.Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL}
     environment:
       VITE_API_URL: ${VITE_API_URL}
     depends_on:
