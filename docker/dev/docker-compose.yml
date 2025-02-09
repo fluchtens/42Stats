@@ -38,8 +38,6 @@ services:
     container_name: 42stats-redis
     image: redis:7.4.1
     platform: linux/amd64
-    ports:
-      - 6379:6379
     volumes:
       - 42stats_redis:/data
     networks:
