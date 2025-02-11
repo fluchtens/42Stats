@@ -5,4 +5,5 @@ export type Account = {
   image: string;
   level: number;
   campus_id: string;
+  roles?: string[];
 };

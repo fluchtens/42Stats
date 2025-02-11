@@ -9,6 +9,7 @@ import { DatabaseModule } from './core/database/database.module';
 import { FetcherModule } from './core/tasks/fetcher/fetcher.module';
 import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
 import { ProjectModule } from './project/project.module';
+import { RoleModule } from './role/role.module';
 import { SessionModule } from './session/session.module';
 import { UserModule } from './user/user.module';
 
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     ProjectModule,
     SessionModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

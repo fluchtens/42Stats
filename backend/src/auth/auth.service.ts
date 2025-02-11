@@ -2,11 +2,15 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AccountRepository } from 'src/account/account.repository';
 import { Account } from 'src/account/types/account.type';
+import { RoleRepository } from 'src/role/role.repository';
 import { UAParser } from 'ua-parser-js';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly accountRepository: AccountRepository) {}
+  constructor(
+    private readonly accountRepository: AccountRepository,
+    private readonly roleRepository: RoleRepository,
+  ) {}
 
   async validateUser(profile: any): Promise<Account> {
     const { id, login, email, image, cursus_users, campus_users } =
@@ -41,10 +45,11 @@ export class AuthService {
   async fortyTwoAuth(req: Request, res: Response) {
     const user = req.user as Account;
     if (user && user.id) {
-      const ua = new UAParser(req.headers['user-agent'] || '').getResult();
       req.session.user = {
         id: user.id,
+        roles: await this.roleRepository.findRolesByAccountId(user.id),
       };
+      const ua = new UAParser(req.headers['user-agent'] || '').getResult();
       req.session.deviceInfo = {
         ip:
           req.headers['x-forwarded-for'] ||

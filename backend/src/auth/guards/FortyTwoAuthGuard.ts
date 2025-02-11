@@ -5,11 +5,11 @@ import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
 export class FortyTwoAuthGuard extends PassportAuthGuard('42') {
   canActivate(context: any) {
     const request = context.switchToHttp().getRequest();
-    if (request.session.user) {
-      return true;
+    if (!request.session.user) {
+      throw new UnauthorizedException({
+        message: 'You must be authenticated to access this resource.',
+      });
     }
-    throw new UnauthorizedException({
-      message: 'You must be authenticated to access this resource.',
-    });
+    return true;
   }
 }
