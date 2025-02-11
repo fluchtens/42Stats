@@ -6,7 +6,7 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
-import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
+import { FortyTwoAuthGuard } from 'src/auth/guards/forty-two-auth.guard';
 import { SessionService } from './session.service';
 
 @Controller()

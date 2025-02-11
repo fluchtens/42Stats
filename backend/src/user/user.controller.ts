@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
+import { FortyTwoAuthGuard } from 'src/auth/guards/forty-two-auth.guard';
 import { UserService } from './user.service';
 
 @Controller('user')

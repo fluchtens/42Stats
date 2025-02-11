@@ -6,7 +6,7 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { FortyTwoAuthGuard } from 'src/auth/guards/FortyTwoAuthGuard';
+import { FortyTwoAuthGuard } from 'src/auth/guards/forty-two-auth.guard';
 import { Roles } from './decorators/role.decorator';
 import { RoleGuard } from './guards/role.guard';
 import { RoleService } from './role.service';
