@@ -8,6 +8,11 @@ export class AccountRepository {
 
   constructor(private readonly databaseService: DatabaseService) {}
 
+  public async findAll(): Promise<Account[]> {
+    const query = 'SELECT * FROM account';
+    return await this.databaseService.query(query);
+  }
+
   public async findById(id: number): Promise<Account> {
     const query = `
       SELECT

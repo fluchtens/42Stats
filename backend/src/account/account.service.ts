@@ -25,6 +25,10 @@ export class AccountService {
     return { message: 'Account deleted and logged out successfully' };
   }
 
+  public async getAllAccounts() {
+    return await this.accountRepository.findAll();
+  }
+
   public async getAccountCount() {
     return await this.accountRepository.count();
   }
