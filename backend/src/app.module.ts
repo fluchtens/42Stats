@@ -8,7 +8,7 @@ import { CampusModule } from './campus/campus.module';
 import { DatabaseModule } from './core/database/database.module';
 import { FetcherModule } from './core/tasks/fetcher/fetcher.module';
 import { SessionCleanupModule } from './core/tasks/session-cleanup/session-cleanup.module';
-import { CredentialModule } from './credentials/credential.module';
+import { CredentialModule } from './credential/credential.module';
 import { ProjectModule } from './project/project.module';
 import { RoleModule } from './role/role.module';
 import { SessionModule } from './session/session.module';
