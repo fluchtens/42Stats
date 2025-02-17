@@ -14,10 +14,7 @@ export class CredentialService {
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(
       'aes-256-cbc',
-      Buffer.from(
-        'baab2ea39b45609e5827bd5c09fc1919889546d93b2afe0594a60bb8facfd44c',
-        'hex',
-      ),
+      Buffer.from(process.env.ENCRYPTION_KEY, 'hex'),
       iv,
     );
     let encrypted = cipher.update(text);
@@ -31,10 +28,7 @@ export class CredentialService {
     const encryptedText = Buffer.from(encryptedHex, 'hex');
     const decipher = crypto.createDecipheriv(
       'aes-256-cbc',
-      Buffer.from(
-        'baab2ea39b45609e5827bd5c09fc1919889546d93b2afe0594a60bb8facfd44c',
-        'hex',
-      ),
+      Buffer.from(process.env.ENCRYPTION_KEY, 'hex'),
       iv,
     );
     let decrypted = decipher.update(encryptedText);

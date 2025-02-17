@@ -61,8 +61,7 @@ services:
       CLIENT_URL: ${CLIENT_URL}
       DATABASE_URL: ${DATABASE_URL}
       SESSION_SECRET: ${SESSION_SECRET}
-      FORTY_TWO_UID: ${FORTY_TWO_UID}
-      FORTY_TWO_SECRET: ${FORTY_TWO_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
     depends_on:
       database:
         condition: service_healthy
