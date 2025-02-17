@@ -8,23 +8,23 @@ import { useForm } from "react-hook-form";
 import { MdError } from "react-icons/md";
 
 interface CredentialFieldEditorProps {
-  fieldName: string;
-  fieldValue: string;
-  validationSchema: any;
-  credentialId: number;
-  request: (id: number, value: string) => Promise<ApiRes>;
   label: string;
   placeholder: string;
+  validationSchema: any;
+  fieldName: string;
+  fieldValue: string;
+  credentialId: number;
+  request: (id: number, value: string) => Promise<ApiRes>;
 }
 
 export const CredentialFieldEditor = ({
-  fieldName,
-  fieldValue,
-  validationSchema,
-  credentialId,
-  request,
   label,
   placeholder,
+  validationSchema,
+  fieldName,
+  fieldValue,
+  credentialId,
+  request,
 }: CredentialFieldEditorProps) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState<string>(fieldValue);

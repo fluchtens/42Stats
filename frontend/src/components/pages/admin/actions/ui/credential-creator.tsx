@@ -11,7 +11,11 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { CreateCredential, CreateCredentialSchema } from "../dtos/create-credential.dto";
 
-export function CredentialCreator() {
+interface CredentialCreatorProps {
+  callback: () => Promise<void>;
+}
+
+export function CredentialCreator({ callback }: CredentialCreatorProps) {
   const { toast } = useToast();
   const [dialog, setDialog] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -34,6 +38,7 @@ export function CredentialCreator() {
   const onSubmit = async (createCredentialDto: CreateCredential) => {
     const data = await createCredential(createCredentialDto);
     if (data.success) {
+      callback();
       handleDialog();
       toast({
         title: "Success",

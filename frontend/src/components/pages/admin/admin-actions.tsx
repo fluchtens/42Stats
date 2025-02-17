@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getCredentialByProvider, updateCredentialClientId, updateCredentialClientSecret } from "@/services/CredentialService";
 import { Credential } from "@/types/models/Credential";
 import { useEffect, useState } from "react";
+import { UpdateCredentialClientSecretSchema } from "./actions/dtos/update-credential-secret";
 import { UpdateCredentialClientIdSchema } from "./actions/dtos/update-credential-uid";
 import { CredentialCreator } from "./actions/ui/credential-creator";
 import { CredentialFieldEditor } from "./actions/ui/credential-field-editor";
@@ -30,28 +31,28 @@ export function AdminActions() {
           {credential === null && (
             <div className="mt-2 flex flex-col items-start gap-1">
               <p className="text-muted-foreground">No api key has yet been configured for 42.</p>
-              <CredentialCreator />
+              <CredentialCreator callback={fetchCredential} />
             </div>
           )}
           {credential && (
             <div className="mt-2 grid gap-1">
               <CredentialFieldEditor
-                fieldName="client_id"
-                fieldValue={credential.client_id}
-                validationSchema={UpdateCredentialClientIdSchema}
-                credentialId={credential.id}
-                request={updateCredentialClientId}
                 label="UID"
                 placeholder="Enter the UID of your application"
+                validationSchema={UpdateCredentialClientIdSchema}
+                fieldName="client_id"
+                fieldValue={credential.client_id}
+                credentialId={credential.id}
+                request={updateCredentialClientId}
               />
               <CredentialFieldEditor
-                fieldName="client_secret"
-                fieldValue={credential.client_secret}
-                validationSchema={UpdateCredentialClientIdSchema}
-                credentialId={credential.id}
-                request={updateCredentialClientSecret}
                 label="SECRET"
                 placeholder="Enter the SECRET of your application"
+                validationSchema={UpdateCredentialClientSecretSchema}
+                fieldName="client_secret"
+                fieldValue={credential.client_secret}
+                credentialId={credential.id}
+                request={updateCredentialClientSecret}
               />
             </div>
           )}
