@@ -45,6 +45,16 @@ export class CredentialService {
     return credential;
   }
 
+  async getClientIdByProvider(provider: string) {
+    return this.credentialRepository.findClientIdByProvider(provider);
+  }
+
+  async getClientSecretByProvider(provider: string) {
+    const encryptedSecret =
+      await this.credentialRepository.findClientSecretByProvider(provider);
+    return this.decrypt(encryptedSecret);
+  }
+
   async createCredential(createCredentialDto: CreateCredentialDto) {
     const { provider, client_id, client_secret } = createCredentialDto;
     if (await this.credentialRepository.findByProvider(provider)) {

@@ -28,6 +28,26 @@ export class CredentialRepository {
     return rows[0];
   }
 
+  public async findClientIdByProvider(provider: string): Promise<string> {
+    const query = `
+      SELECT client_id
+      FROM external_credentials
+      WHERE provider = ?
+    `;
+    const rows = await this.databaseService.query(query, [provider]);
+    return rows[0].client_id;
+  }
+
+  public async findClientSecretByProvider(provider: string): Promise<string> {
+    const query = `
+      SELECT client_secret
+      FROM external_credentials
+      WHERE provider = ?
+    `;
+    const rows = await this.databaseService.query(query, [provider]);
+    return rows[0].client_secret;
+  }
+
   public async save(
     provider: string,
     client_id: string,
