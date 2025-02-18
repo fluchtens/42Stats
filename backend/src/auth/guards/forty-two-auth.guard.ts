@@ -1,8 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class FortyTwoAuthGuard extends PassportAuthGuard('42') {
+export class FortyTwoAuthGuard {
   canActivate(context: any) {
     const request = context.switchToHttp().getRequest();
     if (!request.session.user) {
