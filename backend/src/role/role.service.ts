@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { AccountRepository } from "src/account/account.repository";
-import { SessionService } from "src/session/session.service";
+import { SessionRepository } from "src/session/session.repository";
 import { RoleRepository } from "./role.repository";
 import { Role } from "./types/role.type";
 
@@ -9,7 +9,7 @@ export class RoleService {
   constructor(
     private readonly roleRepository: RoleRepository,
     private readonly accountRepository: AccountRepository,
-    private readonly sessionService: SessionService
+    private readonly sessionRepository: SessionRepository
   ) {}
 
   private readonly logger = new Logger(RoleService.name);
@@ -24,7 +24,7 @@ export class RoleService {
 
   private async updateSessions(accountId: number) {
     const newRoles: Role[] = await this.roleRepository.findByAccountId(accountId);
-    await this.sessionService.updateUserRolesSessions(accountId, newRoles);
+    await this.sessionRepository.updateRoles(accountId, newRoles);
   }
 
   async addToAccount(accountId: number, roleName: string) {
