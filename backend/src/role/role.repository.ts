@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { DatabaseService } from 'src/core/database/database.service';
-import { Role } from './types/role.type';
+import { Injectable, Logger } from "@nestjs/common";
+import { DatabaseService } from "src/core/database/database.service";
+import { Role } from "./types/role.type";
 
 @Injectable()
 export class RoleRepository {
@@ -9,7 +9,7 @@ export class RoleRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async findByName(roleName: string): Promise<Role> {
-    const query = 'SELECT * FROM role WHERE name = ?';
+    const query = "SELECT * FROM role WHERE name = ?";
     const params = [roleName];
 
     try {
@@ -20,9 +20,9 @@ export class RoleRepository {
     }
   }
 
-  public async findRolesByAccountId(accountId: number): Promise<Role[]> {
+  public async findByAccountId(accountId: number): Promise<Role[]> {
     const query = `
-      SELECT *
+      SELECT r.id, r.name
       FROM role r
       JOIN account_role ar ON r.id = ar.role_id
       WHERE ar.account_id = ?
@@ -33,17 +33,11 @@ export class RoleRepository {
       const rows = await this.databaseService.query(query, params);
       return rows;
     } catch (error) {
-      this.logger.error(
-        `Failed to get roles for account with id ${accountId}`,
-        error.message,
-      );
+      this.logger.error(`Failed to get roles for account with id ${accountId}`, error.message);
     }
   }
 
-  public async addToAccount(
-    accountId: number,
-    roleName: string,
-  ): Promise<void> {
+  public async addToAccount(accountId: number, roleName: string): Promise<void> {
     const query = `
       INSERT INTO account_role (account_id, role_id)
       VALUES (?, (SELECT id FROM role WHERE name = ?))
@@ -53,21 +47,13 @@ export class RoleRepository {
 
     try {
       await this.databaseService.query(query, params);
-      this.logger.log(
-        `Role ${roleName} successfully added to account with id ${accountId}`,
-      );
+      this.logger.log(`Role ${roleName} successfully added to account with id ${accountId}`);
     } catch (error) {
-      this.logger.error(
-        `Failed to add role ${roleName} to account with id ${accountId}`,
-        error.message,
-      );
+      this.logger.error(`Failed to add role ${roleName} to account with id ${accountId}`, error.message);
     }
   }
 
-  public async removeFromAccount(
-    accountId: number,
-    roleName: string,
-  ): Promise<void> {
+  public async removeFromAccount(accountId: number, roleName: string): Promise<void> {
     const query = `
       DELETE FROM account_role
       WHERE account_id = ? 
@@ -78,10 +64,7 @@ export class RoleRepository {
     try {
       await this.databaseService.query(query, params);
     } catch (error) {
-      this.logger.error(
-        `Failed to remove role ${roleName} from account with id ${accountId}`,
-        error.message,
-      );
+      this.logger.error(`Failed to remove role ${roleName} from account with id ${accountId}`, error.message);
     }
   }
 }
