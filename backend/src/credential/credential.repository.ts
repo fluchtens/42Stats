@@ -1,11 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { DatabaseService } from 'src/core/database/database.service';
-import { Credential } from './types/credential.type';
+import { Injectable } from "@nestjs/common";
+import { DatabaseService } from "src/core/database/database.service";
+import { Credential } from "./types/credential.type";
 
 @Injectable()
 export class CredentialRepository {
-  private readonly logger = new Logger(CredentialRepository.name);
-
   constructor(private readonly databaseService: DatabaseService) {}
 
   public async findById(id: number): Promise<Credential> {
@@ -28,11 +26,7 @@ export class CredentialRepository {
     return rows[0];
   }
 
-  public async save(
-    provider: string,
-    client_id: string,
-    client_secret: string,
-  ): Promise<void> {
+  public async save(provider: string, client_id: string, client_secret: string): Promise<void> {
     const query = `
         INSERT INTO external_credentials (provider, client_id, client_secret, expires_at)
         VALUES (?, ?, ?, ?)
@@ -41,7 +35,7 @@ export class CredentialRepository {
     await this.databaseService.query(query, params);
   }
 
-  updateField(id: number, field: string, value: string): Promise<void> {
+  public async updateField(id: number, field: string, value: string): Promise<void> {
     const query = `
       UPDATE external_credentials
       SET ${field} = ?
