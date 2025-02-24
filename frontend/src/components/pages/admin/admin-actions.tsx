@@ -23,7 +23,7 @@ export function AdminActions() {
 
   return (
     <>
-      {user && (
+      {user && user.roles.some((role) => role.name === "admin") && (
         <div className="max-w-screen-xl m-auto">
           <h1 className="text-2xl font-bold">Admin actions</h1>
           <Separator className="my-4" />

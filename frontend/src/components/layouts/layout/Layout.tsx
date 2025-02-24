@@ -1,10 +1,9 @@
 import { Home } from "@/components/pages/home/Home";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "../footer/Footer";
 import { Header } from "../header/Header";
 
@@ -12,9 +11,14 @@ export function Layout() {
   const { pathname } = useLocation();
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const isHomePage = () => {
     return pathname === "/";
+  };
+
+  const isAdminPage = () => {
+    return pathname.includes("/admin");
   };
 
   useEffect(() => {
@@ -23,6 +27,15 @@ export function Layout() {
         title: "Not authenticated",
         description: "You must be logged in to access this page.",
       });
+      navigate("/");
+      return;
+    }
+    if (user && !user.roles.some((role) => role.name === "admin") && isAdminPage()) {
+      toast({
+        title: "Not authorized",
+        description: "You are not authorized to access this page.",
+      });
+      navigate("/");
       return;
     }
   }, [user, pathname]);
@@ -30,17 +43,6 @@ export function Layout() {
   return (
     <div className="min-h-screen w-full flex flex-col">
       <Header />
-      {user === null && !isHomePage() && (
-        <div className="m-auto max-w-screen-xl w-full">
-          <Alert variant="destructive" className="mt-6 w-full">
-            <AlertTitle>Not authenticated</AlertTitle>
-            <AlertDescription>
-              <p>You need to be authenticated to access this page.</p>
-              <p>Please log in with your 42 account.</p>
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
       <main className="py-6 px-4 md:px-6 flex-1">{isHomePage() ? <Home /> : <Outlet />}</main>
       <Footer />
       <Toaster />
