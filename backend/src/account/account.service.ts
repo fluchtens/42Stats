@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { RoleRepository } from "src/role/role.repository";
 import { AccountRepository } from "./account.repository";
 import { Account } from "./types/account.type";
@@ -9,8 +9,6 @@ export class AccountService {
     private readonly accountRepository: AccountRepository,
     private readonly roleRepository: RoleRepository
   ) {}
-
-  private readonly logger = new Logger(AccountService.name);
 
   public async getAccountSession(session: Record<string, any>) {
     const account: Account = await this.accountRepository.findById(session.user.id);

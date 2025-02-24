@@ -1,11 +1,9 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "src/core/database/database.service";
 import { Account } from "./types/account.type";
 
 @Injectable()
 export class AccountRepository {
-  private readonly logger = new Logger(AccountRepository.name);
-
   constructor(private readonly databaseService: DatabaseService) {}
 
   public async findAll(): Promise<Account[]> {
