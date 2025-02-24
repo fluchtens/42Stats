@@ -1,3 +1,5 @@
+import { Role } from "src/role/types/role.type";
+
 export type Account = {
   id: number;
   login: string;
@@ -5,5 +7,5 @@ export type Account = {
   image: string;
   level: number;
   campus_id: string;
-  roles?: string[];
+  roles?: Role[];
 };

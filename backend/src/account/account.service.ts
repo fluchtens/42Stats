@@ -1,28 +1,35 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { AccountRepository } from './account.repository';
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
+import { RoleRepository } from "src/role/role.repository";
+import { AccountRepository } from "./account.repository";
+import { Account } from "./types/account.type";
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly accountRepository: AccountRepository) {}
+  constructor(
+    private readonly accountRepository: AccountRepository,
+    private readonly roleRepository: RoleRepository
+  ) {}
 
   private readonly logger = new Logger(AccountService.name);
 
   public async getAccountSession(session: Record<string, any>) {
-    return await this.accountRepository.findById(session.user.id);
+    const account: Account = await this.accountRepository.findById(session.user.id);
+    account.roles = await this.roleRepository.findByAccountId(session.user.id);
+    return account;
   }
 
   public async deleteAccount(session: Record<string, any>) {
     await new Promise<void>((resolve, reject) => {
       session.destroy((err) => {
         if (err) {
-          reject(new BadRequestException('Unable to log out'));
+          reject(new BadRequestException("Unable to log out"));
         } else {
           resolve();
         }
       });
     });
     await this.accountRepository.delete(session.user.id);
-    return { message: 'Account deleted and logged out successfully' };
+    return { message: "Account deleted and logged out successfully" };
   }
 
   public async getAllAccounts() {
@@ -52,12 +59,11 @@ export class AccountService {
 
   public async getMonthlyRegistrations() {
     const startDate = this.getMonthlyStartDate();
-    const results =
-      await this.accountRepository.findMonthlyRegistrations(startDate);
+    const results = await this.accountRepository.findMonthlyRegistrations(startDate);
 
     return results.map(({ year, month, count }) => {
-      const monthName = new Date(year, month - 1).toLocaleString('en-US', {
-        month: 'short',
+      const monthName = new Date(year, month - 1).toLocaleString("en-US", {
+        month: "short"
       });
       return { year, month: monthName, count };
     });
@@ -65,15 +71,13 @@ export class AccountService {
 
   public async getMonthlyCumulativeRegistrations() {
     const startDate = this.getMonthlyStartDate();
-    const monthlyRegistrations =
-      await this.accountRepository.findMonthlyRegistrations(startDate);
-    let cumulativeCount =
-      await this.accountRepository.countBeforeCreatedDate(startDate);
+    const monthlyRegistrations = await this.accountRepository.findMonthlyRegistrations(startDate);
+    let cumulativeCount = await this.accountRepository.countBeforeCreatedDate(startDate);
 
     return monthlyRegistrations.map(({ year, month, count }) => {
       cumulativeCount += count;
-      const monthName = new Date(year, month - 1).toLocaleString('en-US', {
-        month: 'short',
+      const monthName = new Date(year, month - 1).toLocaleString("en-US", {
+        month: "short"
       });
       return { year, month: monthName, count: cumulativeCount };
     });

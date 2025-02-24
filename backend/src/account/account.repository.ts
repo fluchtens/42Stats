@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { DatabaseService } from 'src/core/database/database.service';
-import { Account } from './types/account.type';
+import { Injectable, Logger } from "@nestjs/common";
+import { DatabaseService } from "src/core/database/database.service";
+import { Account } from "./types/account.type";
 
 @Injectable()
 export class AccountRepository {
@@ -9,229 +9,109 @@ export class AccountRepository {
   constructor(private readonly databaseService: DatabaseService) {}
 
   public async findAll(): Promise<Account[]> {
-    const query = 'SELECT * FROM account';
+    const query = "SELECT * FROM account";
     return await this.databaseService.query(query);
   }
 
   public async findById(id: number): Promise<Account> {
     const query = `
-      SELECT
-        *
-      FROM
-        account
-      WHERE
-        id = ?
+      SELECT *
+      FROM account
+      WHERE id = ?
     `;
     const params = [id];
-
-    try {
-      const rows = await this.databaseService.query(query, params);
-      return rows[0];
-    } catch (error) {
-      this.logger.error(`Failed to get account with id ${id}`, error.message);
-    }
+    const rows = await this.databaseService.query(query, params);
+    return rows[0];
   }
 
   public async save(account: Account): Promise<void> {
     const query = `
-      INSERT INTO
-        account (id, login, email, image, level, campus_id)
-      VALUES
-        (?, ?, ?, ?, ?, ?)
+      INSERT INTO account (id, login, email, image, level, campus_id)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const params = [
-      account.id,
-      account.login,
-      account.email,
-      account.image,
-      account.level,
-      account.campus_id,
-    ];
-
-    try {
-      await this.databaseService.query(query, params);
-      this.logger.log(`Account ${account.login} inserted`);
-    } catch (error) {
-      this.logger.error(
-        `Failed to insert account ${account.login}`,
-        error.message,
-      );
-    }
+    const params = [account.id, account.login, account.email, account.image, account.level, account.campus_id];
+    await this.databaseService.query(query, params);
   }
 
   public async update(account: Account): Promise<void> {
     const query = `
-      UPDATE
-        account
-      SET
-        id = ?,
-        login = ?,
-        email = ?,
-        image = ?,
-        level = ?,
-        campus_id = ?,
-        updated_at = NOW()
-      WHERE
-        id = ?
+      UPDATE account
+      SET id = ?, login = ?, email = ?, image = ?, level = ?, campus_id = ?, updated_at = NOW()
+      WHERE id = ?
     `;
-    const params = [
-      account.id,
-      account.login,
-      account.email,
-      account.image,
-      account.level,
-      account.campus_id,
-      account.id,
-    ];
-
-    try {
-      const result = await this.databaseService.query(query, params);
-      if (result.affectedRows <= 0) {
-        this.logger.warn(`Account with id ${account.id} not found`);
-      }
-    } catch (error) {
-      this.logger.error(`Failed to update account with id ${account.id}`);
-    }
+    const params = [account.id, account.login, account.email, account.image, account.level, account.campus_id, account.id];
+    const result = await this.databaseService.query(query, params);
   }
 
   public async delete(id: number): Promise<void> {
     const query = `
-      DELETE FROM
-        account
-      WHERE
-        id = ?
+      DELETE FROM account
+      WHERE id = ?
     `;
     const params = [id];
-
-    try {
-      await this.databaseService.query(query, params);
-      this.logger.log(`Account with id ${id} deleted`);
-    } catch (error) {
-      this.logger.error(
-        `Failed to delete account with id ${id}`,
-        error.message,
-      );
-    }
+    await this.databaseService.query(query, params);
   }
 
   public async count(): Promise<number> {
     const query = `
-      SELECT
-        COUNT(*) as count
-      FROM
-        account
+      SELECT COUNT(*) as count
+      FROM account
     `;
-
-    try {
-      const rows = await this.databaseService.query(query);
-      return rows[0].count;
-    } catch (error) {
-      this.logger.error(`Failed to get account count`, error.message);
-    }
+    const rows = await this.databaseService.query(query);
+    return rows[0].count;
   }
 
-  public async countActive(
-    startOfMonth: Date,
-    endOfMonth: Date,
-  ): Promise<number> {
+  public async countActive(startOfMonth: Date, endOfMonth: Date): Promise<number> {
     const query = `
-      SELECT
-        COUNT(*) as count
-      FROM
-        account
-      WHERE
-        updated_at BETWEEN ? AND ?
+      SELECT COUNT(*) as count
+      FROM account
+      WHERE updated_at BETWEEN ? AND ?
     `;
     const params = [startOfMonth, endOfMonth];
-
-    try {
-      const rows = await this.databaseService.query(query, params);
-      return rows[0].count;
-    } catch (error) {
-      this.logger.error(`Failed to get active account count`, error.message);
-    }
+    const rows = await this.databaseService.query(query, params);
+    return rows[0].count;
   }
 
-  public async findMonthlyRegistrations(
-    startDate: Date,
-  ): Promise<{ year: number; month: number; count: number }[]> {
+  public async findMonthlyRegistrations(startDate: Date): Promise<{ year: number; month: number; count: number }[]> {
     const query = `
-      SELECT 
-        YEAR(created_at) AS year, 
-        MONTH(created_at) AS month, 
-        COUNT(*) AS count
-      FROM
-        account
-      WHERE
-        created_at >= ?
-      GROUP BY
-        YEAR(created_at),
-        MONTH(created_at)
-      ORDER BY
-        YEAR(created_at),
-        MONTH(created_at)
+      SELECT YEAR(created_at) AS year, MONTH(created_at) AS month, COUNT(*) AS count
+      FROM account
+      WHERE created_at >= ?
+      GROUP BY YEAR(created_at), MONTH(created_at)
+      ORDER BY YEAR(created_at), MONTH(created_at)
     `;
     const params = [startDate];
-
-    try {
-      const rows = await this.databaseService.query(query, params);
-      return rows.map((row) => ({
-        year: row.year,
-        month: row.month,
-        count: row.count,
-      }));
-    } catch (error) {
-      this.logger.error(`Failed to fetch monthly registrations`, error.message);
-    }
+    const rows = await this.databaseService.query(query, params);
+    return rows.map((row) => ({
+      year: row.year,
+      month: row.month,
+      count: row.count
+    }));
   }
 
   public async countBeforeCreatedDate(date: Date): Promise<number> {
     const query = `
-      SELECT
-        COUNT(*) AS count
-      FROM
-        account
-      WHERE
-        created_at < ?
+      SELECT COUNT(*) AS count
+      FROM account
+      WHERE created_at < ?
     `;
     const params = [date];
-
-    try {
-      const rows = await this.databaseService.query(query, params);
-      return rows[0].count;
-    } catch (error) {
-      this.logger.error('Failed to count users before date');
-    }
+    const rows = await this.databaseService.query(query, params);
+    return rows[0].count;
   }
 
-  public async countAllCampuses(
-    page: number,
-    pageSize: number,
-  ): Promise<{ campus: string; count: number }[]> {
+  public async countAllCampuses(page: number, pageSize: number): Promise<{ campus: string; count: number }[]> {
     const query = `
-      SELECT
-        campus.name as campus,
-        COUNT(account.id) as count
-      FROM
-        account
-      JOIN
-        campus ON account.campus_id = campus.id
-      GROUP BY
-        campus.name
-      ORDER BY
-        count DESC
-      LIMIT
-        ?
-      OFFSET
-        ?
+      SELECT campus.name as campus, COUNT(account.id) as count
+      FROM account
+      JOIN campus ON account.campus_id = campus.id
+      GROUP BY campus.name
+      ORDER BY count DESC
+      LIMIT ?
+      OFFSET ?
     `;
     const offset = (page - 1) * pageSize;
     const params = [`${pageSize}`, `${offset}`];
-
-    try {
-      return await this.databaseService.query(query, params);
-    } catch (error) {
-      this.logger.error('Failed to get campus account counts');
-    }
+    return await this.databaseService.query(query, params);
   }
 }
