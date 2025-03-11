@@ -3,7 +3,7 @@ import { Layout } from "./components/layouts/layout/Layout";
 import { AdminActions } from "./components/pages/admin/admin-actions";
 import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
-import { Home } from "./components/pages/home/Home";
+import { HomePage } from "./components/pages/home/home-page";
 import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
 import { RncpChecker } from "./components/pages/rncp/Rncp";
 import { Settings } from "./components/pages/settings/Settings";
@@ -17,7 +17,7 @@ const routes = [
     element: <Layout />,
     errorElement: <Error />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element: <HomePage /> },
       { path: "/settings", element: <Settings /> },
       { path: "/calculator", element: <Calculator /> },
       { path: "/leaderboard", element: <Leaderboard /> },

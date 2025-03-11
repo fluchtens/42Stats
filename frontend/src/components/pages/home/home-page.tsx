@@ -19,7 +19,7 @@ const FaqQuestion = ({ value, question, answer }: { value: string; question: str
   );
 };
 
-export function Home() {
+export function HomePage() {
   return (
     <div className="md:my-14 max-w-screen-lg m-auto flex-col flex justify-center items-center gap-6 md:gap-16">
       <div className="text-center">
