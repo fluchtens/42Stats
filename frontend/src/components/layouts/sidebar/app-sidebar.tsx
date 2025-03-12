@@ -86,7 +86,7 @@ export function AppSidebar() {
                             <SidebarMenuSub>
                               {item.children.map((subItem) => (
                                 <SidebarMenuSubItem key={subItem.title}>
-                                  <SidebarMenuSubButton onClick={() => navigate(subItem.url)}>
+                                  <SidebarMenuSubButton onClick={() => navigate(subItem.url)} className="cursor-pointer">
                                     <span>{subItem.title}</span>
                                   </SidebarMenuSubButton>
                                 </SidebarMenuSubItem>
