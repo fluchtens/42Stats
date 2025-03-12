@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Layout } from "./components/layouts/layout/Layout";
+import { Layout } from "./components/layouts/layout/layout";
 import { AdminActions } from "./components/pages/admin/admin-actions";
 import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
@@ -18,11 +18,13 @@ const routes = [
     errorElement: <Error />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/settings", element: <Settings /> },
       { path: "/calculator", element: <Calculator /> },
       { path: "/leaderboard", element: <Leaderboard /> },
       { path: "/stats", element: <Stats /> },
       { path: "/rncp", element: <RncpChecker /> },
+      { path: "/settings", element: <Settings /> },
+      { path: "/settings/your-account", element: <Settings /> },
+      { path: "/settings/login-and-security", element: <Settings /> },
       { path: "/admin", element: <AdminActions /> },
     ],
   },
