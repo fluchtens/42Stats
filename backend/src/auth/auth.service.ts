@@ -52,7 +52,6 @@ export class AuthService {
       });
       const data = await response.json();
       if (!response.ok) {
-        console.log(response);
         throw new Error(data.error);
       }
       return data;
@@ -89,8 +88,7 @@ export class AuthService {
 
   private async saveSession(req: Request, account: Account) {
     req.session.user = {
-      id: account.id,
-      roles: await this.roleRepository.findByAccountId(account.id)
+      id: account.id
     };
     const ua = new UAParser(req.headers["user-agent"] || "").getResult();
     req.session.deviceInfo = {

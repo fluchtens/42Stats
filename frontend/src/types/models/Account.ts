@@ -7,14 +7,9 @@ export const AccountSchema = z.object({
   image: z.string(),
   level: z.number(),
   campus_id: z.number(),
+  is_admin: z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
-  roles: z.array(
-    z.object({
-      id: z.number(),
-      name: z.string(),
-    })
-  ),
 });
 
 export type Account = z.infer<typeof AccountSchema>;

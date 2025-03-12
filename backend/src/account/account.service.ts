@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { RoleRepository } from "src/role/role.repository";
 import { AccountRepository } from "./account.repository";
-import { Account } from "./types/account.type";
 
 @Injectable()
 export class AccountService {
@@ -11,9 +10,7 @@ export class AccountService {
   ) {}
 
   public async getAccountSession(session: Record<string, any>) {
-    const account: Account = await this.accountRepository.findById(session.user.id);
-    account.roles = await this.roleRepository.findByAccountId(session.user.id);
-    return account;
+    return await this.accountRepository.findById(session.user.id);
   }
 
   public async deleteAccount(session: Record<string, any>) {
