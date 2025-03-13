@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/layouts/layout/layout";
 import { AdminActions } from "./components/pages/admin/admin-actions";
-import { Calculator } from "./components/pages/calculator/Calculator";
+import { CalculatorPage } from "./components/pages/calculator/calculator-page";
 import { ErrorPage } from "./components/pages/error/error-page";
 import { HomePage } from "./components/pages/home/home-page";
 import { LeaderboardPage } from "./components/pages/leaderboard/leaderboard-page";
@@ -19,7 +19,7 @@ const routes = [
     errorElement: <ErrorPage />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/calculator", element: <Calculator /> },
+      { path: "/calculator", element: <CalculatorPage /> },
       { path: "/leaderboard", element: <LeaderboardPage /> },
       { path: "/stats/42", element: <FortyTwoStatsPage /> },
       { path: "/stats/42stats", element: <MainStatsPage /> },

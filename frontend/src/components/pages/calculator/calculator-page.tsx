@@ -9,9 +9,9 @@ import { getProjects } from "@/services/ProjectService";
 import { Project } from "@/types/models/Project";
 import { useEffect, useState } from "react";
 import { FaCalculator } from "react-icons/fa6";
-import { ProjectSelector } from "./ui/ProjectSelector";
+import { ProjectSelector } from "./ui/project-selector";
 
-export function Calculator() {
+export function CalculatorPage() {
   const { user } = useAuth();
   const [level, setLevel] = useState<number>(0);
   const [projects, setProjects] = useState<Project[] | null>(null);
@@ -106,7 +106,7 @@ export function Calculator() {
   return (
     <>
       {user && (
-        <div className="max-w-screen-xl m-auto">
+        <div>
           <PageHeader title="XP Calculator" description="Calculate your next XP level after turning in a project." />
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
             <Card className="md:col-span-2 bg-popover">
