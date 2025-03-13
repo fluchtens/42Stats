@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { AccountRepository } from "src/account/account.repository";
 import { Account } from "src/account/types/account.type";
 import { CredentialService } from "src/credential/credential.service";
-import { RoleRepository } from "src/role/role.repository";
 import { UAParser } from "ua-parser-js";
 
 @Injectable()
@@ -12,7 +11,6 @@ export class AuthService {
 
   constructor(
     private readonly accountRepository: AccountRepository,
-    private readonly roleRepository: RoleRepository,
     private readonly credentialService: CredentialService
   ) {}
 
@@ -65,7 +63,6 @@ export class AuthService {
     const { id, login, email, image, cursus_users, campus_users } = profile;
 
     const commonCoreCursus = cursus_users.find((cursus) => cursus.cursus_id === 21);
-
     const primaryCampus = campus_users.find((campus) => campus.is_primary === true);
 
     const account: Account = {
@@ -74,13 +71,15 @@ export class AuthService {
       email,
       image: image?.link,
       level: commonCoreCursus?.level ?? 0,
-      campus_id: primaryCampus?.campus_id ?? null
+      campus_id: primaryCampus?.campus_id ?? null,
+      is_admin: false
     };
 
     const existingAccount = await this.accountRepository.findById(id);
     if (!existingAccount) {
       await this.accountRepository.save(account);
     } else {
+      account.is_admin = existingAccount.is_admin;
       await this.accountRepository.update(account);
     }
     return account;
@@ -88,7 +87,8 @@ export class AuthService {
 
   private async saveSession(req: Request, account: Account) {
     req.session.user = {
-      id: account.id
+      id: account.id,
+      is_admin: account.is_admin
     };
     const ua = new UAParser(req.headers["user-agent"] || "").getResult();
     req.session.deviceInfo = {

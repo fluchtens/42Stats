@@ -27,10 +27,10 @@ export class AccountRepository {
 
   public async save(account: Account): Promise<void> {
     const query = `
-      INSERT INTO account (id, login, email, image, level, campus_id)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO account (id, login, email, image, level, campus_id, is_admin)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const params = [account.id, account.login, account.email, account.image, account.level, account.campus_id];
+    const params = [account.id, account.login, account.email, account.image, account.level, account.campus_id, account.is_admin];
     await this.databaseService.query(query, params);
   }
 
@@ -41,7 +41,7 @@ export class AccountRepository {
       WHERE id = ?
     `;
     const params = [account.id, account.login, account.email, account.image, account.level, account.campus_id, account.id];
-    const result = await this.databaseService.query(query, params);
+    await this.databaseService.query(query, params);
   }
 
   public async delete(id: number): Promise<void> {
