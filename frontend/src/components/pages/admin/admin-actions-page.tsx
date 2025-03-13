@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/core/PageHeader";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useAuth";
 import { getCredentialByProvider, updateCredentialClientId, updateCredentialClientSecret } from "@/services/CredentialService";
@@ -8,7 +9,7 @@ import { UpdateCredentialClientIdSchema } from "./actions/dtos/update-credential
 import { CredentialCreator } from "./actions/ui/credential-creator";
 import { CredentialFieldEditor } from "./actions/ui/credential-field-editor";
 
-export function AdminActions() {
+export function AdminActionsPage() {
   const { user } = useAuth();
   const [credential, setCredential] = useState<Credential | null | undefined>(undefined);
 
@@ -24,8 +25,8 @@ export function AdminActions() {
   return (
     <>
       {user && user.is_admin && (
-        <div className="max-w-screen-xl m-auto">
-          <h1 className="text-2xl font-bold">Admin actions</h1>
+        <div>
+          <PageHeader title="Admin actions" description="Actions reserved for administrators" />
           <Separator className="my-4" />
           <h2 className="text-xl font-semibold">API Keys</h2>
           {credential === null && (

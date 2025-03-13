@@ -15,8 +15,9 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
+import clsx from "clsx";
 import { Calculator, ChartNoAxesCombined, ChevronRightIcon, FolderLock, Home, Medal, Settings } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppSidebarFooter } from "./app-sidebar-footer";
 import { AppSidebarHeader } from "./app-sidebar-header";
 
@@ -40,16 +41,17 @@ const routes = [
     icon: Settings,
     defaultOpen: false,
     children: [
-      { title: "Account", url: "/settings/your-account" },
-      { title: "Security", url: "/settings/login-and-security" },
+      { title: "Account", url: "/settings/account" },
+      { title: "Device management", url: "/settings/device" },
     ],
   },
-  { title: "Admin panel", url: "/admin", icon: FolderLock, admin: true },
+  { title: "Admin panel", url: "/admin/actions", icon: FolderLock, admin: true },
 ];
 
 export function AppSidebar() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <>
@@ -67,13 +69,21 @@ export function AppSidebar() {
                   .map((item) =>
                     !item.children ? (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton onClick={() => navigate(item.url)}>
+                        <SidebarMenuButton
+                          onClick={() => navigate(item.url)}
+                          className={clsx({ "bg-sidebar-accent text-sidebar-accent-foreground": location.pathname === item.url })}
+                        >
                           {item.icon && <item.icon />}
                           <span>{item.title}</span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ) : (
-                      <Collapsible key={item.title} defaultOpen={item.defaultOpen} className="group/collapsible" asChild>
+                      <Collapsible
+                        key={item.title}
+                        defaultOpen={item.defaultOpen || item.children.some((subItem) => location.pathname.startsWith(subItem.url))}
+                        className="group/collapsible"
+                        asChild
+                      >
                         <SidebarMenuItem>
                           <CollapsibleTrigger asChild>
                             <SidebarMenuButton>
@@ -86,7 +96,13 @@ export function AppSidebar() {
                             <SidebarMenuSub>
                               {item.children.map((subItem) => (
                                 <SidebarMenuSubItem key={subItem.title}>
-                                  <SidebarMenuSubButton onClick={() => navigate(subItem.url)} className="cursor-pointer">
+                                  <SidebarMenuSubButton
+                                    onClick={() => navigate(subItem.url)}
+                                    className={clsx(
+                                      "cursor-pointer",
+                                      location.pathname === subItem.url && "bg-sidebar-accent text-sidebar-accent-foreground"
+                                    )}
+                                  >
                                     <span>{subItem.title}</span>
                                   </SidebarMenuSubButton>
                                 </SidebarMenuSubItem>
@@ -107,7 +123,10 @@ export function AppSidebar() {
                     .filter((item) => item.admin)
                     .map((item) => (
                       <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton onClick={() => navigate(item.url)}>
+                        <SidebarMenuButton
+                          onClick={() => navigate(item.url)}
+                          className={clsx({ "bg-sidebar-accent text-sidebar-accent-foreground": location.pathname === item.url })}
+                        >
                           {item.icon && <item.icon />}
                           <span>{item.title}</span>
                         </SidebarMenuButton>

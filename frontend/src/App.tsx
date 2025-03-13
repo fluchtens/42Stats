@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/layouts/layout/layout";
-import { AdminActions } from "./components/pages/admin/admin-actions";
+import { AdminActionsPage } from "./components/pages/admin/admin-actions-page";
 import { CalculatorPage } from "./components/pages/calculator/calculator-page";
 import { ErrorPage } from "./components/pages/error/error-page";
 import { HomePage } from "./components/pages/home/home-page";
@@ -24,9 +24,9 @@ const routes = [
       { path: "/stats/42", element: <FortyTwoStatsPage /> },
       { path: "/stats/42stats", element: <MainStatsPage /> },
       // { path: "/rncp", element: <RncpChecker /> },
-      { path: "/settings/your-account", element: <AccountSettingsPage /> },
-      { path: "/settings/login-and-security", element: <DeviceSettingsPage /> },
-      { path: "/admin", element: <AdminActions /> },
+      { path: "/settings/account", element: <AccountSettingsPage /> },
+      { path: "/settings/device", element: <DeviceSettingsPage /> },
+      { path: "/admin/actions", element: <AdminActionsPage /> },
     ],
   },
 ];
