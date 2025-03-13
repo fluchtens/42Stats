@@ -8,7 +8,8 @@ import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
 import { RncpChecker } from "./components/pages/rncp/Rncp";
 import { AccountSettings } from "./components/pages/settings/account-settings";
 import { DeviceSettings } from "./components/pages/settings/device-settings";
-import { Stats } from "./components/pages/stats/Stats";
+import { FortyTwoStatsPage } from "./components/pages/stats/forty-two/forty-two-stats-page";
+import { MainStatsPage } from "./components/pages/stats/main/main-stats-page";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
@@ -21,7 +22,8 @@ const routes = [
       { path: "/", element: <HomePage /> },
       { path: "/calculator", element: <Calculator /> },
       { path: "/leaderboard", element: <Leaderboard /> },
-      { path: "/stats", element: <Stats /> },
+      { path: "/stats/42", element: <FortyTwoStatsPage /> },
+      { path: "/stats/42stats", element: <MainStatsPage /> },
       { path: "/rncp", element: <RncpChecker /> },
       { path: "/settings/your-account", element: <AccountSettings /> },
       { path: "/settings/login-and-security", element: <DeviceSettings /> },

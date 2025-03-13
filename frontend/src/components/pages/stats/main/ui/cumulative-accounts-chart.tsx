@@ -11,7 +11,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const CumulativeUsersChart = () => {
+export const CumulativeAccountsChart = () => {
   const [chartData, setChartData] = useState<Registration[]>([]);
 
   const fetchData = async () => {
