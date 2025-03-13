@@ -48,23 +48,23 @@ export const AccountSettingsPage = () => {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col">
                 <span className="text-base font-semibold">ID</span>
-                <span className="text-base font-normal">{user.id}</span>
+                <span className="text-base font-normal text-muted-foreground">{user.id}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-semibold">Email</span>
-                <span className="text-base font-normal">{user.email}</span>
+                <span className="text-base font-normal text-muted-foreground">{user.email}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-semibold">Username</span>
-                <span className="text-base font-normal">{user.login}</span>
+                <span className="text-base font-normal text-muted-foreground">{user.login}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-semibold">Level</span>
-                <span className="text-base font-normal">{user.level}</span>
+                <span className="text-base font-normal text-muted-foreground">{user.level}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base font-semibold">Campus ID</span>
-                <span className="text-base font-normal">{user.campus_id}</span>
+                <span className="text-base font-normal text-muted-foreground">{user.campus_id}</span>
               </div>
             </div>
             <Avatar className="w-48 h-48 rounded-full">
