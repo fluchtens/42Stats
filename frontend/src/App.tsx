@@ -6,8 +6,8 @@ import { Error } from "./components/pages/error/Error";
 import { HomePage } from "./components/pages/home/home-page";
 import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
 import { RncpChecker } from "./components/pages/rncp/Rncp";
-import { AccountSettings } from "./components/pages/settings/account-settings";
-import { DeviceSettings } from "./components/pages/settings/device-settings";
+import { AccountSettingsPage } from "./components/pages/settings/account-settings-page";
+import { DeviceSettingsPage } from "./components/pages/settings/device-settings-page";
 import { FortyTwoStatsPage } from "./components/pages/stats/forty-two/forty-two-stats-page";
 import { MainStatsPage } from "./components/pages/stats/main/main-stats-page";
 import { AuthProvider } from "./components/providers/AuthProvider";
@@ -25,8 +25,8 @@ const routes = [
       { path: "/stats/42", element: <FortyTwoStatsPage /> },
       { path: "/stats/42stats", element: <MainStatsPage /> },
       { path: "/rncp", element: <RncpChecker /> },
-      { path: "/settings/your-account", element: <AccountSettings /> },
-      { path: "/settings/login-and-security", element: <DeviceSettings /> },
+      { path: "/settings/your-account", element: <AccountSettingsPage /> },
+      { path: "/settings/login-and-security", element: <DeviceSettingsPage /> },
       { path: "/admin", element: <AdminActions /> },
     ],
   },

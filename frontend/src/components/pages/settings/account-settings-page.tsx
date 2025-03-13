@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { deleteAccount } from "@/services/AccountService";
 
-export const AccountSettings = () => {
+export const AccountSettingsPage = () => {
   const { user, updateUser } = useAuth();
   const { toast } = useToast();
 

@@ -8,7 +8,7 @@ import { Session } from "@/types/models/Session";
 import { convertDate } from "@/utils/convertDate";
 import { useEffect, useState } from "react";
 
-export const DeviceSettings = () => {
+export const DeviceSettingsPage = () => {
   const { user } = useAuth();
   const [sessions, setSessions] = useState<Session[] | null>(null);
   const { toast } = useToast();
