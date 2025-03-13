@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/layouts/layout/layout";
 import { AdminActions } from "./components/pages/admin/admin-actions";
 import { Calculator } from "./components/pages/calculator/Calculator";
-import { Error } from "./components/pages/error/Error";
+import { ErrorPage } from "./components/pages/error/error-page";
 import { HomePage } from "./components/pages/home/home-page";
 import { LeaderboardPage } from "./components/pages/leaderboard/leaderboard-page";
 import { AccountSettingsPage } from "./components/pages/settings/account-settings-page";
@@ -16,7 +16,7 @@ const routes = [
   {
     path: "/",
     element: <Layout />,
-    errorElement: <Error />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/calculator", element: <Calculator /> },
