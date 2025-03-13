@@ -14,11 +14,11 @@ import { GiBlackHoleBolas } from "react-icons/gi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { updateUrlParams } from "../../../utils/updateUrlParams";
 import { PageHeader } from "../../core/PageHeader";
-import { CampusSelector } from "./ui/CampusSelector";
-import { PoolDateSelector } from "./ui/PoolDateSelector";
-import { UserPagination } from "./ui/UserPagination";
+import { CampusSelector } from "./ui/campus-selector";
+import { PoolDateSelector } from "./ui/pool-date-selector";
+import { StudentPagination } from "./ui/student-pagination";
 
-export const Leaderboard = () => {
+export const LeaderboardPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -149,7 +149,7 @@ export const Leaderboard = () => {
   return (
     <>
       {user && (
-        <div className="max-w-screen-xl m-auto">
+        <div>
           <div className="flex flex-col">
             <PageHeader title="Student Leaderboard" description="Ranking of student by descending level." />
             <div className="mt-6 w-full flex-col md:flex-row flex md:justify-between gap-2">
@@ -216,7 +216,7 @@ export const Leaderboard = () => {
                       ))}
                   </tbody>
                 </table>
-                {totalPages > 1 && <UserPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
+                {totalPages > 1 && <StudentPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />}
               </>
             )}
           </div>

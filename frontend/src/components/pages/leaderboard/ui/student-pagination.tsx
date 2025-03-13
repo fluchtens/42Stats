@@ -8,13 +8,13 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-interface UsersPaginationProps {
+interface StudentPaginationProps {
   currentPage: number;
   totalPages: number;
   setCurrentPage: (newPage: number) => void;
 }
 
-export const UserPagination = ({ currentPage, totalPages, setCurrentPage }: UsersPaginationProps) => {
+export const StudentPagination = ({ currentPage, totalPages, setCurrentPage }: StudentPaginationProps) => {
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages || page === currentPage) {
       return;

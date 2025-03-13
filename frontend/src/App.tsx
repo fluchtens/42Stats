@@ -4,8 +4,7 @@ import { AdminActions } from "./components/pages/admin/admin-actions";
 import { Calculator } from "./components/pages/calculator/Calculator";
 import { Error } from "./components/pages/error/Error";
 import { HomePage } from "./components/pages/home/home-page";
-import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
-import { RncpChecker } from "./components/pages/rncp/Rncp";
+import { LeaderboardPage } from "./components/pages/leaderboard/leaderboard-page";
 import { AccountSettingsPage } from "./components/pages/settings/account-settings-page";
 import { DeviceSettingsPage } from "./components/pages/settings/device-settings-page";
 import { FortyTwoStatsPage } from "./components/pages/stats/forty-two/forty-two-stats-page";
@@ -21,10 +20,10 @@ const routes = [
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/calculator", element: <Calculator /> },
-      { path: "/leaderboard", element: <Leaderboard /> },
+      { path: "/leaderboard", element: <LeaderboardPage /> },
       { path: "/stats/42", element: <FortyTwoStatsPage /> },
       { path: "/stats/42stats", element: <MainStatsPage /> },
-      { path: "/rncp", element: <RncpChecker /> },
+      // { path: "/rncp", element: <RncpChecker /> },
       { path: "/settings/your-account", element: <AccountSettingsPage /> },
       { path: "/settings/login-and-security", element: <DeviceSettingsPage /> },
       { path: "/admin", element: <AdminActions /> },
