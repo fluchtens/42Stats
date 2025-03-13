@@ -19,7 +19,10 @@ export class AccountRepository {
     `;
     const params = [id];
     const rows = await this.databaseService.query(query, params);
-    return rows[0];
+    return {
+      ...rows[0],
+      is_admin: Boolean(rows[0].is_admin)
+    };
   }
 
   public async save(account: Account): Promise<void> {
