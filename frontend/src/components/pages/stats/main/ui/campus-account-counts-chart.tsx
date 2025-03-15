@@ -18,7 +18,6 @@ export const CampusAccountCountsChart = () => {
 
   const fetchData = async () => {
     const data = await getCampusAccountCounts();
-    console.log(data);
     if (data) {
       setChartData(data);
     }
