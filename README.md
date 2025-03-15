@@ -18,10 +18,6 @@ Web application in NestJS and React for 42 users to discover detailed informatio
 - Run `make` to start the application with docker.
 - Use `MODE=prod` or `MODE=dev` in your make commands to select the mode.
 
-### Screenshots:
-
-![1](https://fluchtens.com/projects/42Stats/42Stats_1.webp)
-
 ### How to Contribute
 
 We welcome contributions from everyone! Here's how you can contribute to **42Stats**:
