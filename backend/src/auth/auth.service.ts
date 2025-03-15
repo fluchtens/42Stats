@@ -92,7 +92,6 @@ export class AuthService {
     };
     const ua = new UAParser(req.headers["user-agent"] || "").getResult();
     req.session.deviceInfo = {
-      ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress || "Unknown",
       browser: ua.browser.name || "Unknown",
       os: ua.os.name || "Unknown",
       device: ua.device.model || ua.device.type || "Unknown"

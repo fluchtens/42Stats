@@ -15,6 +15,14 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { deleteAccount } from "@/services/AccountService";
+import { convertDate } from "@/utils/convertDate";
+
+const AccountInformation = ({ info, value }: { info: string; value: string }) => (
+  <div className="flex flex-col">
+    <span className="text-base font-semibold">{info}</span>
+    <span className="text-base font-normal text-muted-foreground">{value}</span>
+  </div>
+);
 
 export const AccountSettingsPage = () => {
   const { user, updateUser } = useAuth();
@@ -44,28 +52,15 @@ export const AccountSettingsPage = () => {
           <p className="text-sm font-medium text-muted-foreground">
             This information is retrieved during the OAuth2 connection with your 42 account.
           </p>
-          <div className="mt-2 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="mt-2 flex flex-col sm:flex-row sm:justify-between gap-4">
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col">
-                <span className="text-base font-semibold">ID</span>
-                <span className="text-base font-normal text-muted-foreground">{user.id}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-semibold">Email</span>
-                <span className="text-base font-normal text-muted-foreground">{user.email}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-semibold">Username</span>
-                <span className="text-base font-normal text-muted-foreground">{user.login}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-semibold">Level</span>
-                <span className="text-base font-normal text-muted-foreground">{user.level}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-semibold">Campus ID</span>
-                <span className="text-base font-normal text-muted-foreground">{user.campus_id}</span>
-              </div>
+              <AccountInformation info="ID" value={user.id.toString()} />
+              <AccountInformation info="Email" value={user.email} />
+              <AccountInformation info="Username" value={user.login} />
+              <AccountInformation info="Level" value={user.level.toString()} />
+              <AccountInformation info="Campus ID" value={user.campus_id.toString()} />
+              <AccountInformation info="Created at" value={convertDate(user.created_at)} />
+              <AccountInformation info="Updated at" value={convertDate(user.updated_at)} />
             </div>
             <Avatar className="w-48 h-48 rounded-full">
               <AvatarFallback>{user.login[0].toUpperCase()}</AvatarFallback>

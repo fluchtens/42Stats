@@ -53,7 +53,6 @@ export const DeviceSettingsPage = () => {
                 <tr>
                   <th className="py-3 text-left">Device</th>
                   <th className="hidden sm:table-cell py-3 text-center">Expiry date</th>
-                  {/* <th className="py-3 text-center">IP address</th> */}
                   <th className="py-3 text-right">Action</th>
                 </tr>
               </thead>
@@ -67,7 +66,6 @@ export const DeviceSettingsPage = () => {
                         <span>{session.data.deviceInfo.device}</span>
                       </td>
                       <td className="hidden sm:table-cell text-sm text-center">{convertDate(session.data.cookie.expires)}</td>
-                      {/* <td className="py-5 text-sm text-center">{session.data.deviceInfo.ip}</td> */}
                       <td className="py-5 text-sm text-right">
                         {session.current ? (
                           <span className="text-sm font-medium text-muted-foreground">
