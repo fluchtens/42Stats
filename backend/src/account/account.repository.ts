@@ -11,7 +11,7 @@ export class AccountRepository {
     return await this.databaseService.query(query);
   }
 
-  public async findById(id: number): Promise<Account> {
+  public async findById(id: number): Promise<Account | null> {
     const query = `
       SELECT *
       FROM account
@@ -19,10 +19,14 @@ export class AccountRepository {
     `;
     const params = [id];
     const rows = await this.databaseService.query(query, params);
-    return {
-      ...rows[0],
-      is_admin: Boolean(rows[0].is_admin)
-    };
+    if (rows.length === 0) {
+      return null;
+    } else {
+      return {
+        ...rows[0],
+        is_admin: Boolean(rows[0].is_admin)
+      };
+    }
   }
 
   public async save(account: Account): Promise<void> {

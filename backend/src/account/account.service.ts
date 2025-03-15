@@ -1,13 +1,9 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { RoleRepository } from "src/role/role.repository";
 import { AccountRepository } from "./account.repository";
 
 @Injectable()
 export class AccountService {
-  constructor(
-    private readonly accountRepository: AccountRepository,
-    private readonly roleRepository: RoleRepository
-  ) {}
+  constructor(private readonly accountRepository: AccountRepository) {}
 
   public async getAccountSession(session: Record<string, any>) {
     return await this.accountRepository.findById(session.user.id);
