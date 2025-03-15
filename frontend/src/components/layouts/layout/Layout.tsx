@@ -19,12 +19,17 @@ export function Layout() {
     return pathname === "/";
   };
 
-  const isAdminPage = () => {
+  const isNotSecurePage = () => {
+    const routes = ["/", "/privacy-policy", "/legal-notice"];
+    return routes.includes(pathname);
+  };
+
+  const isSecurePage = () => {
     return pathname.includes("/admin");
   };
 
   useEffect(() => {
-    if (user === null && !isHomePage()) {
+    if (user === null && !isNotSecurePage()) {
       toast({
         title: "Not authenticated",
         description: "You must be logged in to access this page.",
@@ -32,7 +37,7 @@ export function Layout() {
       navigate("/");
       return;
     }
-    if (user && !user.is_admin && isAdminPage()) {
+    if (user && !user.is_admin && isSecurePage()) {
       toast({
         title: "Not authorized",
         description: "You are not authorized to access this page.",

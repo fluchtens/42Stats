@@ -9,6 +9,8 @@ import { AccountSettingsPage } from "./components/pages/settings/account-setting
 import { DeviceSettingsPage } from "./components/pages/settings/device-settings-page";
 import { FortyTwoStatsPage } from "./components/pages/stats/forty-two/forty-two-stats-page";
 import { MainStatsPage } from "./components/pages/stats/main/main-stats-page";
+import { LegalNoticePage } from "./components/pages/utils/legal-notice-page";
+import { PrivacyPolicyPage } from "./components/pages/utils/privacy-policy-page";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
@@ -27,6 +29,8 @@ const routes = [
       { path: "/settings/account", element: <AccountSettingsPage /> },
       { path: "/settings/device", element: <DeviceSettingsPage /> },
       { path: "/admin/actions", element: <AdminActionsPage /> },
+      { path: "/privacy-policy", element: <PrivacyPolicyPage /> },
+      { path: "/legal-notice", element: <LegalNoticePage /> },
     ],
   },
 ];
