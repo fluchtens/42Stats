@@ -5,8 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Footer } from "../footer/footer";
-import { Header } from "../header/header";
+import { Footer } from "../footer/tmp";
+import { Header } from "../header/tmp";
 import { AppSidebar } from "../sidebar/app-sidebar";
 
 export function Layout() {
