@@ -9,7 +9,7 @@ export const AppSidebarHeader = () => {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size="lg" onClick={() => navigate("/")}>
-          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+          <div className="flex justify-center items-center aspect-square size-8 rounded-lg bg-gradient-to-r from-blue-400 to-purple-400 text-sidebar-primary-foreground">
             <ChartColumn className="size-4" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
