@@ -4,10 +4,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { getCredentialByProvider, updateCredentialClientId, updateCredentialClientSecret } from "@/services/CredentialService";
 import { Credential } from "@/types/models/Credential";
 import { useEffect, useState } from "react";
-import { UpdateCredentialClientSecretSchema } from "./actions/dtos/update-credential-secret";
-import { UpdateCredentialClientIdSchema } from "./actions/dtos/update-credential-uid";
-import { CredentialCreator } from "./actions/ui/credential-creator";
-import { CredentialFieldEditor } from "./actions/ui/credential-field-editor";
+import { UpdateCredentialClientSecretSchema } from "./dtos/update-credential-secret";
+import { UpdateCredentialClientIdSchema } from "./dtos/update-credential-uid";
+import { CredentialCreator } from "./ui/credential-creator";
+import { CredentialFieldEditor } from "./ui/credential-field-editor";
 
 export function AdminActionsPage() {
   const { user } = useAuth();

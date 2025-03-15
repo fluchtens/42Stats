@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/layouts/layout/layout";
-import { AdminActionsPage } from "./components/pages/admin/admin-actions-page";
+import { AdminActionsPage } from "./components/pages/admin/actions/admin-actions-page";
 import { CalculatorPage } from "./components/pages/calculator/calculator-page";
 import { ErrorPage } from "./components/pages/error/error-page";
 import { HomePage } from "./components/pages/home/home-page";
