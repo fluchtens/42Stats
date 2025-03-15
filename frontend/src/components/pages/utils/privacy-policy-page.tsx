@@ -28,13 +28,14 @@ export const PrivacyPolicyPage = () => {
           <Section title="Data we collect">
             <List
               items={[
-                "Your unique 42 account identifier",
-                "Your login (username) 42",
-                "Link to your profile photo 42",
-                "Your cursus experience level",
-                "Your primary campus ID",
-                "Timestamp of your first connection to 42stats",
-                "Timestamp of your last connection to 42stats",
+                "Your unique 42 account identifier.",
+                "Your login (username) 42.",
+                "Link to your profile photo 42.",
+                "Your cursus experience level.",
+                "Your primary campus ID.",
+                "Timestamp of your first connection to 42stats.",
+                "Timestamp of your last connection to 42stats.",
+                "Connection information for each session (browser, operating system, device).",
               ]}
             />
             <p className="text-sm">This information can be consulted at any time in your account settings.</p>
