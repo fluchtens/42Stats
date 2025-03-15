@@ -7,7 +7,7 @@
     },
     {
       "question": "What technologies were used in this project?",
-      "answer": "This project was built using Java Spring Boot and React."
+      "answer": "This project was built using NestJS and React."
     },
     {
       "question": "Is the project open source?",

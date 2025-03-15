@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import RedisStore from 'connect-redis';
 import session from 'express-session';
@@ -35,6 +36,8 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     credentials: true,
   });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
 }

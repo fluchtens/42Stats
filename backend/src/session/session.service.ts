@@ -1,38 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { createClient } from 'redis';
+import { Injectable } from "@nestjs/common";
+import { createClient } from "redis";
+import { SessionRepository } from "./session.repository";
 
 @Injectable()
 export class SessionService {
   private redisClient;
 
-  constructor() {
+  constructor(private readonly sessionRepository: SessionRepository) {
     this.redisClient = createClient({
-      socket: { host: 'redis', port: 6379 },
+      socket: { host: "redis", port: 6379 }
     });
     this.redisClient.connect();
   }
 
   async getUserSessions(userId: number, sessionId: string) {
-    const keys = await this.redisClient.keys('sess:*');
-    const sessions = [];
-    for (const key of keys) {
-      const sessionData = await this.redisClient.get(key);
-      if (sessionData) {
-        const parsedSession = JSON.parse(sessionData);
-        if (parsedSession.user.id === userId) {
-          sessions.push({
-            sessionId: key.replace('sess:', ''),
-            data: parsedSession,
-            current: key === `sess:${sessionId}`,
-          });
-        }
-      }
-    }
-    return sessions;
+    return await this.sessionRepository.getAll(userId, sessionId);
   }
 
   async deleteSession(sessionId: string) {
-    this.redisClient.del(sessionId);
-    return { message: 'Session successfully deleted' };
+    await this.sessionRepository.delete(sessionId);
+    return { message: "Session successfully deleted" };
   }
 }

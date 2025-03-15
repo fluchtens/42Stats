@@ -19,7 +19,8 @@ export async function fetchAPI<T>(endpoint: string, options: RequestInit): Promi
 
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.error.message);
+      const message = Array.isArray(data.message) ? data.message.join("\n") : data.message;
+      throw new Error(message);
     }
 
     return data;

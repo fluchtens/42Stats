@@ -1,12 +1,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Layout } from "./components/layouts/layout/Layout";
-import { Calculator } from "./components/pages/calculator/Calculator";
-import { Error } from "./components/pages/error/Error";
-import { Home } from "./components/pages/home/Home";
-import { Leaderboard } from "./components/pages/leaderboard/Leaderboard";
-import { RncpChecker } from "./components/pages/rncp/Rncp";
-import { Settings } from "./components/pages/settings/Settings";
-import { Stats } from "./components/pages/stats/Stats";
+import { Layout } from "./components/layouts/layout/layout";
+import { AdminActionsPage } from "./components/pages/admin/actions/admin-actions-page";
+import { CalculatorPage } from "./components/pages/calculator/calculator-page";
+import { ErrorPage } from "./components/pages/error/error-page";
+import { HomePage } from "./components/pages/home/home-page";
+import { LeaderboardPage } from "./components/pages/leaderboard/leaderboard-page";
+import { AccountSettingsPage } from "./components/pages/settings/account-settings-page";
+import { DeviceSettingsPage } from "./components/pages/settings/device-settings-page";
+import { FortyTwoStatsPage } from "./components/pages/stats/forty-two/forty-two-stats-page";
+import { MainStatsPage } from "./components/pages/stats/main/main-stats-page";
+import { LegalNoticePage } from "./components/pages/utils/legal-notice-page";
+import { PrivacyPolicyPage } from "./components/pages/utils/privacy-policy-page";
 import { AuthProvider } from "./components/providers/AuthProvider";
 import { ThemeProvider } from "./components/providers/ThemeProvider";
 
@@ -14,14 +18,19 @@ const routes = [
   {
     path: "/",
     element: <Layout />,
-    errorElement: <Error />,
+    errorElement: <ErrorPage />,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/settings", element: <Settings /> },
-      { path: "/calculator", element: <Calculator /> },
-      { path: "/leaderboard", element: <Leaderboard /> },
-      { path: "/stats", element: <Stats /> },
-      { path: "/rncp", element: <RncpChecker /> },
+      { path: "/", element: <HomePage /> },
+      { path: "/calculator", element: <CalculatorPage /> },
+      { path: "/leaderboard", element: <LeaderboardPage /> },
+      { path: "/stats/42", element: <FortyTwoStatsPage /> },
+      { path: "/stats/42stats", element: <MainStatsPage /> },
+      // { path: "/rncp", element: <RncpChecker /> },
+      { path: "/settings/account", element: <AccountSettingsPage /> },
+      { path: "/settings/device", element: <DeviceSettingsPage /> },
+      { path: "/admin/actions", element: <AdminActionsPage /> },
+      { path: "/privacy-policy", element: <PrivacyPolicyPage /> },
+      { path: "/legal-notice", element: <LegalNoticePage /> },
     ],
   },
 ];

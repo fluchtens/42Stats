@@ -25,6 +25,16 @@ export async function deleteAccount(): Promise<ApiRes> {
   }
 }
 
+export async function getAllAccount(): Promise<Account[] | null> {
+  try {
+    return await fetchAPI<Account[]>("/account/all", {
+      method: "GET",
+    });
+  } catch (error: any) {
+    return null;
+  }
+}
+
 export async function getAccountsCount(): Promise<number | null> {
   try {
     const data = await fetchAPI<number>("/account/count", {

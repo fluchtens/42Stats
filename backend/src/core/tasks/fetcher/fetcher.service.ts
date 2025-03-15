@@ -1,12 +1,12 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
-import { CampusRepository } from 'src/campus/campus.repository';
-import { Campus } from 'src/campus/types/campus.type';
-import { ProjectRepository } from 'src/project/project.repository';
-import { Project } from 'src/project/types/project.type';
-import { User } from 'src/user/types/user.type';
-import { UserRepository } from 'src/user/user.repository';
-import { UserService } from 'src/user/user.service';
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { Cron } from "@nestjs/schedule";
+import { CampusRepository } from "src/campus/campus.repository";
+import { Campus } from "src/campus/types/campus.type";
+import { ProjectRepository } from "src/project/project.repository";
+import { Project } from "src/project/types/project.type";
+import { User } from "src/user/types/user.type";
+import { UserRepository } from "src/user/user.repository";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class FetcherService implements OnModuleInit {
@@ -14,27 +14,27 @@ export class FetcherService implements OnModuleInit {
   private accessToken: string;
   private readonly clientId: string = process.env.FORTY_TWO_UID;
   private readonly clientSecret: string = process.env.FORTY_TWO_SECRET;
-  private apiUrl: string = 'https://api.intra.42.fr/v2';
+  private apiUrl: string = "https://api.intra.42.fr/v2";
 
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly campusRepository: CampusRepository,
-    private readonly projectRepository: ProjectRepository,
+    private readonly projectRepository: ProjectRepository
   ) {}
 
   private async fetchAccessToken(): Promise<Promise<string>> {
     try {
-      const response = await fetch('https://api.intra.42.fr/oauth/token', {
-        method: 'POST',
+      const response = await fetch("https://api.intra.42.fr/oauth/token", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          grant_type: 'client_credentials',
+          grant_type: "client_credentials",
           client_id: this.clientId,
-          client_secret: this.clientSecret,
-        }),
+          client_secret: this.clientSecret
+        })
       });
 
       const data = await response.json();
@@ -44,28 +44,23 @@ export class FetcherService implements OnModuleInit {
 
       return data.access_token;
     } catch (error: any) {
-      this.logger.error('fetchAccessToken() ' + error.message);
+      this.logger.error("fetchAccessToken() " + error.message);
       return null;
     }
   }
 
   private async fetchCampusesPage(page: number): Promise<any[]> {
     try {
-      const response = await fetch(
-        this.apiUrl + `/campus?page=${page}&?page[size]=${100}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${this.accessToken}`,
-          },
-        },
-      );
+      const response = await fetch(this.apiUrl + `/campus?page=${page}&?page[size]=${100}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`
+        }
+      });
 
       if (!response.ok) {
-        this.logger.error(
-          `${response.status} ${response.statusText}, retry in 15 seconds...`,
-        );
+        this.logger.error(`${response.status} ${response.statusText}, retry in 15 seconds...`);
         if (response.status === 401) {
           this.accessToken = await this.fetchAccessToken();
         }
@@ -76,7 +71,7 @@ export class FetcherService implements OnModuleInit {
       const data = await response.json();
       return data;
     } catch (error: any) {
-      this.logger.error('fetchCampusesPage() ' + error.message);
+      this.logger.error("fetchCampusesPage() " + error.message);
       return [];
     }
   }
@@ -96,15 +91,13 @@ export class FetcherService implements OnModuleInit {
           country: campusJson.country,
           user_count: campusJson.users_count,
           student_count: 0,
-          average_level: 0.0,
+          average_level: 0.0
         };
         await this.campusRepository.save(campus);
         await this.fetchAllCampusUsers(campus.id);
         const userCount = await this.userRepository.countByCampus(campus.id);
         campus.student_count = userCount;
-        const averageLevel = await this.userRepository.findAverageLevelByCampus(
-          campus.id,
-        );
+        const averageLevel = await this.userRepository.findAverageLevelByCampus(campus.id);
         if (averageLevel !== null && averageLevel !== 0) {
           campus.average_level = Math.round(averageLevel * 100.0) / 100.0;
         } else {
@@ -116,24 +109,19 @@ export class FetcherService implements OnModuleInit {
     }
   }
 
-  private async fetchCampusUsersPage(
-    campusId: number,
-    page: number,
-  ): Promise<any[]> {
+  private async fetchCampusUsersPage(campusId: number, page: number): Promise<any[]> {
     try {
       const apiUrl = `${this.apiUrl}/cursus_users?filter[cursus_id]=${21}&filter[campus_id]=${campusId}&page[number]=${page}&page[size]=${100}`;
       const response = await fetch(apiUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.accessToken}`,
-        },
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`
+        }
       });
 
       if (!response.ok) {
-        this.logger.error(
-          `${response.status} ${response.statusText}, retry in 15 seconds...`,
-        );
+        this.logger.error(`${response.status} ${response.statusText}, retry in 15 seconds...`);
         if (response.status === 401) {
           this.accessToken = await this.fetchAccessToken();
         }
@@ -144,7 +132,7 @@ export class FetcherService implements OnModuleInit {
       const data = await response.json();
       return data;
     } catch (error) {
-      this.logger.error('fetchCampusUsersPage() ' + error.message);
+      this.logger.error("fetchCampusUsersPage() " + error.message);
       return [];
     }
   }
@@ -158,7 +146,7 @@ export class FetcherService implements OnModuleInit {
       }
       for (const userJson of usersJson) {
         const userObj = userJson.user;
-        if (userObj['staff?']) {
+        if (userObj["staff?"]) {
           continue;
         }
         const user: User = {
@@ -172,9 +160,9 @@ export class FetcherService implements OnModuleInit {
           pool_year: userObj.pool_year || null,
           level: userJson.level,
           campus_id: campusId,
-          blackholed: false,
+          blackholed: false
         };
-        if (userJson.end_at && !userObj['alumni?']) {
+        if (userJson.end_at && !userObj["alumni?"]) {
           const blackholedAt = new Date(userJson.end_at);
           if (blackholedAt < new Date()) {
             user.blackholed = true;
@@ -190,19 +178,17 @@ export class FetcherService implements OnModuleInit {
 
   private async fetchProjectsPage(page: number): Promise<any[]> {
     try {
-      const apiUrl = `${this.apiUrl}/projects?page[number]=${page}&page[size]=${100}&cursus_id=${21}&sort=${'id'}`;
+      const apiUrl = `${this.apiUrl}/projects?page[number]=${page}&page[size]=${100}&cursus_id=${21}&sort=${"id"}`;
       const response = await fetch(apiUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.accessToken}`,
-        },
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.accessToken}`
+        }
       });
 
       if (!response.ok) {
-        this.logger.error(
-          `${response.status} ${response.statusText}, retry in 15 seconds...`,
-        );
+        this.logger.error(`${response.status} ${response.statusText}, retry in 15 seconds...`);
         if (response.status === 401) {
           this.accessToken = await this.fetchAccessToken();
         }
@@ -212,7 +198,7 @@ export class FetcherService implements OnModuleInit {
 
       return await response.json();
     } catch (error) {
-      this.logger.error('fetchProjectsPage() ' + error.message);
+      this.logger.error("fetchProjectsPage() " + error.message);
       return [];
     }
   }
@@ -229,14 +215,9 @@ export class FetcherService implements OnModuleInit {
           id: projectJson.id,
           name: projectJson.name,
           slug: projectJson.slug,
-          difficulty: projectJson.difficulty,
+          difficulty: projectJson.difficulty
         };
-        if (
-          project.id <= 0 ||
-          project.name === null ||
-          project.slug === null ||
-          project.difficulty <= 0
-        ) {
+        if (project.id <= 0 || project.name === null || project.slug === null || project.difficulty <= 0) {
           continue;
         }
         if (
@@ -252,13 +233,13 @@ export class FetcherService implements OnModuleInit {
     }
   }
 
-  @Cron('0 5 * * *')
+  @Cron("0 5 * * *")
   private async fetchData() {
-    this.logger.log('Start scrapping data from api.intra.42.fr');
+    this.logger.log("Start scrapping data from api.intra.42.fr");
 
     this.accessToken = await this.fetchAccessToken();
     if (!this.accessToken) {
-      return this.logger.error('Failed to fetch access token.');
+      return this.logger.error("Failed to fetch access token.");
     }
 
     await this.userRepository.deleteAll();
@@ -268,7 +249,7 @@ export class FetcherService implements OnModuleInit {
     await this.fetchAllProjects();
     await this.fetchAllCampuses();
 
-    this.logger.log('End of data scrapping from api.intra.42.fr');
+    this.logger.log("End of data scrapping from api.intra.42.fr");
   }
 
   onModuleInit() {

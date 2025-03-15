@@ -15,7 +15,6 @@ export const SessionSchema = z.object({
       id: z.number(),
     }),
     deviceInfo: z.object({
-      ip: z.string(),
       browser: z.string(),
       os: z.string(),
       device: z.string(),
