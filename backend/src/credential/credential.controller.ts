@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { AdminGuard } from "src/auth/guards/admin-guard";
 import { FortyTwoAuthGuard } from "src/auth/guards/forty-two-auth.guard";
 import { CredentialService } from "./credential.service";
 import { CreateCredentialDto } from "./dtos/create-credential.dto";
@@ -6,6 +7,7 @@ import { UpdateCredentialDto } from "./dtos/update-credential.dto";
 
 @Controller()
 @UseGuards(FortyTwoAuthGuard)
+@UseGuards(AdminGuard)
 export class CredentialController {
   constructor(private readonly credentialService: CredentialService) {}
 

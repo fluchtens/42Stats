@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 
 @Injectable()
-export class FortyTwoAuthGuard {
+export class AdminGuard {
   canActivate(context: any) {
     const request = context.switchToHttp().getRequest();
-    if (!request.session.user) {
+    if (!request.session.user.is_admin) {
       throw new UnauthorizedException({
-        message: "You must be authenticated to access this resource."
+        message: "You do not have permission to access this resource."
       });
     }
     return true;
