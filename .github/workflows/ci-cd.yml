@@ -26,6 +26,7 @@ jobs:
             make clean
             cd /home/debian/app/42Stats
             git pull origin main
-            make
+            make clean MODE=prod
+            make MODE=prod
             cd /home/debian/nginx-reverse-proxy
             make
