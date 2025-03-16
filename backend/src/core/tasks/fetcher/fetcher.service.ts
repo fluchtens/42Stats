@@ -253,6 +253,8 @@ export class FetcherService implements OnModuleInit {
   }
 
   onModuleInit() {
-    this.fetchData();
+    if (process.env.MODE === "development") {
+      this.fetchData();
+    }
   }
 }
