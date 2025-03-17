@@ -2,11 +2,9 @@ name: Frontend Test
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
 
 jobs:
   build:
@@ -26,7 +24,9 @@ jobs:
         run: corepack enable && corepack prepare pnpm@latest --activate
 
       - name: Install dependencies
+        working-directory: frontend
         run: pnpm install
 
       - name: Build project
+        working-directory: frontend
         run: pnpm run build
