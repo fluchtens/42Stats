@@ -10,7 +10,7 @@ export const Header = () => {
   const { user } = useAuth();
 
   return (
-    <header className="px-4 py-3 border-b">
+    <header className="px-4 py-3 sticky top-0 z-50 border-b bg-background">
       <div className={clsx("flex justify-between items-center", user === null && "max-w-screen-lg m-auto")}>
         {user && <SidebarTrigger />}
         {user === null && (
