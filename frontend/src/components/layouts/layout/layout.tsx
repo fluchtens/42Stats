@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "../footer/footer";
 import { Header } from "../header/header";
 import { AppSidebar } from "../sidebar/app-sidebar";
@@ -55,6 +55,7 @@ export function Layout() {
         <main className="py-6 px-4 md:px-6 flex-1">{isHomePage() ? <HomePage /> : <Outlet />}</main>
         <Footer />
         <Toaster />
+        <ScrollRestoration />
       </div>
     </SidebarProvider>
   );

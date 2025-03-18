@@ -8,6 +8,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import clsx from "clsx";
@@ -25,7 +26,15 @@ export function AppSideBarRoutes({ label, routes, admin }: AppSidebarRoutesProps
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile, toggleSidebar } = useSidebar();
   const [visible, setVisible] = useState<boolean>(true);
+
+  const changeRoute = (url: string) => {
+    if (isMobile) {
+      toggleSidebar();
+    }
+    navigate(url);
+  };
 
   useEffect(() => {
     if (user && admin && !user.is_admin) {
@@ -43,7 +52,7 @@ export function AppSideBarRoutes({ label, routes, admin }: AppSidebarRoutesProps
               !item.children ? (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    onClick={() => navigate(item.url)}
+                    onClick={() => changeRoute(item.url)}
                     className={clsx({ "bg-sidebar-accent text-sidebar-accent-foreground": location.pathname === item.url })}
                   >
                     {item.icon && <item.icon />}
@@ -70,7 +79,7 @@ export function AppSideBarRoutes({ label, routes, admin }: AppSidebarRoutesProps
                         {item.children.map((subItem: any) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton
-                              onClick={() => navigate(subItem.url)}
+                              onClick={() => changeRoute(subItem.url)}
                               className={clsx(
                                 "cursor-pointer",
                                 location.pathname === subItem.url && "bg-sidebar-accent text-sidebar-accent-foreground"
